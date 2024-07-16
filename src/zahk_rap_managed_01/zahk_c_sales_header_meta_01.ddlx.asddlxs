@@ -1,0 +1,79 @@
+@Metadata.layer: #CORE
+
+@UI: { headerInfo: { title: { value: 'sales_doc_num' },
+                     description: { value: 'date_created' }, 
+                     typeName: 'Sales Document',
+                     typeNamePlural: 'Sales Documents' } }
+
+annotate view ZAHK_I_SALES_HEADER_M_01
+    with 
+{
+    
+    @UI.facet: [ { id: 'General', type: #IDENTIFICATION_REFERENCE, position: 10, label: 'Sales Document Details' },
+                  
+                  { parentId: 'General', type: #FIELDGROUP_REFERENCE, position: 10, targetQualifier: 'BasicInfo' },
+                  { parentId: 'General', type: #FIELDGROUP_REFERENCE, position: 20, targetQualifier: 'DetailInfo' },
+                  
+                  // line item reference, like click on sales doc num and to check its all items
+                  {   id: '_SHeader_M_01', // from 2nd low level CDS from annotation
+                      purpose: #STANDARD, 
+                      type: #LINEITEM_REFERENCE,
+                      label: 'Sales Order Item', 
+                      position: 20, 
+                      targetElement: '_SItem_M_01' }  // from top root CDS & it must be linked with field, see below(sales_doc_num)
+                  ] 
+
+    @UI:{ lineItem: [{ position: 10, label: 'Number', importance: #HIGH,
+                       targetElement: '_SItem_M_01.sales_doc_num' }], 
+                       
+                       identification: [{ position: 10, label: 'Number' }],
+                       fieldGroup: [{ qualifier: 'BasicInfo', importance: #HIGH }] }
+    sales_doc_num;
+    
+    @UI:{ lineItem: [{ position: 20, label: 'Created On', importance: #HIGH }],
+         identification: [{ position: 20, label: 'Created On' }],
+         fieldGroup: [{ qualifier: 'BasicInfo', importance: #HIGH }] }
+    date_created;
+    
+    @UI:{ lineItem: [{ position: 30, label: 'Created By', importance: #HIGH }],
+         identification: [{ position: 30, label: 'Created By' }],
+         fieldGroup: [{ qualifier: 'BasicInfo', importance: #HIGH }] }
+    person_created;
+    
+    @UI:{ lineItem: [{ position: 40, label: 'Total Cost', importance: #HIGH }],
+         identification: [{ position: 40, label: 'Total Cost' }],
+         fieldGroup: [{ qualifier: 'BasicInfo', importance: #HIGH }] }
+    total_cost;
+    
+//    @UI:{ lineItem: [{ position: 41, label: 'Number', importance: #HIGH }] }
+//    cost_currency;
+    
+    @UI:{ lineItem: [{ position: 50, label: 'Block Status', importance: #HIGH }],
+         identification: [{ position: 50, label: 'Block Status' }],
+         fieldGroup: [{ qualifier: 'BasicInfo', importance: #HIGH }] }
+    block_status;
+    
+    
+ 
+    // importance is about what to show on UI
+    @UI:{ lineItem: [{ position: 60, label: 'Sales Org', importance: #MEDIUM }],
+         identification: [{ position: 60, label: 'Sales Org' }],
+         fieldGroup: [{ qualifier: 'DetailInfo', importance: #HIGH }] }
+    sales_org;
+    
+    @UI:{ lineItem: [{ position: 70, label: 'Sales Dist', importance: #MEDIUM }],
+         identification: [{ position: 70, label: 'Sales Dist' }],
+         fieldGroup: [{ qualifier: 'DetailInfo', importance: #HIGH }] }
+    sales_dist;
+    
+    @UI:{ lineItem: [{ position: 80, label: 'Sales Div', importance: #MEDIUM }],
+         identification: [{ position: 80, label: 'Sales Div' }],
+         fieldGroup: [{ qualifier: 'DetailInfo', importance: #HIGH }] }
+    sales_div;
+    
+    // last_changed_on;
+    
+    /* Associations */
+    // _SItem_M_01;
+    
+}

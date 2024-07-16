@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service Def for Sales Header'
+define service ZSD_UI_SALES_HEADER {
+  expose ZAHK_I_SALES_HEADER_M_01;
+  expose ZAHK_I_SALES_ITEM_M_01;
+}

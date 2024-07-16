@@ -1,0 +1,28 @@
+managed implementation in class zcl_rapdemo02_crud_syntax unique;
+//strict ( 2 );
+
+define behavior for Zahk_I_userinfo02_m_02 //alias <alias_name>
+persistent table ztest_userinfo02
+lock master
+//authorization master ( instance )
+etag master LastChanged
+{
+  field ( readonly : update ) Email;
+
+  create;
+  update;
+  delete;
+
+  mapping for ztest_userinfo02
+    {
+      Email       = user_mail;
+      FirstName   = first_name;
+      LastName    = last_name;
+      IsAdmin     = is_admin;
+      LastChanged = last_changed;
+    }
+/*  -> mapping can also be written as : )
+//  mapping for ztest_userinfo02 corresponding;
+    # for a smooth corresponding, field names must be identical in Comp. Root View and D.Table
+    # e.g. in this example it could cause problem as namings are different */
+}
