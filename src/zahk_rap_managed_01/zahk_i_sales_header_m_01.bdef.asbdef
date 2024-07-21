@@ -1,0 +1,43 @@
+managed implementation in class zbp_ahk_i_sales_header_m_01 unique;
+//strict ( 2 );
+
+define behavior for ZAHK_I_SALES_HEADER_M_01 //alias <alias_name>
+persistent table ztest_vbak_01
+lock master
+//authorization master ( instance )
+//etag master <field_name>
+{
+  field ( readonly : update ) sales_doc_num;
+
+  create;
+  update;
+  delete;
+
+  association _SItem_M_01 { create; }
+
+  mapping for ztest_vbak_01 control zahk_i_sales_header_m_01 corresponding
+    {
+      sales_doc_num = vbeln;
+      block_status  = faksk;
+    }
+}
+
+define behavior for ZAHK_I_SALES_ITEM_M_01 //alias <alias_name>
+persistent table ztest_vbap_01
+lock dependent by _SHeader_M_01
+//authorization dependent by _SHeader_M_01
+//etag master <field_name>
+{
+  field ( readonly : update ) sales_doc_num, item_position;
+
+  update;
+  delete;
+  association _SHeader_M_01;
+
+  mapping for ztest_vbap_01 control zahk_i_sales_item_m_01 corresponding
+    {
+      sales_doc_num = vbeln;
+      cost_currency = waerk;
+      item_position = posnr;
+    }
+}
