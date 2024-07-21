@@ -1,7 +1,7 @@
 managed implementation in class zbp_ahk_i_sales_header_m_01 unique;
 //strict ( 2 );
 
-define behavior for ZAHK_I_SALES_HEADER_M_01 //alias <alias_name>
+define behavior for ZAHK_I_SALES_HEADER_M_01 alias SalesHead_M_01
 persistent table ztest_vbak_01
 lock master
 //authorization master ( instance )
@@ -12,7 +12,6 @@ lock master
   create;
   update;
   delete;
-
   association _SItem_M_01 { create; }
 
   mapping for ztest_vbak_01 control zahk_i_sales_header_m_01 corresponding
@@ -28,9 +27,13 @@ lock master
       date_created    = erdat;
       last_changed_on = last_changed_timestamp;
     }
+
+  // to block sales order
+  action blockOrder result[1] $self; // result[1] -> 1 row
+  action unblockOrder result[1] $self;
 }
 
-define behavior for ZAHK_I_SALES_ITEM_M_01 //alias <alias_name>
+define behavior for ZAHK_I_SALES_ITEM_M_01 alias SalesItem_M_01
 persistent table ztest_vbap_01
 lock dependent by _SHeader_M_01
 //authorization dependent by _SHeader_M_01
