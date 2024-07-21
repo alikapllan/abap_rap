@@ -10,9 +10,9 @@ lock master
   field ( readonly : update ) sales_doc_num;
 
   create;
-  update;
-  delete;
-  association _SItem_M_01 { create; }
+  update ( features : instance );
+  delete ( features : instance );
+  association _SItem_M_01 { create ( features : instance ); }
 
   mapping for ztest_vbak_01 control zahk_i_sales_header_m_01 corresponding
     {
@@ -29,8 +29,8 @@ lock master
     }
 
   // to block sales order
-  action blockOrder result[1] $self; // result[1] -> 1 row
-  action unblockOrder result[1] $self;
+  action blockOrder result [1] $self; // result[1] -> 1 row
+  action unblockOrder result [1] $self;
 }
 
 define behavior for ZAHK_I_SALES_ITEM_M_01 alias SalesItem_M_01
