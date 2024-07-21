@@ -73,7 +73,7 @@ CLASS lhc_SalesHead_M_01 IMPLEMENTATION.
 
     " Dynamic Feature Control
     " -> what I basically do here is, based on the blocked status we allow the user to be able to do actions.
-    " -> E.g -> if on UI the marked line has blocked status, which is '99', then the buttons 'Delete' and 'Edit wont be clickable anymore.
+    " -> E.g -> if on UI the marked line has blocked status, which is '99', then the buttons 'Delete' and 'Edit' wont be clickable anymore on UI.
     result = VALUE #( FOR <ls_result> IN lt_result
                       ( %tky               = <ls_result>-sales_doc_num
                         %update            = COND #( WHEN <ls_result>-block_status = cv_unblocked_status
@@ -87,5 +87,46 @@ CLASS lhc_SalesHead_M_01 IMPLEMENTATION.
                                                      ELSE if_abap_behv=>fc-o-disabled ) ) ).
     " %tky stands for transactional key. In non-draft use cases , %tky contains the same value as %key which is the key of the related entity.
     " In draft-enabled use cases, %tky will automatically contain the is_draft indicator.
+  ENDMETHOD.
+ENDCLASS.
+
+
+CLASS lcl_additional_save DEFINITION INHERITING FROM cl_abap_behavior_saver.
+  " https://help.sap.com/docs/abap-cloud/abap-rap/implementing-additional-save
+
+  " lets say you a have requirement as following :
+  " -> if a line is marked and edited one or a few fields of it, based on that, if edited fields have proper values
+  " you want to call a Function Module / Method / BAPI etc to do another operation in parallel. (such as creating a sales order in parallel)
+  " -> In such scenarios its the place where you put your codes.
+
+  PROTECTED SECTION.
+    METHODS save_modified REDEFINITION.
+ENDCLASS.
+
+
+CLASS lcl_additional_save IMPLEMENTATION.
+  METHOD save_modified.
+    " -> these are tables
+    " CREATE-EntityName
+    " UPDATE-EntityName
+    " DELETE-EntityName
+
+    IF create-saleshead_m_01 IS NOT INITIAL.
+      " means -> Creation has been made
+
+      " Call BAPI, FM or CRUD on Database Tables etc.
+    ENDIF.
+
+    IF update-saleshead_m_01 IS NOT INITIAL.
+      " means -> Update has been made
+
+      " Call BAPI, FM or CRUD on Database Tables etc.
+    ENDIF.
+
+    IF delete-saleshead_m_01 IS NOT INITIAL.
+      " means -> Deletion has been made
+
+      " Call BAPI, FM or CRUD on Database Tables etc.
+    ENDIF.
   ENDMETHOD.
 ENDCLASS.

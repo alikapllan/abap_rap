@@ -3,6 +3,7 @@ managed implementation in class zbp_ahk_i_sales_header_m_01 unique;
 
 define behavior for ZAHK_I_SALES_HEADER_M_01 alias SalesHead_M_01
 persistent table ztest_vbak_01
+with additional save
 lock master
 //authorization master ( instance )
 //etag master <field_name>
