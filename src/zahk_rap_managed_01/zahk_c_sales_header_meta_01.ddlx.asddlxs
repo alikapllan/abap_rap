@@ -56,21 +56,24 @@ annotate view ZAHK_I_SALES_HEADER_M_01
          fieldGroup: [{ qualifier: 'BasicInfo', importance: #HIGH }] }
     block_status;
     
-    
+    @UI:{ lineItem: [{ position: 60, label: 'Block Status Message', importance: #HIGH }],
+         identification: [{ position: 60, label: 'Block Status Message' }],
+         fieldGroup: [{ qualifier: 'BasicInfo', importance: #HIGH }] }
+    block_status_msg;
  
     // importance is about what to show on UI
-    @UI:{ lineItem: [{ position: 60, label: 'Sales Org', importance: #MEDIUM }],
-         identification: [{ position: 60, label: 'Sales Org' }],
+    @UI:{ lineItem: [{ position: 70, label: 'Sales Org', importance: #MEDIUM }],
+         identification: [{ position: 70, label: 'Sales Org' }],
          fieldGroup: [{ qualifier: 'DetailInfo', importance: #HIGH }] }
     sales_org;
     
-    @UI:{ lineItem: [{ position: 70, label: 'Sales Dist', importance: #MEDIUM }],
-         identification: [{ position: 70, label: 'Sales Dist' }],
+    @UI:{ lineItem: [{ position: 80, label: 'Sales Dist', importance: #MEDIUM }],
+         identification: [{ position: 80, label: 'Sales Dist' }],
          fieldGroup: [{ qualifier: 'DetailInfo', importance: #HIGH }] }
     sales_dist;
     
-    @UI:{ lineItem: [{ position: 80, label: 'Sales Div', importance: #MEDIUM }],
-         identification: [{ position: 80, label: 'Sales Div' }],
+    @UI:{ lineItem: [{ position: 90, label: 'Sales Div', importance: #MEDIUM }],
+         identification: [{ position: 90, label: 'Sales Div' }],
          fieldGroup: [{ qualifier: 'DetailInfo', importance: #HIGH }] }
     sales_div;
     

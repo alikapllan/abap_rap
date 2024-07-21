@@ -23,6 +23,11 @@ define root view entity ZAHK_I_SALES_HEADER_M_01 as select from ZAHK_I_SALES_HEA
     total_cost,
     cost_currency,
     block_status,
+    case block_status
+        when ' ' then 'OK'
+        when '99' then 'Approval needed'
+        else 'Blocked'
+    end as block_status_msg,
     last_changed_on,
     
     /* Associations */
