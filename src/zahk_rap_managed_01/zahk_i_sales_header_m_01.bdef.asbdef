@@ -17,8 +17,16 @@ lock master
 
   mapping for ztest_vbak_01 control zahk_i_sales_header_m_01 corresponding
     {
-      sales_doc_num = vbeln;
-      block_status  = faksk;
+      sales_doc_num   = vbeln;
+      block_status    = faksk;
+      sales_dist      = vtweg;
+      sales_div       = spart;
+      sales_org       = vkorg;
+      total_cost      = netwr;
+      cost_currency   = waerk;
+      person_created  = ernam;
+      date_created    = erdat;
+      last_changed_on = last_changed_timestamp;
     }
 }
 
@@ -36,8 +44,15 @@ lock dependent by _SHeader_M_01
 
   mapping for ztest_vbap_01 control zahk_i_sales_item_m_01 corresponding
     {
-      sales_doc_num = vbeln;
-      cost_currency = waerk;
-      item_position = posnr;
+      sales_doc_num   = vbeln;
+      item_position   = posnr;
+      cost_currency   = waerk;
+      mat_desc        = arktx;
+      mat_num         = matnr;
+      quantity        = kpein;
+      total_item_cost = netwr;
+      unit_cost       = netpr;
+      unit            = kmein;
+      last_changed_on = last_changed_timestamp;
     }
 }
