@@ -117,6 +117,15 @@ CLASS lcl_additional_save IMPLEMENTATION.
       " Call BAPI, FM or CRUD on Database Tables etc.
     ENDIF.
 
+    " -- UNMANAGED SAVE --
+    " -> if we would want a specific logic while creating a record on item level
+    " CREATE would not have the table SalesItem_M_01.
+    " to do so, in behavior def. :
+    " 1. persistent table commented out
+    " 2. added 'with unmanaged save'
+    " https://help.sap.com/docs/abap-cloud/abap-rap/unmanaged-save
+    " https://help.sap.com/docs/abap-cloud/abap-rap/integrating-unmanaged-save-in-managed-business-objects
+
     IF update-saleshead_m_01 IS NOT INITIAL.
       " means -> Update has been made
 
