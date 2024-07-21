@@ -6,7 +6,7 @@ persistent table ztest_vbak_01
 with additional save
 lock master
 //authorization master ( instance )
-//etag master <field_name>
+etag master last_changed_on
 {
   field ( readonly : update ) sales_doc_num;
 
@@ -38,9 +38,13 @@ define behavior for ZAHK_I_SALES_ITEM_M_01 alias SalesItem_M_01
 persistent table ztest_vbap_01
 lock dependent by _SHeader_M_01
 //authorization dependent by _SHeader_M_01
-//etag master <field_name>
+etag master last_changed_on
 {
   field ( readonly : update ) sales_doc_num, item_position;
+
+  // for external numbering, meaning to take it from user
+  // put here as I want to demonstrate the creation of an item
+  field ( mandatory : create ) sales_doc_num, item_position;
 
   update;
   delete;
