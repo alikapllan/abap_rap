@@ -4,6 +4,8 @@
   <asx:values>
    <DDLS>
     <DDLNAME>ZAHK_I_USERINFO02_M_01</DDLNAME>
+    <DDLANGUAGE>D</DDLANGUAGE>
+    <DDTEXT>Interface Basic View for ztest_userinfo02</DDTEXT>
     <SOURCE_TYPE>W</SOURCE_TYPE>
    </DDLS>
   </asx:values>

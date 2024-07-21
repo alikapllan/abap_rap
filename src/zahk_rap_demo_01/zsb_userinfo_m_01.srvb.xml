@@ -6,6 +6,7 @@
     <METADATA>
      <NAME>ZSB_USERINFO_M_01</NAME>
      <TYPE>SRVB/SVB</TYPE>
+     <DESCRIPTION>User Info Service Binding</DESCRIPTION>
      <LINKS>
       <item>
        <HREF>versions</HREF>
