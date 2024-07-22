@@ -7,7 +7,7 @@
     <TYPE>BDEF/BDO</TYPE>
     <DESCRIPTION>Behavior Def. for Compos. Root View ZAHK_I_USERINFO02_M02</DESCRIPTION>
     <DESCRIPTION_TEXT_LIMIT>60</DESCRIPTION_TEXT_LIMIT>
-    <LANGUAGE>DE</LANGUAGE>
+    <LANGUAGE>EN</LANGUAGE>
     <LINKS>
      <item>
       <HREF>./zahk_i_userinfo02_m_02/source/main/versions</HREF>
