@@ -12,46 +12,48 @@ annotate view ZAHK_I_SALES_ITEM_M_01
     
     @UI:{ lineItem: [{ position: 10, label: 'Number', importance: #HIGH }],
           identification: [{ position: 10, label: 'Header Number' }],
-          fieldGroup: [{ qualifier: 'ItemDetail', importance: #HIGH }] }
+          fieldGroup: [{ qualifier: 'ItemDetail', position: 10, importance: #HIGH }] }
     sales_doc_num;
     
     @UI:{ lineItem: [{ position: 20, label: 'Position', importance: #HIGH }],
           identification: [{ position: 20, label: 'Position' }],
-          fieldGroup: [{ qualifier: 'ItemDetail', importance: #HIGH }] }
+          fieldGroup: [{ qualifier: 'ItemDetail', position: 20, importance: #HIGH }] }
     item_position;
     
     @UI:{ lineItem: [{ position: 30, label: 'Material No', importance: #HIGH }],
           identification: [{ position: 30, label: 'Material No' }],
-          fieldGroup: [{ qualifier: 'ItemDetail', importance: #HIGH }]}
+          fieldGroup: [{ qualifier: 'ItemDetail', position: 30, importance: #HIGH }]}
     mat_num;
     
     @UI:{ lineItem: [{ position: 40, label: 'Mat Desc', importance: #HIGH }],
           identification: [{ position: 40, label: 'Mat Desc' }],
-          fieldGroup: [{ qualifier: 'ItemDetail', importance: #HIGH }]}
+          fieldGroup: [{ qualifier: 'ItemDetail', position: 40, importance: #HIGH }]}
     mat_desc;
     
     @UI:{ lineItem: [{ position: 50, label: 'Unit Price', importance: #HIGH }],
           identification: [{ position: 50, label: 'Unit Price' }],
-          fieldGroup: [{ qualifier: 'ItemDetail', importance: #HIGH }]}
+          fieldGroup: [{ qualifier: 'ItemDetail', position: 50, importance: #HIGH }]}
     unit_cost;
     
-    @UI:{ lineItem: [{ position: 60, label: 'Price', importance: #HIGH }],
-          identification: [{ position: 60, label: 'Price' }],
-          fieldGroup: [{ qualifier: 'ItemDetail', importance: #HIGH }]}
+    
+    @UI:{ lineItem: [{ position: 60, label: 'Quantity', importance: #HIGH }],
+          identification: [{ position: 60, label: 'Quantity' }],
+          fieldGroup: [{ qualifier: 'ItemDetail', position: 60, importance: #HIGH }]}
+    quantity;
+    
+//    @UI:{ lineItem: [{ position: 80, label: 'Q Unit', importance: #HIGH }],
+//          identification: [{ position: 80, label: 'Q Unit' }],
+//          fieldGroup: [{ qualifier: 'ItemDetail', importance: #HIGH }]}
+//    unit;
+    
+    
+    @UI:{ lineItem: [{ position: 70, label: 'Price', importance: #HIGH }],
+          identification: [{ position: 70, label: 'Price' }],
+          fieldGroup: [{ qualifier: 'ItemDetail', position: 70, importance: #HIGH }]}
     total_item_cost;
     
 //    @UI:{ lineItem: [{ position: 70, label: 'Currency', importance: #HIGH }] }
 //    cost_currency;
-    
-    @UI:{ lineItem: [{ position: 70, label: 'Quantity', importance: #HIGH }],
-          identification: [{ position: 70, label: 'Quantity' }],
-          fieldGroup: [{ qualifier: 'ItemDetail', importance: #HIGH }]}
-    quantity;
-    
-    @UI:{ lineItem: [{ position: 80, label: 'Q Unit', importance: #HIGH }],
-          identification: [{ position: 80, label: 'Q Unit' }],
-          fieldGroup: [{ qualifier: 'ItemDetail', importance: #HIGH }]}
-    unit;
     
     // last_changed_on;
     /* Associations */
