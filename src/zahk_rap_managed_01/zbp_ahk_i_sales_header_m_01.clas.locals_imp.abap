@@ -111,6 +111,9 @@ CLASS lcl_additional_save IMPLEMENTATION.
     " UPDATE-EntityName
     " DELETE-EntityName
 
+    DATA lt_item         TYPE z_tt_sales_item_01.
+    DATA lv_status_subrc TYPE i.
+
     IF create-saleshead_m_01 IS NOT INITIAL.
       " means -> Creation has been made
 
@@ -125,6 +128,41 @@ CLASS lcl_additional_save IMPLEMENTATION.
     " 2. added 'with unmanaged save'
     " https://help.sap.com/docs/abap-cloud/abap-rap/unmanaged-save
     " https://help.sap.com/docs/abap-cloud/abap-rap/integrating-unmanaged-save-in-managed-business-objects
+    IF create-salesitem_m_01 IS NOT INITIAL.
+
+      lt_item = VALUE #( FOR ls_sales_item IN create-salesitem_m_01
+                         ( vbeln                  = ls_sales_item-sales_doc_num
+                           posnr                  = ls_sales_item-item_position
+                           waerk                  = 'EUR'
+                           arktx                  = ls_sales_item-mat_desc
+                           matnr                  = ls_sales_item-mat_num
+                           kpein                  = ls_sales_item-quantity
+                           netpr                  = ls_sales_item-unit_cost
+                           netwr                  = ls_sales_item-quantity * ls_sales_item-unit_cost
+                           kmein                  = 'PC'
+                           last_changed_timestamp = ls_sales_item-last_changed_on ) ).
+
+      CALL FUNCTION 'Z_CREATE_ITEM_01'
+        EXPORTING item   = lt_item
+        IMPORTING status = lv_status_subrc.
+
+      IF lv_status_subrc <> 0.
+        " Error Message to display on UI
+        LOOP AT lt_item INTO DATA(ls_item).
+          APPEND VALUE #( sales_doc_num = ls_item-vbeln
+                          item_position = ls_item-posnr
+                          %msg          = new_message( id       = 'ZAHK_RAP_MANAGED_01' " message class
+                                                       number   = '000'
+                                                       severity = if_abap_behv_message=>severity-error
+*                                                       v1       =
+*                                                       v2       =
+*                                                       v3       =
+*                                                       v4       =
+                                          ) ) TO reported-salesitem_m_01. " Messages to display on UI passed by to REPORTED
+
+        ENDLOOP.
+      ENDIF.
+    ENDIF.
 
     IF update-saleshead_m_01 IS NOT INITIAL.
       " means -> Update has been made

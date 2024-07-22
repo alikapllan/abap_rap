@@ -41,11 +41,15 @@ with unmanaged save
 //authorization dependent by _SHeader_M_01
 etag master last_changed_on
 {
-  field ( readonly : update ) sales_doc_num, item_position;
-
   // for external numbering, meaning to take it from user
   // put here as I want to demonstrate the creation of an item
-  field ( mandatory : create ) sales_doc_num, item_position;
+  field ( mandatory : create ) item_position;
+  // sales_doc_num, -> As I will take the current sales document head. number from UPDATE-salesItem, User doesnt&shouldnt need to provide any header number
+  // check method -> save_modified -> create-salesitem_m_01
+
+  field ( readonly ) sales_doc_num, cost_currency, unit, total_item_cost
+  //   item_position -> commented out as for this scenario I want to provide the position no on UI
+  ;
 
   update;
   delete;
