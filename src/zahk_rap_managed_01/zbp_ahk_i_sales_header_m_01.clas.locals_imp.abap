@@ -177,3 +177,25 @@ CLASS lcl_additional_save IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 ENDCLASS.
+
+
+CLASS lhc_salesitem_m_01 DEFINITION INHERITING FROM cl_abap_behavior_handler.
+
+  PRIVATE SECTION.
+
+    METHODS newPriceTotal FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR SalesItem_M_01~newPriceTotal.
+    METHODS checkNegativityPriceQty FOR VALIDATE ON SAVE
+      IMPORTING keys FOR SalesItem_M_01~checkNegativityPriceQty.
+
+ENDCLASS.
+
+CLASS lhc_salesitem_m_01 IMPLEMENTATION.
+
+  METHOD newPriceTotal.
+  ENDMETHOD.
+
+  METHOD checkNegativityPriceQty.
+  ENDMETHOD.
+
+ENDCLASS.

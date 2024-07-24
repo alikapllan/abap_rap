@@ -15,6 +15,10 @@ etag master last_changed_on
   delete ( features : instance );
   association _SItem_M_01 { create ( features : instance ); }
 
+  // to block sales order
+  action blockOrder result [1] $self; // result[1] -> 1 row
+  action unblockOrder result [1] $self;
+
   mapping for ztest_vbak_01 control zahk_i_sales_header_m_01 corresponding
     {
       sales_doc_num   = vbeln;
@@ -29,9 +33,6 @@ etag master last_changed_on
       last_changed_on = last_changed_timestamp;
     }
 
-  // to block sales order
-  action blockOrder result [1] $self; // result[1] -> 1 row
-  action unblockOrder result [1] $self;
 }
 
 define behavior for ZAHK_I_SALES_ITEM_M_01 alias SalesItem_M_01
@@ -47,13 +48,19 @@ etag master last_changed_on
   // sales_doc_num, -> As I will take the current sales document head. number from UPDATE-salesItem, User doesnt&shouldnt need to provide any header number
   // check method -> save_modified -> create-salesitem_m_01
 
-  field ( readonly ) sales_doc_num, cost_currency, unit, total_item_cost
+  field ( readonly ) sales_doc_num, unit, total_item_cost
   //   item_position -> commented out as for this scenario I want to provide the position no on UI
   ;
 
   update;
   delete;
   association _SHeader_M_01;
+
+  // quantity
+  // unit cost -> all price changes on item level will reflect the total price on header level
+  determination newPriceTotal on modify { field quantity, unit_cost; }
+  // validation of given quantity and unit cost are not negative
+  validation checkNegativityPriceQty on save { field quantity, unit_cost; }
 
   mapping for ztest_vbap_01 control zahk_i_sales_item_m_01 corresponding
     {
