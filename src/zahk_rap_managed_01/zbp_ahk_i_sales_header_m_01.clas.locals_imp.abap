@@ -183,19 +183,19 @@ CLASS lhc_salesitem_m_01 DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
   PRIVATE SECTION.
 
-    METHODS newPriceTotal FOR DETERMINE ON MODIFY
+    METHODS new_price_total FOR DETERMINE ON MODIFY
       IMPORTING keys FOR SalesItem_M_01~newPriceTotal.
-    METHODS checkNegativityPriceQty FOR VALIDATE ON SAVE
+    METHODS check_negativity_price_qty FOR VALIDATE ON SAVE
       IMPORTING keys FOR SalesItem_M_01~checkNegativityPriceQty.
 
 ENDCLASS.
 
 CLASS lhc_salesitem_m_01 IMPLEMENTATION.
 
-  METHOD newPriceTotal.
+  METHOD new_price_total.
   ENDMETHOD.
 
-  METHOD checkNegativityPriceQty.
+  METHOD check_negativity_price_qty.
   ENDMETHOD.
 
 ENDCLASS.
