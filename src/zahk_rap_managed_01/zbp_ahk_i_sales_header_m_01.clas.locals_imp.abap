@@ -182,20 +182,24 @@ ENDCLASS.
 CLASS lhc_salesitem_m_01 DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
   PRIVATE SECTION.
-
     METHODS new_price_total FOR DETERMINE ON MODIFY
       IMPORTING keys FOR SalesItem_M_01~newPriceTotal.
+
     METHODS check_negativity_price_qty FOR VALIDATE ON SAVE
       IMPORTING keys FOR SalesItem_M_01~checkNegativityPriceQty.
 
 ENDCLASS.
 
-CLASS lhc_salesitem_m_01 IMPLEMENTATION.
 
+CLASS lhc_salesitem_m_01 IMPLEMENTATION.
   METHOD new_price_total.
   ENDMETHOD.
 
   METHOD check_negativity_price_qty.
+    READ ENTITIES OF zahk_i_sales_header_m_01 IN LOCAL MODE
+         ENTITY SalesHead_M_01 BY \_SItem_M_01
+         FROM VALUE #( FOR key IN keys
+                       ( sales_doc_num = key-%tky-sales_doc_num ) )
+         RESULT DATA(lt_sales_item).
   ENDMETHOD.
-
 ENDCLASS.
