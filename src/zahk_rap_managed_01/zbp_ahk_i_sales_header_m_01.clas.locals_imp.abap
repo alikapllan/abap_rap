@@ -161,6 +161,18 @@ CLASS lcl_additional_save IMPLEMENTATION.
                                           ) ) TO reported-salesitem_m_01. " Messages to display on UI passed by to REPORTED
 
         ENDLOOP.
+
+      ELSE.
+        " -> while creation of a new item in header, new total price in header should be newly calculated and updated.
+        " -> so that the new determination logic of calculating the total price could also reflect to header. ( determination newPriceTotal on item level)
+        " -> during creating new sales item, the update-saleshead_m_01 contains values.
+        LOOP AT update-saleshead_m_01 REFERENCE INTO DATA(ls_head).
+          UPDATE ztest_vbak_01 SET netwr = @ls_head->*-total_cost WHERE vbeln = @ls_head->*-sales_doc_num.
+
+          IF sy-subrc <> 0.
+            " Throw error message
+          ENDIF.
+        ENDLOOP.
       ENDIF.
     ENDIF.
 
