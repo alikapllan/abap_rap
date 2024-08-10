@@ -12,6 +12,7 @@ ENDCLASS.
 
 CLASS lhc_salesitem_m_01 IMPLEMENTATION.
   METHOD new_price_total.
+
   ENDMETHOD.
 
   METHOD check_negativity_price_qty.
