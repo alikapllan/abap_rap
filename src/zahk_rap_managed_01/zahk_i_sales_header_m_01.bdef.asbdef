@@ -1,7 +1,8 @@
-managed implementation in class zbp_ahk_i_sales_header_m_01 unique;
+managed;
 //strict ( 2 );
 
 define behavior for ZAHK_I_SALES_HEADER_M_01 alias SalesHead_M_01
+implementation in class zbp_ahk_i_sales_header_m_01 unique
 persistent table ztest_vbak_01
 with additional save
 lock master
@@ -36,6 +37,7 @@ etag master last_changed_on
 }
 
 define behavior for ZAHK_I_SALES_ITEM_M_01 alias SalesItem_M_01
+implementation in class zbp_ahk_i_item_header_m_01 unique
 //persistent table ztest_vbap_01 -> for unmanaged save this should be commented out, both not possible
 lock dependent by _SHeader_M_01
 with unmanaged save
