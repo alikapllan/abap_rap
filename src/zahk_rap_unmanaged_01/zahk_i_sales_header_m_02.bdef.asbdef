@@ -1,0 +1,26 @@
+unmanaged implementation in class zbp_ahk_i_sales_header_m_02 unique;
+//strict ( 2 );
+
+define behavior for ZAHK_I_SALES_HEADER_M_02 //alias <alias_name>
+//late numbering
+//lock master
+//authorization master ( instance )
+//etag master <field_name>
+{
+//  create;
+//  update;
+//  delete;
+  association _SItem_M_02 { create; }
+}
+
+define behavior for ZAHK_I_SALES_ITEM_M_02 //alias <alias_name>
+//late numbering
+//lock dependent by _SHeader_M_02
+//authorization dependent by _SHeader_M_02
+//etag master <field_name>
+{
+//  update;
+//  delete;
+  field ( readonly ) sales_doc_num;
+  association _SHeader_M_02;
+}
