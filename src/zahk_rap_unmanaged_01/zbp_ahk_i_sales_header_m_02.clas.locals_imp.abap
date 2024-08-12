@@ -30,7 +30,7 @@ CLASS lhc_SO_Header IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD delete.
-    zcl_salesorder_operation_u_02=>get_instance( )->delete_so_header( ).
+    zcl_salesorder_operation_u_02=>get_instance( )->delete_so_header( ). " to take attention in commit :P
   ENDMETHOD.
 
   METHOD read.
@@ -107,11 +107,11 @@ CLASS lsc_ZAHK_I_SALES_HEADER_M_02 IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD save.
-    zcl_salesorder_operation_u_02=>get_instance( )->save_so_header( ).
+    zcl_salesorder_operation_u_02=>get_instance( )->save_so_header( ). " to take attention in commit :P
   ENDMETHOD.
 
   METHOD cleanup.
-    zcl_salesorder_operation_u_02=>get_instance( )->cleanup( ).
+    zcl_salesorder_operation_u_02=>get_instance( )->cleanup( ). " to take attention in commit :P
   ENDMETHOD.
 
   METHOD cleanup_finalize.

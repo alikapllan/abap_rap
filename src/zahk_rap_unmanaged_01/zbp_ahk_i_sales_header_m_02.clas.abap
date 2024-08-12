@@ -1,15 +1,5 @@
-class ZBP_AHK_I_SALES_HEADER_M_02 definition
-  public
-  abstract
-  final
-  create public .
-
-public section.
-protected section.
-private section.
+CLASS zbp_ahk_i_sales_header_m_02 DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zahk_i_sales_header_m_02.
 ENDCLASS.
 
-
-
-CLASS ZBP_AHK_I_SALES_HEADER_M_02 IMPLEMENTATION.
+CLASS zbp_ahk_i_sales_header_m_02 IMPLEMENTATION.
 ENDCLASS.
