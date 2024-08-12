@@ -28,7 +28,7 @@ define behavior for ZAHK_I_SALES_HEADER_M_02 alias SO_Header
     }
 }
 
-define behavior for ZAHK_I_SALES_ITEM_M_02 //alias <alias_name>
+define behavior for ZAHK_I_SALES_ITEM_M_02 alias SO_Item
 //late numbering
 //lock dependent by _SHeader_M_02
 //authorization dependent by _SHeader_M_02
