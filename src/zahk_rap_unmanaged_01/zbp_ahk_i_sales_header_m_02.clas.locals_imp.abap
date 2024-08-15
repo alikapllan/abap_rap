@@ -30,7 +30,13 @@ CLASS lhc_SO_Header IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD delete.
-    zcl_salesorder_operation_u_02=>get_instance( )->delete_so_header( ). " to take attention in commit :P
+    DATA lt_so_header TYPE STANDARD TABLE OF ztest_vbak_02.
+
+    LOOP AT keys INTO DATA(ls_key).
+      INSERT VALUE ztest_vbak_02( vbeln = ls_key-sales_doc_num ) INTO TABLE lt_so_header.
+    ENDLOOP.
+
+    zcl_salesorder_operation_u_02=>get_instance( )->delete_so_header( it_so_header = lt_so_header ).
   ENDMETHOD.
 
   METHOD read.
@@ -107,11 +113,14 @@ CLASS lsc_ZAHK_I_SALES_HEADER_M_02 IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD save.
-    zcl_salesorder_operation_u_02=>get_instance( )->save_so_header( ). " to take attention in commit :P
+    " This method gets triggered anytime at any SQL specific changes like update, create, delete by Framework
+    zcl_salesorder_operation_u_02=>get_instance( )->save_so_header( ).
   ENDMETHOD.
 
   METHOD cleanup.
-    zcl_salesorder_operation_u_02=>get_instance( )->cleanup( ). " to take attention in commit :P
+    " -> This cleanup method gets triggered at the very at the end of all steps by Framework.
+    " -> So no need to call this method explicitly in the save method after the operation.
+    zcl_salesorder_operation_u_02=>get_instance( )->cleanup( ).
   ENDMETHOD.
 
   METHOD cleanup_finalize.
