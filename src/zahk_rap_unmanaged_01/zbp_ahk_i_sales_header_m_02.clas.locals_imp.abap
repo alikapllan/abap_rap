@@ -33,13 +33,14 @@ CLASS lhc_SO_Header IMPLEMENTATION.
     LOOP AT entities REFERENCE INTO DATA(lr_entity).
       CLEAR ls_so_header.
 
-      ls_so_header-vbeln = CONV vbeln( CONV i( lv_latest_sales_doc_num + 1 ) ).
-
       ls_so_header = CORRESPONDING #( lr_entity->* MAPPING
                                       faksk = block_status
                                       vtweg = sales_dist
                                       spart = sales_div
                                       vkorg = sales_org ).
+
+      ls_so_header-vbeln = CONV vbeln( CONV i( lv_latest_sales_doc_num + 1 ) ).
+      CONDENSE ls_so_header-vbeln. " removing spaces
 
       ls_so_header-netwr                  = 0.
       ls_so_header-waerk                  = 'USD'.

@@ -48,7 +48,7 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
     ENDIF.
 
     IF lines( gt_so_header_create_buffer ) > 0.
-      INSERT ztest_vbak_02 FROM TABLE @( CORRESPONDING #( gt_so_header_delete_buffer ) ).
+      INSERT ztest_vbak_02 FROM TABLE @( CORRESPONDING #( gt_so_header_create_buffer ) ).
     ENDIF.
   ENDMETHOD.
 
