@@ -47,8 +47,8 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
     gt_so_header_delete_buffer = CORRESPONDING #( it_so_header ).
 
     " Item
-    DATA(lt_sales_item_doc_num) = get_associated_items( it_so_header = it_so_header ).
-    gt_so_item_delete_buffer = lt_sales_item_doc_num.
+    DATA(lt_sales_items) = get_associated_items( it_so_header = it_so_header ).
+    gt_so_item_delete_buffer = lt_sales_items.
   ENDMETHOD.
 
   METHOD save_so_header_buffer.
