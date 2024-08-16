@@ -26,7 +26,7 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
     METHODS cleanup_buffer.
     METHODS get_last_sales_doc_num_buffer RETURNING VALUE(rv_sales_doc_num) TYPE vbeln.
     METHODS get_associated_items IMPORTING it_so_header TYPE tt_ztest_vbak02
-                                 RETURNING VALUE(rt_sales_item_doc_nums) TYPE tt_ztest_vbap02.
+                                 RETURNING VALUE(rt_sales_items) TYPE tt_ztest_vbap02.
 
   PRIVATE SECTION.
     CLASS-DATA go_instance TYPE REF TO lcl_salesorder_buffer.
@@ -90,10 +90,10 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
       FIELDS *
       FOR ALL ENTRIES IN @it_so_header
       WHERE vbeln = @it_so_header-vbeln
-      INTO TABLE @DATA(lt_sales_item_doc_nums).
+      INTO TABLE @DATA(lt_sales_items).
 
     IF sy-subrc = 0.
-       rt_sales_item_doc_nums = lt_sales_item_doc_nums.
+       rt_sales_items = lt_sales_items.
     ENDIF.
   ENDMETHOD.
 
