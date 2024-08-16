@@ -11,6 +11,12 @@ define behavior for ZAHK_I_SALES_HEADER_M_02 alias SO_Header
   update;
   delete;
 
+  field ( readonly ) sales_doc_num,
+  date_created,
+  last_changed_on,
+  block_status,
+  person_created;
+
   association _SItem_M_02 { create; }
 
   mapping for ztest_vbak_02 control zahk_i_sales_header_m_02 corresponding
