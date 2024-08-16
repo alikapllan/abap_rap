@@ -22,8 +22,33 @@ CLASS lhc_SO_Header DEFINITION INHERITING FROM cl_abap_behavior_handler.
 ENDCLASS.
 
 CLASS lhc_SO_Header IMPLEMENTATION.
-
   METHOD create.
+    DATA ls_so_header TYPE ztest_vbak_02.
+    DATA lt_so_header TYPE STANDARD TABLE OF ztest_vbak_02.
+
+    DATA(lv_latest_sales_doc_num) = zcl_salesorder_operation_u_02=>get_instance( )->get_last_sales_doc_num( ).
+
+    GET TIME STAMP FIELD DATA(lv_timestamp).
+
+    LOOP AT entities REFERENCE INTO DATA(lr_entity).
+      CLEAR ls_so_header.
+
+      ls_so_header-vbeln = CONV vbeln( CONV i( lv_latest_sales_doc_num + 1 ) ).
+
+      ls_so_header = CORRESPONDING #( lr_entity->* MAPPING
+                                      faksk = block_status
+                                      vtweg = sales_dist
+                                      spart = sales_div
+                                      vkorg = sales_org ).
+
+      ls_so_header-netwr                  = 0.
+      ls_so_header-waerk                  = 'USD'.
+      ls_so_header-ernam                  = sy-uname.
+      ls_so_header-erdat                  = sy-datum.
+      ls_so_header-last_changed_timestamp = lv_timestamp.
+
+      INSERT ls_so_header INTO TABLE lt_so_header.
+    ENDLOOP.
   ENDMETHOD.
 
   METHOD update.

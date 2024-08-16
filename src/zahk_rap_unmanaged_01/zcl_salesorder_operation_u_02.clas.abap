@@ -11,6 +11,7 @@ CLASS zcl_salesorder_operation_u_02 DEFINITION
     METHODS delete_so_header IMPORTING it_so_header TYPE tt_ztest_vbak02.
     METHODS save_so_header.
     METHODS cleanup.
+    METHODS get_last_sales_doc_num RETURNING VALUE(rv_sales_doc_num) TYPE vbeln.
 
   PRIVATE SECTION.
     CLASS-DATA go_instance TYPE REF TO zcl_salesorder_operation_u_02.
@@ -41,4 +42,9 @@ CLASS zcl_salesorder_operation_u_02 IMPLEMENTATION.
   METHOD cleanup.
     lcl_salesorder_buffer=>get_instance( )->cleanup_buffer( ).
   ENDMETHOD.
+
+  METHOD get_last_sales_doc_num .
+    rv_sales_doc_num = lcl_salesorder_buffer=>get_instance( )->get_last_sales_doc_num_buffer( ).
+  ENDMETHOD.
+
 ENDCLASS.

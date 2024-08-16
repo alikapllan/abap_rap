@@ -16,6 +16,7 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
     METHODS delete_so_header_buffer IMPORTING it_so_header TYPE tt_ztest_vbak02.
     METHODS save_so_header_buffer.
     METHODS cleanup_buffer.
+    METHODS get_last_sales_doc_num_buffer RETURNING VALUE(rv_sales_doc_num) TYPE vbeln.
 
   PRIVATE SECTION.
     CLASS-DATA go_instance TYPE REF TO lcl_salesorder_buffer.
@@ -49,4 +50,10 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
     CLEAR: gt_so_header_update_buffer,
            gt_so_header_delete_buffer.
   ENDMETHOD.
+  METHOD get_last_sales_doc_num_buffer.
+    SELECT FROM ztest_vbak_02
+        FIELDS max( vbeln )
+        INTO @rv_sales_doc_num.
+  ENDMETHOD.
+
 ENDCLASS.
