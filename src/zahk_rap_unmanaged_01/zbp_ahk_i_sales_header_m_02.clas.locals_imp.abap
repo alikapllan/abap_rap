@@ -55,6 +55,50 @@ CLASS lhc_SO_Header IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD update.
+    DATA ls_so_header  TYPE ztest_vbak_02.
+    DATA lt_so_header  TYPE STANDARD TABLE OF ztest_vbak_02.
+    " ..!
+    DATA ls_so_header_control TYPE zif_sales_order_structure=>ts_so_control.
+    DATA lt_so_header_control TYPE zif_sales_order_structure=>tt_so_control.
+
+    GET TIME STAMP FIELD DATA(lv_timestamp).
+
+    LOOP AT entities REFERENCE INTO DATA(lr_entity).
+      CLEAR: ls_so_header,
+             ls_so_header_control.
+
+      ls_so_header = CORRESPONDING #( lr_entity->* MAPPING
+                                      vbeln = sales_doc_num
+                                      faksk = block_status
+                                      vtweg = sales_dist
+                                      spart = sales_div
+                                      vkorg = sales_org
+                                      netwr = total_cost
+                                      waerk = cost_currency
+                                      ernam = person_created
+                                      erdat = date_created ).
+
+      ls_so_header-last_changed_timestamp = lv_timestamp.
+
+      INSERT ls_so_header INTO TABLE lt_so_header.
+
+      " %control
+      " .. changed fields take value '01'.
+      ls_so_header_control = CORRESPONDING #( lr_entity->*-%control MAPPING
+                                               vbeln = sales_doc_num
+                                               faksk = block_status
+                                               vtweg = sales_dist
+                                               spart = sales_div
+                                               vkorg = sales_org
+                                               netwr = total_cost
+                                               waerk = cost_currency
+                                               ernam = person_created
+                                               erdat = date_created ).
+
+      ls_so_header_control-vbeln_id = ls_so_header-vbeln. " used in order to figure out to which sales doc changes are applied
+
+      INSERT ls_so_header_control INTO TABLE lt_so_header_control.
+    ENDLOOP.
   ENDMETHOD.
 
   METHOD delete.

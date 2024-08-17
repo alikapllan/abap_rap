@@ -17,7 +17,8 @@ INTERFACE zif_sales_order_structure
   " -- Source: https://github.com/SAP-samples/abap-cheat-sheets/blob/main/08_EML_ABAP_for_RAP.md
 
   TYPES: BEGIN OF ts_so_control,
-           vbeln TYPE abp_behv_flag,
+           vbeln_id TYPE vbeln,
+           vbeln TYPE abp_behv_flag, " 00 -> nothing changed " 01 -> change applied
            faksk TYPE abp_behv_flag,
            vtweg TYPE abp_behv_flag,
            spart TYPE abp_behv_flag,
