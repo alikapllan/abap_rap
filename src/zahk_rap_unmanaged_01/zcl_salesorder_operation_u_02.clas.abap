@@ -10,6 +10,8 @@ CLASS zcl_salesorder_operation_u_02 DEFINITION
 
     METHODS delete_so_header IMPORTING it_so_header TYPE tt_ztest_vbak02.
     METHODS create_so_header IMPORTING it_so_header TYPE tt_ztest_vbak02.
+    METHODS update_so_header IMPORTING it_so_header         TYPE tt_ztest_vbak02
+                                       it_so_header_control TYPE zif_sales_order_structure=>tt_so_control.
     METHODS save_so_header.
     METHODS cleanup.
     METHODS get_last_sales_doc_num RETURNING VALUE(rv_sales_doc_num) TYPE vbeln.
@@ -50,6 +52,11 @@ CLASS zcl_salesorder_operation_u_02 IMPLEMENTATION.
 
   METHOD create_so_header.
     lcl_salesorder_buffer=>get_instance( )->create_so_header_buffer( it_so_header = it_so_header ).
+  ENDMETHOD.
+
+  METHOD update_so_header.
+    lcl_salesorder_buffer=>get_instance( )->update_so_header_buffer( it_so_header         = it_so_header
+                                                                     it_so_header_control = it_so_header_control ).
   ENDMETHOD.
 
 ENDCLASS.

@@ -22,6 +22,8 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
 
     METHODS delete_so_header_buffer IMPORTING it_so_header TYPE tt_ztest_vbak02.
     METHODS create_so_header_buffer IMPORTING it_so_header TYPE tt_ztest_vbak02.
+    METHODS update_so_header_buffer IMPORTING it_so_header         TYPE tt_ztest_vbak02
+                                              it_so_header_control TYPE zif_sales_order_structure=>tt_so_control.
     METHODS save_so_header_buffer.
     METHODS cleanup_buffer.
     METHODS get_last_sales_doc_num_buffer RETURNING VALUE(rv_sales_doc_num) TYPE vbeln.
@@ -95,6 +97,11 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
     IF sy-subrc = 0.
        rt_sales_items = lt_sales_items.
     ENDIF.
+  ENDMETHOD.
+
+  METHOD update_so_header_buffer.
+    " .. Consider both %control table and fill the missing data which don't need to be updated
+    " from DB table.
   ENDMETHOD.
 
 ENDCLASS.

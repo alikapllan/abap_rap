@@ -99,6 +99,9 @@ CLASS lhc_SO_Header IMPLEMENTATION.
 
       INSERT ls_so_header_control INTO TABLE lt_so_header_control.
     ENDLOOP.
+
+    zcl_salesorder_operation_u_02=>get_instance( )->update_so_header( it_so_header         = lt_so_header
+                                                                      it_so_header_control = lt_so_header_control ).
   ENDMETHOD.
 
   METHOD delete.
