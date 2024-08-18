@@ -19,6 +19,12 @@ CLASS lhc_SO_Header DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS cba_Sitem_m_02 FOR MODIFY
       IMPORTING entities_cba FOR CREATE SO_Header\_Sitem_m_02.
 
+    METHODS blockOrder FOR MODIFY
+      IMPORTING keys FOR ACTION SO_Header~blockOrder RESULT result.
+
+    METHODS unblockOrder FOR MODIFY
+      IMPORTING keys FOR ACTION SO_Header~unblockOrder RESULT result.
+
 ENDCLASS.
 
 CLASS lhc_SO_Header IMPLEMENTATION.
@@ -121,6 +127,12 @@ CLASS lhc_SO_Header IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD cba_Sitem_m_02.
+  ENDMETHOD.
+
+  METHOD blockOrder.
+  ENDMETHOD.
+
+  METHOD unblockOrder.
   ENDMETHOD.
 
 ENDCLASS.

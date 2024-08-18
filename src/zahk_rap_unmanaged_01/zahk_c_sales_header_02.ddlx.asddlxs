@@ -48,10 +48,10 @@ annotate view ZAHK_I_SALES_HEADER_M_02 with
   //    @UI:{ lineItem: [{ position: 41, label: 'Number', importance: #HIGH }] }
   //    cost_currency;
 
-  @UI:{ lineItem: [{ position: 50, label: 'Block Status', importance: #HIGH }],
-        // Actions
-  //        { type: #FOR_ACTION, dataAction: 'blockOrder', label: 'Block' },
-  //        { type: #FOR_ACTION, dataAction: 'unblockOrder', label: 'Unblock' }],
+  @UI:{ lineItem: [{ position: 50, label: 'Block Status', importance: #HIGH },
+       // Actions
+          { type: #FOR_ACTION, dataAction: 'blockOrder', label: 'Block' },
+          { type: #FOR_ACTION, dataAction: 'unblockOrder', label: 'Unblock' }],
        identification: [{ position: 50, label: 'Block Status' }],
        fieldGroup: [{ qualifier: 'BASIC_INFO', importance: #HIGH }] }
   block_status;
