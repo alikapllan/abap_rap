@@ -46,9 +46,11 @@ define behavior for ZAHK_I_SALES_ITEM_M_02 alias SO_Item
   update;
   delete;
 
-  // sales doc no & item position should not be given at creating.
+  // sales doc no & item & position should not be given at creating.
+  // total item cost is calculating explicitly
   field ( readonly ) sales_doc_num,
-                     item_position;
+                     item_position,
+                     total_item_cost;
 
   association _SHeader_M_02;
 

@@ -42,6 +42,15 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
 
   PRIVATE SECTION.
     CLASS-DATA go_instance TYPE REF TO lcl_salesorder_buffer.
+
+    METHODS get_associated_header IMPORTING it_so_item          TYPE tt_ztest_vbap02
+                                  RETURNING VALUE(rs_so_header) TYPE t_ztest_vbak02.
+
+    METHODS update_header_total_price IMPORTING it_so_item            TYPE tt_ztest_vbap02.
+
+    METHODS calculate_header_new_price IMPORTING is_so_header         TYPE t_ztest_vbak02
+                                                 it_so_item           TYPE tt_ztest_vbap02
+                                       EXPORTING es_so_header_updated TYPE t_ztest_vbak02.
 ENDCLASS.
 
 
@@ -81,6 +90,10 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
 
     IF lines( gt_so_header_update_buffer ) > 0.
       UPDATE ztest_vbak_02 FROM TABLE @( gt_so_header_update_buffer ).
+    ENDIF.
+
+    IF lines( gt_so_item_create_buffer ) > 0.
+      INSERT ztest_vbap_02 FROM TABLE @( CORRESPONDING #( gt_so_item_create_buffer ) ).
     ENDIF.
   ENDMETHOD.
 
@@ -212,6 +225,39 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
 
   METHOD create_so_item_buffer.
     gt_so_item_create_buffer = CORRESPONDING #( it_so_item ).
+
+    " .. The new total price in item needs to be taken into account in header.
+    " .. Total price of all items = total price in header
+    update_header_total_price( it_so_item = it_so_item ).
+  ENDMETHOD.
+
+  METHOD update_header_total_price.
+    DATA(ls_so_header) = get_associated_header( it_so_item = it_so_item ).
+    calculate_header_new_price( EXPORTING is_so_header         = ls_so_header
+                                          it_so_item           = it_so_item
+                                IMPORTING es_so_header_updated = DATA(ls_so_header_updated) ).
+
+    INSERT ls_so_header_updated INTO TABLE gt_so_header_update_buffer.
+  ENDMETHOD.
+
+  METHOD get_associated_header.
+    SELECT FROM ztest_vbak_02
+      FIELDS *
+      FOR ALL ENTRIES IN @it_so_item
+      WHERE vbeln = @it_so_item-vbeln
+      INTO TABLE @DATA(lt_so_header).
+
+    IF sy-subrc = 0.
+      rs_so_header = lt_so_header[ 1 ].
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD calculate_header_new_price.
+    es_so_header_updated = is_so_header.
+
+    LOOP AT it_so_item INTO DATA(ls_so_item).
+      es_so_header_updated-netwr += ls_so_item-netwr.
+    ENDLOOP.
   ENDMETHOD.
 
 ENDCLASS.

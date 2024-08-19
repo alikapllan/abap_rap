@@ -169,30 +169,37 @@ CLASS lhc_SO_Header IMPLEMENTATION.
                                     )->get_item_new_posnr( iv_so_sales_doc_num = entities_cba[ 1 ]-sales_doc_num  ).
     ENDIF.
 
-
     " .. Create a table of all items
     " .. Pass this to the operation
     LOOP AT entities_cba REFERENCE INTO DATA(lr_entity_cba).
       CLEAR ls_so_item.
 
-      ls_so_item = CORRESPONDING #( lr_entity_cba->*-%target
+      LOOP AT lr_entity_cba->*-%target REFERENCE INTO DATA(lr_entity_target).
+
+      ls_so_item = CORRESPONDING #( lr_entity_target->*
                                     MAPPING
-                                    vbeln = sales_doc_num
-                                    posnr = item_position
+                                    " .. in the target we have only values which are provided in UI
+                                    " .. as vbeln & posnr will be provided by us explicitly outside of the UI
+                                    " both removed from here
+                                    " .. total item cost is also calculated explicitly based on qty and unit cost
                                     waerk = cost_currency
                                     arktx = mat_desc
                                     matnr = mat_num
                                     kpein = quantity
-                                    netwr = total_item_cost
                                     netpr = unit_cost
                                     kmein = unit ).
 
       " .. Calculating price
-      ls_so_item-netwr = ls_so_item-netpr * ls_so_item-kmein.
+      ls_so_item-netwr = ls_so_item-netpr * ls_so_item-kpein.
+
+      ls_so_item-vbeln = lr_entity_cba->*-sales_doc_num. " here it will be taken from Header not UI.
+
       " .. Assigning new posnr
       ls_so_item-posnr = lv_new_so_item_posnr.
 
       INSERT ls_so_item INTO TABLE lt_so_item.
+
+      ENDLOOP.
 
      ENDLOOP.
 
