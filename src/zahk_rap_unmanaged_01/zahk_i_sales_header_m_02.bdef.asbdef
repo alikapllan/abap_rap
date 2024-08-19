@@ -8,9 +8,9 @@ define behavior for ZAHK_I_SALES_HEADER_M_02 alias SO_Header
 //etag master <field_name>
 {
   create;
-  update;
-  delete;
-  association _SItem_M_02 { create; }
+  update ( features : instance );
+  delete ( features : instance );
+  association _SItem_M_02 { create ( features : instance ); }
 
   action blockOrder result[1] $self; // 1 because we will only get 1 entity set for the particulat SO
   action unblockOrder result[1] $self;
