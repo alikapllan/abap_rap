@@ -19,6 +19,7 @@ CLASS zcl_salesorder_operation_u_02 DEFINITION
     METHODS cleanup.
 
     METHODS create_so_item IMPORTING it_so_item TYPE tt_ztest_vbap02.
+    METHODS delete_so_item IMPORTING it_so_item TYPE tt_ztest_vbap02.
 
     METHODS get_last_sales_doc_num RETURNING VALUE(rv_sales_doc_num) TYPE vbeln.
     METHODS block_or_unlock_so IMPORTING it_so_header    TYPE tt_ztest_vbak02
@@ -81,6 +82,10 @@ CLASS zcl_salesorder_operation_u_02 IMPLEMENTATION.
 
   METHOD create_so_item.
     lcl_salesorder_buffer=>get_instance( )->create_so_item_buffer( it_so_item = it_so_item ).
+  ENDMETHOD.
+
+  METHOD delete_so_item.
+    lcl_salesorder_buffer=>get_instance( )->delete_so_item_buffer( it_so_item = it_so_item ).
   ENDMETHOD.
 
 ENDCLASS.

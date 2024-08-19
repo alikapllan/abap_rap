@@ -29,6 +29,7 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
     METHODS cleanup_buffer.
 
     METHODS create_so_item_buffer IMPORTING it_so_item TYPE tt_ztest_vbap02.
+    METHODS delete_so_item_buffer IMPORTING it_so_item TYPE tt_ztest_vbap02.
 
     METHODS get_last_sales_doc_num_buffer RETURNING VALUE(rv_sales_doc_num) TYPE vbeln.
     METHODS get_associated_items IMPORTING it_so_header TYPE tt_ztest_vbak02
@@ -46,10 +47,14 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
     METHODS get_associated_header IMPORTING it_so_item          TYPE tt_ztest_vbap02
                                   RETURNING VALUE(rs_so_header) TYPE t_ztest_vbak02.
 
-    METHODS update_header_total_price IMPORTING it_so_item            TYPE tt_ztest_vbap02.
+    METHODS update_header_total_price IMPORTING it_so_item            TYPE tt_ztest_vbap02
+                                                iv_create_flag        TYPE abap_bool OPTIONAL
+                                                iv_delete_flag        TYPE abap_bool OPTIONAL.
 
     METHODS calculate_header_new_price IMPORTING is_so_header         TYPE t_ztest_vbak02
                                                  it_so_item           TYPE tt_ztest_vbap02
+                                                 iv_create_flag       TYPE abap_bool OPTIONAL
+                                                 iv_delete_flag       TYPE abap_bool OPTIONAL
                                        EXPORTING es_so_header_updated TYPE t_ztest_vbak02.
 ENDCLASS.
 
@@ -228,13 +233,16 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
 
     " .. The new total price in item needs to be taken into account in header.
     " .. Total price of all items = total price in header
-    update_header_total_price( it_so_item = it_so_item ).
+    update_header_total_price( it_so_item = it_so_item
+                               iv_create_flag = abap_true ).
   ENDMETHOD.
 
   METHOD update_header_total_price.
     DATA(ls_so_header) = get_associated_header( it_so_item = it_so_item ).
     calculate_header_new_price( EXPORTING is_so_header         = ls_so_header
                                           it_so_item           = it_so_item
+                                          iv_create_flag       = iv_create_flag
+                                          iv_delete_flag       = iv_delete_flag
                                 IMPORTING es_so_header_updated = DATA(ls_so_header_updated) ).
 
     INSERT ls_so_header_updated INTO TABLE gt_so_header_update_buffer.
@@ -253,11 +261,38 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD calculate_header_new_price.
+    DATA lt_so_header TYPE STANDARD TABLE OF ztest_vbak_02.
+
     es_so_header_updated = is_so_header.
 
-    LOOP AT it_so_item INTO DATA(ls_so_item).
-      es_so_header_updated-netwr += ls_so_item-netwr.
-    ENDLOOP.
+    IF iv_delete_flag = abap_true.
+      CLEAR lt_so_header.
+
+      INSERT is_so_header INTO TABLE lt_so_header.
+
+      DATA(lt_so_item_all_data) = get_associated_items( it_so_header = lt_so_header ).
+
+      IF sy-subrc = 0.
+        LOOP AT lt_so_item_all_data INTO DATA(ls_so_item).
+          es_so_header_updated-netwr -= ls_so_item-netwr.
+        ENDLOOP.
+      ENDIF.
+    ENDIF.
+
+    IF iv_create_flag = abap_true.
+      LOOP AT it_so_item INTO ls_so_item.
+        es_so_header_updated-netwr += ls_so_item-netwr.
+      ENDLOOP.
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD delete_so_item_buffer.
+    gt_so_item_delete_buffer = it_so_item.
+
+    " .. The new total price in item needs to be taken into account in header.
+    " .. Total price of all items = total price in header
+    update_header_total_price( it_so_item = it_so_item
+                               iv_delete_flag = abap_true ).
   ENDMETHOD.
 
 ENDCLASS.

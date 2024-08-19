@@ -315,6 +315,18 @@ CLASS lhc_SO_Item IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD delete.
+    DATA ls_so_item TYPE ztest_vbap_02.
+    DATA lt_so_item TYPE STANDARD TABLE OF ztest_vbap_02 WITH EMPTY KEY.
+
+    LOOP AT keys REFERENCE INTO DATA(lr_key).
+      ls_so_item = CORRESPONDING #( lr_key->*
+                                    MAPPING
+                                    vbeln = sales_doc_num
+                                    posnr = item_position ).
+      INSERT ls_so_item INTO TABLE lt_so_item.
+    ENDLOOP.
+
+    zcl_salesorder_operation_u_02=>get_instance( )->delete_so_item( lt_so_item ).
   ENDMETHOD.
 
   METHOD read.
