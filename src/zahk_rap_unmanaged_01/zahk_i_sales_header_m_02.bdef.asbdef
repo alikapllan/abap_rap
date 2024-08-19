@@ -46,7 +46,10 @@ define behavior for ZAHK_I_SALES_ITEM_M_02 alias SO_Item
   update;
   delete;
 
-  field ( readonly ) sales_doc_num;
+  // sales doc no & item position should not be given at creating.
+  field ( readonly ) sales_doc_num,
+                     item_position;
+
   association _SHeader_M_02;
 
   mapping for ztest_vbap_02 control zahk_i_sales_item_m_02 corresponding

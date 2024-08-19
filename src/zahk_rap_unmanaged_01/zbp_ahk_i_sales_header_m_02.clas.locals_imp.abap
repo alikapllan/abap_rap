@@ -163,6 +163,13 @@ CLASS lhc_SO_Header IMPLEMENTATION.
     DATA ls_so_item TYPE ztest_vbap_02.
     DATA lt_so_item TYPE STANDARD TABLE OF ztest_vbap_02.
 
+    " .. Get new sales item position
+    IF lines( entities_cba ) > 0.
+      DATA(lv_new_so_item_posnr) = zcl_salesorder_operation_u_02=>get_instance(
+                                    )->get_item_new_posnr( iv_so_sales_doc_num = entities_cba[ 1 ]-sales_doc_num  ).
+    ENDIF.
+
+
     " .. Create a table of all items
     " .. Pass this to the operation
     LOOP AT entities_cba REFERENCE INTO DATA(lr_entity_cba).
@@ -180,8 +187,14 @@ CLASS lhc_SO_Header IMPLEMENTATION.
                                     netpr = unit_cost
                                     kmein = unit ).
 
+      " .. Calculating price
+      ls_so_item-netwr = ls_so_item-netpr * ls_so_item-kmein.
+      " .. Assigning new posnr
+      ls_so_item-posnr = lv_new_so_item_posnr.
+
       INSERT ls_so_item INTO TABLE lt_so_item.
-    ENDLOOP.
+
+     ENDLOOP.
   ENDMETHOD.
 
   METHOD blockOrder.

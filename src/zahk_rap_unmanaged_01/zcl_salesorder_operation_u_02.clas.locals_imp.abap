@@ -33,6 +33,9 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
     METHODS block_or_unlock_so_buffer IMPORTING it_so_header    TYPE tt_ztest_vbak02
                                                 iv_block_status TYPE ztest_vbak_02-faksk.
 
+    METHODS get_item_new_posnr_buffer IMPORTING iv_so_sales_doc_num      TYPE ztest_vbap_02-vbeln
+                                      RETURNING VALUE(rv_new_item_posnr) TYPE ztest_vbap_02-posnr.
+
   PRIVATE SECTION.
     CLASS-DATA go_instance TYPE REF TO lcl_salesorder_buffer.
 ENDCLASS.
@@ -103,6 +106,17 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
 
     IF sy-subrc = 0.
        rt_sales_items = lt_sales_items.
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD get_item_new_posnr_buffer.
+    SELECT FROM ztest_vbap_02
+      FIELDS MAX( posnr )
+      WHERE vbeln = @iv_so_sales_doc_num
+      INTO @DATA(lv_last_item_posnr).
+
+    IF sy-subrc = 0.
+      rv_new_item_posnr = lv_last_item_posnr + 10.
     ENDIF.
   ENDMETHOD.
 
