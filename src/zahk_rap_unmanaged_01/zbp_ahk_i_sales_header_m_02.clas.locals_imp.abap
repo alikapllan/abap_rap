@@ -124,6 +124,34 @@ CLASS lhc_SO_Header IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD read.
+    " .. what the framework at Etag does is, whenever an update is triggered, it will invoke this read
+    " before the update and get the most recent copy of the table/data and compare / find the difference
+    " and trigger the update process.
+    SELECT FROM ztest_vbak_02
+      FIELDS *
+      FOR ALL ENTRIES IN @keys
+      WHERE vbeln = @keys-sales_doc_num
+      INTO TABLE @DATA(lt_so_headers).
+
+    IF sy-subrc = 0.
+
+      " .. Mapping is really important.
+      " .. Even one field is missing you get the error :
+      " 'our changes could not be saved. A more recent version is available.
+      " To make changes to the latest version, please refresh the data. '
+      result = CORRESPONDING #( lt_so_headers
+                                MAPPING
+                                sales_doc_num   = vbeln
+                                block_status    = faksk
+                                sales_dist      = vtweg
+                                sales_div       = spart
+                                sales_org       = vkorg
+                                total_cost      = netwr
+                                cost_currency   = waerk
+                                person_created  = ernam
+                                date_created    = erdat
+                                last_changed_on = last_changed_timestamp ).
+    ENDIF.
   ENDMETHOD.
 
   METHOD rba_Sitem_m_02.
