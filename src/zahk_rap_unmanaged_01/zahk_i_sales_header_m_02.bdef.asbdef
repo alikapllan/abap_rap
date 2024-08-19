@@ -5,7 +5,7 @@ define behavior for ZAHK_I_SALES_HEADER_M_02 alias SO_Header
 //late numbering
 //lock master
 //authorization master ( instance )
-//etag master <field_name>
+etag master last_changed_on
 {
   create;
   update ( features : instance );

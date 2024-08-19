@@ -10,7 +10,7 @@ CLASS lhc_SO_Header DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS delete FOR MODIFY
       IMPORTING keys FOR DELETE SO_Header.
 
-    METHODS read FOR READ
+    METHODS read FOR READ " Etag Master Impl. done here
       IMPORTING keys FOR READ SO_Header RESULT result.
 
     METHODS rba_Sitem_m_02 FOR READ
