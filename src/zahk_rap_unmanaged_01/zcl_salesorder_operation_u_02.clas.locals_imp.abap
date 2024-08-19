@@ -30,6 +30,9 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
     METHODS get_associated_items IMPORTING it_so_header TYPE tt_ztest_vbak02
                                  RETURNING VALUE(rt_sales_items) TYPE tt_ztest_vbap02.
 
+    METHODS block_or_unlock_so_buffer IMPORTING it_so_header    TYPE tt_ztest_vbak02
+                                                iv_block_status TYPE ztest_vbak_02-faksk.
+
   PRIVATE SECTION.
     CLASS-DATA go_instance TYPE REF TO lcl_salesorder_buffer.
 ENDCLASS.
@@ -169,6 +172,22 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
 
       INSERT <lfs_so_header> INTO TABLE gt_so_header_update_buffer.
 
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD block_or_unlock_so_buffer.
+    " .. Get related Sales Orders
+    SELECT FROM ztest_vbak_02
+      FIELDS *
+      FOR ALL ENTRIES IN @it_so_header
+      WHERE vbeln = @it_so_header-vbeln
+      INTO TABLE @DATA(lt_so_header_to_block).
+
+    " .. Assign them blocked or unblocked status
+    LOOP AT lt_so_header_to_block REFERENCE INTO DATA(lr_so_header_to_block).
+      lr_so_header_to_block->*-faksk = iv_block_status.
+
+      INSERT lr_so_header_to_block->* INTO TABLE gt_so_header_update_buffer. " as we are updating block status field
     ENDLOOP.
   ENDMETHOD.
 

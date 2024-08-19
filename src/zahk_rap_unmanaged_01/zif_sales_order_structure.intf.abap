@@ -31,4 +31,7 @@ INTERFACE zif_sales_order_structure
 
   TYPES tt_so_control TYPE STANDARD TABLE OF ts_so_control.
 
+  CONSTANTS c_blocked_status   TYPE faksk VALUE '99'.
+  CONSTANTS c_unblocked_status TYPE faksk VALUE ''.
+
 ENDINTERFACE.

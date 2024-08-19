@@ -130,9 +130,41 @@ CLASS lhc_SO_Header IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD blockOrder.
+    DATA lt_so_header TYPE STANDARD TABLE OF ztest_vbak_02.
+
+    LOOP AT keys REFERENCE INTO DATA(lr_key).
+      INSERT VALUE #( vbeln = lr_key->%key-sales_doc_num
+                      faksk = zif_sales_order_structure=>c_blocked_status )
+             INTO TABLE lt_so_header.
+    ENDLOOP.
+
+    zcl_salesorder_operation_u_02=>get_instance( )->block_or_unlock_so(
+        it_so_header    = lt_so_header
+        iv_block_status = zif_sales_order_structure=>c_blocked_status ).
+
+    result = VALUE #( FOR s_so_header IN lt_so_header
+                      ( sales_doc_num        = s_so_header-vbeln
+                        %param-sales_doc_num = s_so_header-vbeln
+                        %param-block_status  = s_so_header-faksk ) ).
   ENDMETHOD.
 
   METHOD unblockOrder.
+    DATA lt_so_header TYPE STANDARD TABLE OF ztest_vbak_02.
+
+    LOOP AT keys REFERENCE INTO DATA(lr_key).
+      INSERT VALUE #( vbeln = lr_key->%key-sales_doc_num
+                      faksk = zif_sales_order_structure=>c_unblocked_status )
+             INTO TABLE lt_so_header.
+    ENDLOOP.
+
+    zcl_salesorder_operation_u_02=>get_instance( )->block_or_unlock_so(
+        it_so_header    = lt_so_header
+        iv_block_status = zif_sales_order_structure=>c_unblocked_status ).
+
+    result = VALUE #( FOR s_so_header IN lt_so_header
+                      ( sales_doc_num        = s_so_header-vbeln
+                        %param-sales_doc_num = s_so_header-vbeln
+                        %param-block_status  = s_so_header-faksk ) ).
   ENDMETHOD.
 
 ENDCLASS.

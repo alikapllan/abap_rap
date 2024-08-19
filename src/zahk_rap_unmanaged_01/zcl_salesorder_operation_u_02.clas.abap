@@ -15,6 +15,8 @@ CLASS zcl_salesorder_operation_u_02 DEFINITION
     METHODS save_so_header.
     METHODS cleanup.
     METHODS get_last_sales_doc_num RETURNING VALUE(rv_sales_doc_num) TYPE vbeln.
+    METHODS block_or_unlock_so IMPORTING it_so_header    TYPE tt_ztest_vbak02
+                                         iv_block_status TYPE ztest_vbak_02-faksk.
 
   PRIVATE SECTION.
     CLASS-DATA go_instance TYPE REF TO zcl_salesorder_operation_u_02.
@@ -57,6 +59,11 @@ CLASS zcl_salesorder_operation_u_02 IMPLEMENTATION.
   METHOD update_so_header.
     lcl_salesorder_buffer=>get_instance( )->update_so_header_buffer( it_so_header         = it_so_header
                                                                      it_so_header_control = it_so_header_control ).
+  ENDMETHOD.
+
+  METHOD block_or_unlock_so.
+    lcl_salesorder_buffer=>get_instance( )->block_or_unlock_so_buffer( it_so_header    = it_so_header
+                                                                       iv_block_status = iv_block_status ).
   ENDMETHOD.
 
 ENDCLASS.
