@@ -17,6 +17,7 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
     DATA gt_so_header_create_buffer TYPE STANDARD TABLE OF ztest_vbak_02.
     " Item
     DATA gt_so_item_delete_buffer   TYPE STANDARD TABLE OF ztest_vbap_02.
+    DATA gt_so_item_create_buffer   TYPE STANDARD TABLE OF ztest_vbap_02.
 
     CLASS-METHODS get_instance RETURNING VALUE(ro_instance) TYPE REF TO lcl_salesorder_buffer.
 
@@ -26,6 +27,9 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
                                               it_so_header_control TYPE zif_sales_order_structure=>tt_so_control.
     METHODS save_so_header_buffer.
     METHODS cleanup_buffer.
+
+    METHODS create_so_item_buffer IMPORTING it_so_item TYPE tt_ztest_vbap02.
+
     METHODS get_last_sales_doc_num_buffer RETURNING VALUE(rv_sales_doc_num) TYPE vbeln.
     METHODS get_associated_items IMPORTING it_so_header TYPE tt_ztest_vbak02
                                  RETURNING VALUE(rt_sales_items) TYPE tt_ztest_vbap02.
@@ -84,7 +88,8 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
     CLEAR: gt_so_header_update_buffer,
            gt_so_header_delete_buffer,
            gt_so_header_create_buffer,
-           gt_so_item_delete_buffer.
+           gt_so_item_delete_buffer,
+           gt_so_item_create_buffer.
   ENDMETHOD.
 
   METHOD get_last_sales_doc_num_buffer.
@@ -203,6 +208,10 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
 
       INSERT lr_so_header_to_block->* INTO TABLE gt_so_header_update_buffer. " as we are updating block status field
     ENDLOOP.
+  ENDMETHOD.
+
+  METHOD create_so_item_buffer.
+    gt_so_item_create_buffer = CORRESPONDING #( it_so_item ).
   ENDMETHOD.
 
 ENDCLASS.

@@ -161,7 +161,7 @@ CLASS lhc_SO_Header IMPLEMENTATION.
     " .. Create By Association
 
     DATA ls_so_item TYPE ztest_vbap_02.
-    DATA lt_so_item TYPE STANDARD TABLE OF ztest_vbap_02.
+    DATA lt_so_item TYPE STANDARD TABLE OF ztest_vbap_02 WITH EMPTY KEY.
 
     " .. Get new sales item position
     IF lines( entities_cba ) > 0.
@@ -195,6 +195,8 @@ CLASS lhc_SO_Header IMPLEMENTATION.
       INSERT ls_so_item INTO TABLE lt_so_item.
 
      ENDLOOP.
+
+     zcl_salesorder_operation_u_02=>get_instance( )->create_so_item( it_so_item = lt_so_item ).
   ENDMETHOD.
 
   METHOD blockOrder.
