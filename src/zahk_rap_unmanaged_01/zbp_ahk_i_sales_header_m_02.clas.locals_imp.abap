@@ -16,7 +16,7 @@ CLASS lhc_SO_Header DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS rba_Sitem_m_02 FOR READ
       IMPORTING keys_rba FOR READ SO_Header\_Sitem_m_02 FULL result_requested RESULT result LINK association_links.
 
-    METHODS cba_Sitem_m_02 FOR MODIFY
+    METHODS cba_Sitem_m_02 FOR MODIFY " creating item triggers here. cba = create by association
       IMPORTING entities_cba FOR CREATE SO_Header\_Sitem_m_02.
 
     METHODS blockOrder FOR MODIFY
@@ -158,6 +158,30 @@ CLASS lhc_SO_Header IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD cba_Sitem_m_02.
+    " .. Create By Association
+
+    DATA ls_so_item TYPE ztest_vbap_02.
+    DATA lt_so_item TYPE STANDARD TABLE OF ztest_vbap_02.
+
+    " .. Create a table of all items
+    " .. Pass this to the operation
+    LOOP AT entities_cba REFERENCE INTO DATA(lr_entity_cba).
+      CLEAR ls_so_item.
+
+      ls_so_item = CORRESPONDING #( lr_entity_cba->*-%target
+                                    MAPPING
+                                    vbeln = sales_doc_num
+                                    posnr = item_position
+                                    waerk = cost_currency
+                                    arktx = mat_desc
+                                    matnr = mat_num
+                                    kpein = quantity
+                                    netwr = total_item_cost
+                                    netpr = unit_cost
+                                    kmein = unit ).
+
+      INSERT ls_so_item INTO TABLE lt_so_item.
+    ENDLOOP.
   ENDMETHOD.
 
   METHOD blockOrder.
@@ -262,6 +286,7 @@ ENDCLASS.
 CLASS lhc_SO_Item IMPLEMENTATION.
 
   METHOD create.
+    " .. creating Item wont trigger here as item is created via association.
   ENDMETHOD.
 
   METHOD update.
