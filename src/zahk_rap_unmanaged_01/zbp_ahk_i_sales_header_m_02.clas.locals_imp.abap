@@ -25,6 +25,9 @@ CLASS lhc_SO_Header DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS unblockOrder FOR MODIFY
       IMPORTING keys FOR ACTION SO_Header~unblockOrder RESULT result.
 
+    METHODS get_instance_features FOR INSTANCE FEATURES " automatic created method for Instance Feature
+      IMPORTING keys REQUEST requested_features FOR SO_Header RESULT result.
+
 ENDCLASS.
 
 CLASS lhc_SO_Header IMPLEMENTATION.
@@ -165,6 +168,45 @@ CLASS lhc_SO_Header IMPLEMENTATION.
                       ( sales_doc_num        = s_so_header-vbeln
                         %param-sales_doc_num = s_so_header-vbeln
                         %param-block_status  = s_so_header-faksk ) ).
+  ENDMETHOD.
+
+  METHOD get_instance_features.
+    SELECT FROM ztest_vbak_02
+      FIELDS *
+      FOR ALL ENTRIES IN @keys
+      WHERE vbeln = @keys-sales_doc_num
+      INTO TABLE @DATA(lt_so_headers).
+
+    " .. If sales order has unblocked status ' ', then is allowed to be edited/deleted
+
+    " .. Loop would be also an option.
+*    LOOP AT lt_so_headers INTO DATA(ls_so_header).
+*      result = VALUE #(
+*          BASE result
+*          ( sales_doc_num      = ls_so_header-vbeln
+*            %update            = COND #( WHEN ls_so_header-faksk = zif_sales_order_structure=>c_unblocked_status
+*                                         THEN if_abap_behv=>fc-f-unrestricted
+*                                         ELSE if_abap_behv=>fc-f-read_only )
+*            %delete            = COND #( WHEN ls_so_header-faksk = zif_sales_order_structure=>c_unblocked_status
+*                                         THEN if_abap_behv=>fc-f-unrestricted
+*                                         ELSE if_abap_behv=>fc-f-read_only )
+*            %assoc-_SItem_M_02 = COND #( WHEN ls_so_header-faksk = zif_sales_order_structure=>c_unblocked_status
+*                                         THEN if_abap_behv=>fc-f-unrestricted
+*                                         ELSE if_abap_behv=>fc-f-read_only ) ) ).
+*    ENDLOOP.
+*
+    result = VALUE #(
+        FOR s_so_header IN lt_so_headers
+        ( sales_doc_num      = s_so_header-vbeln
+          %update            = COND #( WHEN s_so_header-faksk = zif_sales_order_structure=>c_unblocked_status
+                                       THEN if_abap_behv=>fc-f-unrestricted
+                                       ELSE if_abap_behv=>fc-f-read_only )
+          %delete            = COND #( WHEN s_so_header-faksk = zif_sales_order_structure=>c_unblocked_status
+                                       THEN if_abap_behv=>fc-f-unrestricted
+                                       ELSE if_abap_behv=>fc-f-read_only )
+          %assoc-_SItem_M_02 = COND #( WHEN s_so_header-faksk = zif_sales_order_structure=>c_unblocked_status
+                                       THEN if_abap_behv=>fc-f-unrestricted
+                                       ELSE if_abap_behv=>fc-f-read_only ) ) ).
   ENDMETHOD.
 
 ENDCLASS.
