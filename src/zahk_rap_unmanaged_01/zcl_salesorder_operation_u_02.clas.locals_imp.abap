@@ -41,6 +41,17 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
     METHODS get_item_new_posnr_buffer IMPORTING iv_so_sales_doc_num      TYPE ztest_vbap_02-vbeln
                                       RETURNING VALUE(rv_new_item_posnr) TYPE ztest_vbap_02-posnr.
 
+    " .. Copied from method new_message within cl_abap_behv definition
+    METHODS new_message
+      IMPORTING !id        TYPE symsgid
+                !number    TYPE symsgno
+                severity   TYPE if_abap_behv_message=>t_severity
+                v1         TYPE simple OPTIONAL
+                v2         TYPE simple OPTIONAL
+                v3         TYPE simple OPTIONAL
+                v4         TYPE simple OPTIONAL
+      RETURNING VALUE(obj) TYPE REF TO if_abap_behv_message.
+
   PRIVATE SECTION.
     CLASS-DATA go_instance TYPE REF TO lcl_salesorder_buffer.
 
@@ -117,6 +128,10 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD create_so_header_buffer.
+    LOOP AT it_so_header into data(ls_so_header).
+
+    endloop.
+
     gt_so_header_create_buffer = CORRESPONDING #( it_so_header ).
   ENDMETHOD.
 
@@ -295,4 +310,28 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
                                iv_delete_flag = abap_true ).
   ENDMETHOD.
 
+  " .. Copied from method new_message within cl_abap_behv implementation
+  METHOD new_message.
+    CONSTANTS ms LIKE if_abap_behv_message=>severity VALUE if_abap_behv_message=>severity ##NO_TEXT.
+    CONSTANTS mc LIKE if_abap_behv=>cause            VALUE if_abap_behv=>cause ##NO_TEXT.
+
+    obj = NEW Zcl_ahk_abap_behv_msg( textid = VALUE #(
+                                         msgid = id
+                                         msgno = number
+                                         attr1 = COND #( WHEN v1 IS NOT INITIAL THEN 'IF_T100_DYN_MSG~MSGV1' )
+                                         attr2 = COND #( WHEN v2 IS NOT INITIAL THEN 'IF_T100_DYN_MSG~MSGV2' )
+                                         attr3 = COND #( WHEN v3 IS NOT INITIAL THEN 'IF_T100_DYN_MSG~MSGV3' )
+                                         attr4 = COND #( WHEN v4 IS NOT INITIAL THEN 'IF_T100_DYN_MSG~MSGV4' ) )
+                                     msgty  = SWITCH #( severity
+                                                        WHEN ms-error       THEN 'E'
+                                                        WHEN ms-warning     THEN 'W'
+                                                        WHEN ms-information THEN 'I'
+                                                        WHEN ms-success     THEN 'S' )
+                                     msgv1  = |{ v1 }|
+                                     msgv2  = |{ v2 }|
+                                     msgv3  = |{ v3 }|
+                                     msgv4  = |{ v4 }| ).
+
+    obj->m_severity = severity.
+  ENDMETHOD.
 ENDCLASS.
