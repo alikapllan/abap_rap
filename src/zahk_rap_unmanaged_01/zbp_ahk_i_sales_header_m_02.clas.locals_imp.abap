@@ -189,6 +189,22 @@ CLASS lhc_SO_Header IMPLEMENTATION.
                                     netpr = unit_cost
                                     kmein = unit ).
 
+        " .. Check if values of qty and unit pr. are negative
+        IF ls_so_item-netpr < 0 OR ls_so_item-kpein < 0.
+          " .. REPORTED - Return Error message to the UI
+          APPEND VALUE #( sales_doc_num = lr_entity_cba->*-sales_doc_num
+                          %msg          = new_message( id       = 'ZAHK_RAP_UNM_01'
+                                                       number   = '001'
+                                                       severity = if_abap_behv_message=>severity-error
+                                                       v1       = 'Item Creation'
+                                                       v2       = 'Unit or Cost cannot be negative' ) ) TO reported-so_item.
+
+          " .. FAILED - is also to be filled. Because when it is, the SAVE Mechanism in RAP wont be triggered.
+          APPEND VALUE #( sales_doc_num = lr_entity_cba->*-sales_doc_num
+                          item_position = lv_new_so_item_posnr ) TO failed-so_item.
+        ENDIF.
+
+
       " .. Calculating price
       ls_so_item-netwr = ls_so_item-netpr * ls_so_item-kpein.
 
