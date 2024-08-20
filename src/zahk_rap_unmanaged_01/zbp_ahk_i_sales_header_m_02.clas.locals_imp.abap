@@ -72,8 +72,17 @@ CLASS lhc_SO_Header IMPLEMENTATION.
         INSERT VALUE #( sales_doc_num = lr_so_header->*-vbeln ) INTO TABLE failed-so_header.
       ENDLOOP.
     ELSE.
-      " .. maybe throw a success message
+      LOOP AT lt_so_header REFERENCE INTO lr_so_header.
+        " .. maybe throw a success message
+        INSERT VALUE #( sales_doc_num = lr_so_header->*-vbeln
+                        %msg          = new_message( id       = 'ZAHK_RAP_UNM_01'
+                                                     number   = '002'
+                                                     severity = if_abap_behv_message=>severity-success
+                                                     v1       = 'Header Creation' ) )
+               INTO TABLE reported-so_header.
+      ENDLOOP.
     ENDIF.
+
   ENDMETHOD.
 
   METHOD update.
