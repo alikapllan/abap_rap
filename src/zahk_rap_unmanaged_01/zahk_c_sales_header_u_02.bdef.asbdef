@@ -1,0 +1,23 @@
+projection;
+//strict ( 2 ); //Uncomment this line in order to enable strict mode 2. The strict mode has two variants (strict(1), strict(2)) and is prerequisite to be future proof regarding syntax and to be able to release your BO.
+
+define behavior for zahk_c_sales_header_u_02 //alias <alias_name>
+{
+  use create;
+  use update;
+  use delete;
+
+  use action blockOrder;
+  use action unblockOrder;
+
+  use association _SItem_M_02 { create; }
+}
+
+define behavior for zahk_c_sales_item_u_02 //alias <alias_name>
+{
+  use create;
+  use update;
+  use delete;
+
+  use association _SHeader_M_02;
+}

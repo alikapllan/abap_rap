@@ -2,6 +2,7 @@
 @EndUserText.label: 'Unm.-Consmption/Projection View for Head'
 @Metadata.allowExtensions: true
 define root view entity zahk_c_sales_header_u_02
+  provider contract transactional_query
   as projection on ZAHK_I_SALES_HEADER_M_02
 {
   key sales_doc_num,
