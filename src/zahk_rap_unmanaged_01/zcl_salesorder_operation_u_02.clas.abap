@@ -12,7 +12,8 @@ CLASS zcl_salesorder_operation_u_02 DEFINITION
     CLASS-METHODS get_instance RETURNING VALUE(ro_instance) TYPE REF TO zcl_salesorder_operation_u_02.
 
     METHODS delete_so_header IMPORTING it_so_header TYPE tt_ztest_vbak02.
-    METHODS create_so_header IMPORTING it_so_header TYPE tt_ztest_vbak02.
+    METHODS create_so_header IMPORTING it_so_header TYPE tt_ztest_vbak02
+                             RETURNING VALUE(ro_msg) TYPE REF TO if_abap_behv_message.
     METHODS update_so_header IMPORTING it_so_header         TYPE tt_ztest_vbak02
                                        it_so_header_control TYPE zif_sales_order_structure=>tt_so_control.
     METHODS save_so_header.
@@ -62,7 +63,7 @@ CLASS zcl_salesorder_operation_u_02 IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD create_so_header.
-    lcl_salesorder_buffer=>get_instance( )->create_so_header_buffer( it_so_header = it_so_header ).
+    ro_msg = lcl_salesorder_buffer=>get_instance( )->create_so_header_buffer( it_so_header = it_so_header ).
   ENDMETHOD.
 
   METHOD update_so_header.

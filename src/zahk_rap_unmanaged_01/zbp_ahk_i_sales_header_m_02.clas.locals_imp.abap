@@ -60,7 +60,20 @@ CLASS lhc_SO_Header IMPLEMENTATION.
       INSERT ls_so_header INTO TABLE lt_so_header.
     ENDLOOP.
 
-    zcl_salesorder_operation_u_02=>get_instance( )->create_so_header( it_so_header = lt_so_header ).
+    DATA(lo_msg) = zcl_salesorder_operation_u_02=>get_instance( )->create_so_header( it_so_header = lt_so_header ).
+
+    IF lo_msg IS BOUND.
+      LOOP AT lt_so_header REFERENCE INTO DATA(lr_so_header).
+        " .. Return the created error message from outside of the behav. implementation to the UI
+        INSERT VALUE #( sales_doc_num = lr_so_header->*-vbeln
+                        %msg          = lo_msg ) INTO TABLE reported-so_header.
+
+        " .. Break RAP Save Mechanism
+        INSERT VALUE #( sales_doc_num = lr_so_header->*-vbeln ) INTO TABLE failed-so_header.
+      ENDLOOP.
+    ELSE.
+      " .. maybe throw a success message
+    ENDIF.
   ENDMETHOD.
 
   METHOD update.
