@@ -3,31 +3,31 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <BDEF>
-    <NAME>ZAHK_I_SALES_HEADER_M_01</NAME>
+    <NAME>ZAHK_C_SALES_HEADER_M_01</NAME>
     <TYPE>BDEF/BDO</TYPE>
-    <DESCRIPTION>Behav. Def. for Composite Root View ZAHK_I_SALES_HEADER_M_01</DESCRIPTION>
+    <DESCRIPTION>Behavior Def. for Projection View ZAHK_C_SALES_HEADER_M_01</DESCRIPTION>
     <DESCRIPTION_TEXT_LIMIT>60</DESCRIPTION_TEXT_LIMIT>
     <LANGUAGE>EN</LANGUAGE>
     <LINKS>
      <item>
-      <HREF>./zahk_i_sales_header_m_01/source/main/versions</HREF>
+      <HREF>./zahk_c_sales_header_m_01/source/main/versions</HREF>
       <REL>http://www.sap.com/adt/relations/versions</REL>
       <TITLE>Historic versions</TITLE>
      </item>
      <item>
-      <HREF>/sap/bc/adt/repository/informationsystem/abaplanguageversions?uri=%2Fsap%2Fbc%2Fadt%2Fbo%2Fbehaviordefinitions%2Fzahk_i_sales_header_m_01</HREF>
+      <HREF>/sap/bc/adt/repository/informationsystem/abaplanguageversions?uri=%2Fsap%2Fbc%2Fadt%2Fbo%2Fbehaviordefinitions%2Fzahk_c_sales_header_m_01</HREF>
       <REL>http://www.sap.com/adt/relations/informationsystem/abaplanguageversions</REL>
       <TYPE>application/vnd.sap.adt.nameditems.v1+xml</TYPE>
       <TITLE>Allowed ABAP language versions</TITLE>
      </item>
      <item>
-      <HREF>./zahk_i_sales_header_m_01/source/main</HREF>
+      <HREF>./zahk_c_sales_header_m_01/source/main</HREF>
       <REL>http://www.sap.com/adt/relations/source</REL>
       <TYPE>text/plain</TYPE>
       <TITLE>Source Content</TITLE>
      </item>
      <item>
-      <HREF>./zahk_i_sales_header_m_01/source/main</HREF>
+      <HREF>./zahk_c_sales_header_m_01/source/main</HREF>
       <REL>http://www.sap.com/adt/relations/source</REL>
       <TYPE>text/html</TYPE>
       <TITLE>Source Content (HTML)</TITLE>
@@ -35,7 +35,7 @@
     </LINKS>
     <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
     <ABAP_LANGU_VERSION>X</ABAP_LANGU_VERSION>
-    <SOURCE_URI>./zahk_i_sales_header_m_01/source/main</SOURCE_URI>
+    <SOURCE_URI>./zahk_c_sales_header_m_01/source/main</SOURCE_URI>
     <SOURCE_TYPE>ABAP_SOURCE</SOURCE_TYPE>
     <SOURCE_FIXED_POINT_ARITHMETIC>true</SOURCE_FIXED_POINT_ARITHMETIC>
     <SOURCE_UNICODE_CHECKS_ACTIVE>true</SOURCE_UNICODE_CHECKS_ACTIVE>

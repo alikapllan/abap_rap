@@ -3,15 +3,15 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>ZBP_AHK_I_SALES_ITEM_M_01</CLSNAME>
+    <CLSNAME>ZBP_AHK_C_SALES_HEADER_M_01</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>Behavior Implementation for ZAHK_I_SALES_ITEMS_M_01</DESCRIPT>
+    <DESCRIPT>Behavior Implementation for ZAHK_C_SALES_HEADER_M_01</DESCRIPT>
     <CATEGORY>06</CATEGORY>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
-    <CLSDEFINT>ZAHK_I_SALES_HEADER_M_01</CLSDEFINT>
+    <CLSDEFINT>ZAHK_C_SALES_HEADER_M_01</CLSDEFINT>
    </VSEOCLASS>
   </asx:values>
  </asx:abap>

@@ -6,7 +6,7 @@
     <METADATA>
      <NAME>ZSB_UI_SALES_HEADER</NAME>
      <TYPE>SRVB/SVB</TYPE>
-     <DESCRIPTION>Sales Header Service Binding</DESCRIPTION>
+     <DESCRIPTION>Sales Header Service Binding - Managed</DESCRIPTION>
      <LINKS>
       <item>
        <HREF>versions</HREF>

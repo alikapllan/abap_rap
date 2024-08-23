@@ -5,7 +5,7 @@
    <SRVD>
     <NAME>ZSD_UI_SALES_HEADER</NAME>
     <TYPE>SRVD/SRV</TYPE>
-    <DESCRIPTION>Service Def for Sales Header</DESCRIPTION>
+    <DESCRIPTION>Service Def for Sales Header - Managed</DESCRIPTION>
     <LANGUAGE>EN</LANGUAGE>
     <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
     <SOURCE_URI>./zsd_ui_sales_header/source/main</SOURCE_URI>
