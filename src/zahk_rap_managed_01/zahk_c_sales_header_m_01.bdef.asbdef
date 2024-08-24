@@ -1,4 +1,5 @@
 projection;
+use draft;
 //strict ( 2 ); //Uncomment this line in order to enable strict mode 2. The strict mode has two variants (strict(1), strict(2)) and is prerequisite to be future proof regarding syntax and to be able to release your BO.
 
 define behavior for ZAHK_C_SALES_HEADER_M_01 //alias <alias_name>
@@ -12,7 +13,7 @@ use etag
   use action blockOrder;
   use action unblockOrder;
 
-  use association _SItem_M_01 { create; }
+  use association _SItem_M_01 { create; with draft; }
 }
 
 define behavior for ZAHK_C_SALES_ITEM_M_01 //alias <alias_name>
@@ -22,5 +23,5 @@ use etag
   use update;
   use delete;
 
-  use association _SHeader_M_01;
+  use association _SHeader_M_01 { with draft; }
 }

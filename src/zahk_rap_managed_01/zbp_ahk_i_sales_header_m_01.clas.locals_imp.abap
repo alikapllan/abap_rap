@@ -75,7 +75,8 @@ CLASS lhc_SalesHead_M_01 IMPLEMENTATION.
     " -> what I basically do here is, based on the blocked status we allow the user to be able to do actions.
     " -> E.g -> if on UI the marked line has blocked status, which is '99', then the buttons 'Delete' and 'Edit' wont be clickable anymore on UI.
     result = VALUE #( FOR <ls_result> IN lt_result
-                      ( %tky               = <ls_result>-sales_doc_num
+                      (
+*                        %tky               = <ls_result>-sales_doc_num
                         %update            = COND #( WHEN <ls_result>-block_status = cv_unblocked_status
                                                      THEN if_abap_behv=>fc-f-unrestricted
                                                      ELSE if_abap_behv=>fc-f-read_only )
@@ -188,4 +189,5 @@ CLASS lcl_additional_save IMPLEMENTATION.
       " Call BAPI, FM or CRUD on Database Tables etc.
     ENDIF.
   ENDMETHOD.
+
 ENDCLASS.

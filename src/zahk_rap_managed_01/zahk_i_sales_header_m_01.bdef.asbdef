@@ -1,11 +1,16 @@
 managed;
+with draft;
 //strict ( 2 );
 
 define behavior for ZAHK_I_SALES_HEADER_M_01 alias SalesHead_M_01
 implementation in class zbp_ahk_i_sales_header_m_01 unique
 persistent table ztest_vbak_01
+draft table ztest_vbak_01_dr
 with additional save
-lock master
+//lock master
+lock master total etag last_changed_on // -> in order to identify changes to active instances,
+                                       // in cases where the durable lock has expired,
+                                       // a total ETag field is required.
 //authorization master ( instance )
 etag master last_changed_on
 {
@@ -14,11 +19,17 @@ etag master last_changed_on
   create;
   update ( features : instance );
   delete ( features : instance );
-  association _SItem_M_01 { create ( features : instance ); }
+  association _SItem_M_01 { create ( features : instance ); with draft; }
 
   // to block sales order
   action blockOrder result [1] $self; // result[1] -> 1 row
   action unblockOrder result [1] $self;
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare;
 
   mapping for ztest_vbak_01 control zahk_i_sales_header_m_01 corresponding
     {
@@ -39,6 +50,7 @@ etag master last_changed_on
 define behavior for ZAHK_I_SALES_ITEM_M_01 alias SalesItem_M_01
 implementation in class zbp_ahk_i_sales_item_m_01 unique
 //persistent table ztest_vbap_01 -> for unmanaged save this should be commented out, both not possible
+draft table ztest_vbap_01_dr
 lock dependent by _SHeader_M_01
 with unmanaged save
 //authorization dependent by _SHeader_M_01
@@ -56,13 +68,21 @@ etag master last_changed_on
 
   update;
   delete;
-  association _SHeader_M_01;
+  association _SHeader_M_01 { with draft; }
 
   // quantity
   // unit cost -> all price changes on item level will reflect the total price on header level
   determination newPriceTotal on modify { field quantity, unit_cost; }
   // validation of given quantity and unit cost are not negative
   validation checkNegativityPriceQty on save { field quantity, unit_cost; }
+
+  // getting error: "ZAHK_I_SALES_ITEM_M_01" is not a lock entity ("lock master") and hence cannot define a "PREPARE" action.
+  // -> lock master cannot be added, as it says it is currenly only possible in root entities.
+  // -> normally always use this draft determine action including all your validations.
+
+//  draft determine action Prepare {
+//    validation checkNegativityPriceQty;
+//  }
 
   mapping for ztest_vbap_01 control zahk_i_sales_item_m_01 corresponding
     {
