@@ -16,3 +16,5 @@ All changes have been committed one by one, so the change flow can be tracked in
 #### Following Screenshots are taken from [SAP Learning -> Course Building Apps with the ABAP RESTful Application Programming Model -> Troubleshooting your SAP Fiori App](https://learning.sap.com/courses/building-apps-with-the-abap-restful-application-programming-model/troubleshooting-your-sap-fiori-app_LE_a174358d-4fa9-492b-864b-a276c28e80ec)
 ![image](https://github.com/user-attachments/assets/dba7295a-20e2-4e7a-9da4-ef9eb67ea7b3)
 ![image](https://github.com/user-attachments/assets/b552caa8-13b2-4790-9731-cfd1bcd8a486)
+
+## [Troubleshooting of SAP Fiori App](https://learning.sap.com/courses/building-apps-with-the-abap-restful-application-programming-model/defining-and-implementing-the-business-object-behavior_LE_3903d34c-9c78-4089-b967-bcdf1581a135)
