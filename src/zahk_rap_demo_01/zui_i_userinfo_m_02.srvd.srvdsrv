@@ -1,4 +1,4 @@
 @EndUserText.label: 'Service Def for User'
-define service ZSD_USERINFO_M_01 {
+define service ZUI_I_USERINFO_M_02 {
   expose Zahk_I_userinfo_m_02;
 }

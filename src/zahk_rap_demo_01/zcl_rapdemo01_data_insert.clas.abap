@@ -36,7 +36,7 @@ CLASS ZCL_RAPDEMO01_DATA_INSERT IMPLEMENTATION.
 
 
   METHOD if_oo_adt_classrun~main.
-*    add_user_data( ).
+    add_user_data( ).
     reset_admin_all_user( ).
   ENDMETHOD.
 

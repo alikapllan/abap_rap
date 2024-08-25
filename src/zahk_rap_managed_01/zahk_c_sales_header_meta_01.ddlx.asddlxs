@@ -51,7 +51,7 @@ annotate view ZAHK_C_SALES_HEADER_M_01 with
         // Actions
         { type: #FOR_ACTION, dataAction: 'blockOrder', label: 'Block' },
         { type: #FOR_ACTION, dataAction: 'unblockOrder', label: 'Unblock' }],
-       identification: [{ position: 50, label: 'Block Status' }],
+       identification: [{ position: 50, label: 'Block Status' }],        
        fieldGroup: [{ qualifier: 'BasicInfo', importance: #HIGH }] }
   block_status;
 

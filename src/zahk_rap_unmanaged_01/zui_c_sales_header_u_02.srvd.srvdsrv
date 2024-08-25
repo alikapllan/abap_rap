@@ -1,5 +1,5 @@
 @EndUserText.label: 'Service Def for Sales Header 02 Unmanaged to BAS'
-define service ZSD_UI_SALES_HEAD_02_u_BAS {
+define service ZUI_C_SALES_HEADER_U_02 {
   expose zahk_c_sales_header_u_02;
   expose zahk_c_sales_item_u_02;
 }
