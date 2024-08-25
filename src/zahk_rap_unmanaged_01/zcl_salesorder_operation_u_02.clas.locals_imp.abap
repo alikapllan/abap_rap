@@ -36,6 +36,9 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
     METHODS get_associated_items IMPORTING it_so_header TYPE tt_ztest_vbak02
                                  RETURNING VALUE(rt_sales_items) TYPE tt_ztest_vbap02.
 
+    METHODS get_item_full_details_buffer IMPORTING it_so_items           TYPE tt_ztest_vbap02
+                                         RETURNING VALUE(rt_sales_items) TYPE tt_ztest_vbap02.
+
     METHODS block_or_unlock_so_buffer IMPORTING it_so_header    TYPE tt_ztest_vbak02
                                                 iv_block_status TYPE ztest_vbak_02-faksk.
 
@@ -277,28 +280,34 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD calculate_header_new_price.
-    DATA lt_so_header TYPE STANDARD TABLE OF ztest_vbak_02.
+    DATA lt_so_header                TYPE STANDARD TABLE OF ztest_vbak_02.
+    DATA lv_total_price_items        TYPE ztest_vbak_02-netwr.
+    DATA lv_total_price_marked_items TYPE ztest_vbak_02-netwr.
 
     es_so_header_updated = is_so_header.
 
+    CLEAR: lt_so_header,
+           lv_total_price_items,
+           lv_total_price_marked_items.
+
+    INSERT es_so_header_updated INTO TABLE lt_so_header.
+
+    DATA(lt_so_items_all_data) = get_associated_items( it_so_header = lt_so_header ).
+
+    LOOP AT lt_so_items_all_data INTO DATA(ls_so_item).
+      lv_total_price_items += ls_so_item-netwr.
+    ENDLOOP.
+
+    LOOP AT it_so_item INTO DATA(ls_so_item_marked).
+      lv_total_price_marked_items += ls_so_item_marked-netwr.
+    ENDLOOP.
+
     IF iv_delete_flag = abap_true.
-      CLEAR lt_so_header.
-
-      INSERT is_so_header INTO TABLE lt_so_header.
-
-      DATA(lt_so_item_all_data) = get_associated_items( it_so_header = lt_so_header ).
-
-      IF sy-subrc = 0.
-        LOOP AT lt_so_item_all_data INTO DATA(ls_so_item).
-          es_so_header_updated-netwr -= ls_so_item-netwr.
-        ENDLOOP.
-      ENDIF.
+      es_so_header_updated-netwr = ( lv_total_price_items - lv_total_price_marked_items ).
     ENDIF.
 
     IF iv_create_flag = abap_true.
-      LOOP AT it_so_item INTO ls_so_item.
-        es_so_header_updated-netwr += ls_so_item-netwr.
-      ENDLOOP.
+      es_so_header_updated-netwr = ( lv_total_price_items + lv_total_price_marked_items ).
     ENDIF.
   ENDMETHOD.
 
@@ -307,7 +316,21 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
 
     " .. The new total price in item needs to be taken into account in header.
     " .. Total price of all items = total price in header
-    update_header_total_price( it_so_item = it_so_item
+    update_header_total_price( it_so_item     = get_item_full_details_buffer( it_so_items = it_so_item )
                                iv_delete_flag = abap_true ).
   ENDMETHOD.
+
+  METHOD get_item_full_details_buffer.
+    SELECT FROM ztest_vbap_02
+      FIELDS *
+      FOR ALL ENTRIES IN @it_so_items
+      WHERE vbeln = @it_so_items-vbeln AND
+            posnr = @it_so_items-posnr
+      INTO TABLE @DATA(lt_sales_items).
+
+    IF sy-subrc = 0.
+       rt_sales_items = lt_sales_items.
+    ENDIF.
+  ENDMETHOD.
+
 ENDCLASS.
