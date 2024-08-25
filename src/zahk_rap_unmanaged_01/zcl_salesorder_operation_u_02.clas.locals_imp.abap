@@ -33,7 +33,7 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
     METHODS delete_so_item_buffer IMPORTING it_so_item TYPE tt_ztest_vbap02.
 
     METHODS get_last_sales_doc_num_buffer RETURNING VALUE(rv_sales_doc_num) TYPE vbeln.
-    METHODS get_associated_items IMPORTING it_so_header TYPE tt_ztest_vbak02
+    METHODS get_associated_items_buffer IMPORTING it_so_header TYPE tt_ztest_vbak02
                                  RETURNING VALUE(rt_sales_items) TYPE tt_ztest_vbap02.
 
     METHODS get_item_full_details_buffer IMPORTING it_so_items           TYPE tt_ztest_vbap02
@@ -77,7 +77,7 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
     gt_so_header_delete_buffer = CORRESPONDING #( it_so_header ).
 
     " Item
-    DATA(lt_sales_items) = get_associated_items( it_so_header = it_so_header ).
+    DATA(lt_sales_items) = get_associated_items_buffer( it_so_header = it_so_header ).
     gt_so_item_delete_buffer = lt_sales_items.
   ENDMETHOD.
 
@@ -139,7 +139,7 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
     gt_so_header_create_buffer = CORRESPONDING #( it_so_header ).
   ENDMETHOD.
 
-  METHOD get_associated_items.
+  METHOD get_associated_items_buffer.
     SELECT FROM ztest_vbap_02
       FIELDS *
       FOR ALL ENTRIES IN @it_so_header
@@ -292,7 +292,7 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
 
     INSERT es_so_header_updated INTO TABLE lt_so_header.
 
-    DATA(lt_so_items_all_data) = get_associated_items( it_so_header = lt_so_header ).
+    DATA(lt_so_items_all_data) = get_associated_items_buffer( it_so_header = lt_so_header ).
 
     LOOP AT lt_so_items_all_data INTO DATA(ls_so_item).
       lv_total_price_items += ls_so_item-netwr.
