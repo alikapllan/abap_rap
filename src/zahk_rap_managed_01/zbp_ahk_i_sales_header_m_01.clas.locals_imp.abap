@@ -68,6 +68,10 @@ CLASS lhc_SalesHead_M_01 IMPLEMENTATION.
     READ ENTITY IN LOCAL MODE zahk_i_sales_header_m_01
          ALL FIELDS WITH
          VALUE #(  FOR <key> IN keys
+                   " .. Non-draft(actual data) only
+                   " .. This where with %is_draft pointless, for showing purpose only,
+                   " on how to use %is_draft.
+                   WHERE ( %is_draft = if_abap_behv=>mk-off )
                   ( sales_doc_num = <key>-%key-sales_doc_num ) )
          RESULT DATA(lt_result).
 
@@ -76,7 +80,7 @@ CLASS lhc_SalesHead_M_01 IMPLEMENTATION.
     " -> E.g -> if on UI the marked line has blocked status, which is '99', then the buttons 'Delete' and 'Edit' wont be clickable anymore on UI.
     result = VALUE #( FOR <ls_result> IN lt_result
                       (
-*                        %tky               = <ls_result>-sales_doc_num
+                        %tky-sales_doc_num = <ls_result>-sales_doc_num
                         %update            = COND #( WHEN <ls_result>-block_status = cv_unblocked_status
                                                      THEN if_abap_behv=>fc-f-unrestricted
                                                      ELSE if_abap_behv=>fc-f-read_only )
@@ -85,9 +89,14 @@ CLASS lhc_SalesHead_M_01 IMPLEMENTATION.
                                                      ELSE if_abap_behv=>fc-o-disabled )
                         %assoc-_SItem_M_01 = COND #( WHEN <ls_result>-block_status = cv_unblocked_status
                                                      THEN if_abap_behv=>fc-o-enabled
-                                                     ELSE if_abap_behv=>fc-o-disabled ) ) ).
+                                                     ELSE if_abap_behv=>fc-o-disabled )
+                        " .. Make action buttons enabled only for actual non-draft data.
+*                        %action-blockOrder   = if_abap_behv=>fc-o-enabled
+*                        %action-unblockOrder = if_abap_behv=>fc-o-enabled
+                                                      ) ).
     " %tky stands for transactional key. In non-draft use cases , %tky contains the same value as %key which is the key of the related entity.
     " In draft-enabled use cases, %tky will automatically contain the is_draft indicator.
+    " -> %tky-%is_draft = '00' (if_abap_behv=>mk-off) %tky-%is_draft = '01' (if_abap_behv=>mk-on)
   ENDMETHOD.
 ENDCLASS.
 
