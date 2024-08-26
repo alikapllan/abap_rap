@@ -18,3 +18,5 @@ All changes have been committed one by one, so the change flow can be tracked in
 ![image](https://github.com/user-attachments/assets/b552caa8-13b2-4790-9731-cfd1bcd8a486)
 
 ## [Dealing with Existing Code](https://learning.sap.com/courses/building-apps-with-the-abap-restful-application-programming-model/defining-and-implementing-the-business-object-behavior_LE_3903d34c-9c78-4089-b967-bcdf1581a135)
+
+## [Service Consumption & Web APIs](https://learning.sap.com/courses/building-apps-with-the-abap-restful-application-programming-model/the-business-scenario_LE_154dc8cd-c3e4-4939-b8b0-8b0b1b326395)
