@@ -1,6 +1,7 @@
 CLASS zcl_salesorder_operation_u_02 DEFINITION
   PUBLIC FINAL
-  CREATE PRIVATE.
+  CREATE PRIVATE. " by adding PRIVATE -> this class cannot be instantiated outside of the class.
+                  " -> meaning we force to use get_instance to have an instance.
 
   PUBLIC SECTION.
     TYPES t_ztest_vbak02  TYPE ztest_vbak_02.
