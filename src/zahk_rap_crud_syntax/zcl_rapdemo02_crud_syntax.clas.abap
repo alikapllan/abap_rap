@@ -81,6 +81,17 @@ CLASS zcl_rapdemo02_crud_syntax IMPLEMENTATION.
            REPORTED reported
            FAILED   failed.
 
+    DATA lt_userinfo02 TYPE TABLE FOR DELETE Zahk_I_userinfo02_m_02.
+    " ..
+    " .. Preprocess of filling lt_userinfo02
+    " ..
+    MODIFY ENTITIES OF Zahk_I_userinfo02_m_02 IN LOCAL MODE
+           ENTITY Zahk_I_userinfo02_m_02
+           DELETE FROM lt_userinfo02
+           FAILED DATA(ls_failed)
+           MAPPED DATA(ls_mapped)
+           REPORTED DATA(ls_reported).
+
     " After delete -> Commit needed
     COMMIT ENTITIES
            RESPONSE OF Zahk_I_userinfo02_m_02
@@ -137,6 +148,17 @@ CLASS zcl_rapdemo02_crud_syntax IMPLEMENTATION.
                       %control-LastName  = if_abap_behv=>mk-off  ) ) " '00' indicates this field cannot be changed even if provided
            REPORTED reported
            FAILED   failed.
+
+    DATA lt_userinfo02 TYPE TABLE FOR UPDATE Zahk_I_userinfo02_m_02.
+    " ..
+    " .. Preprocess of filling lt_userinfo02
+    " ..
+    MODIFY ENTITIES OF Zahk_I_userinfo02_m_02 IN LOCAL MODE
+           ENTITY Zahk_I_userinfo02_m_02
+           UPDATE FROM lt_userinfo02
+           FAILED DATA(ls_failed)
+           MAPPED DATA(ls_mapped)
+           REPORTED DATA(ls_reported).
 
     " After update -> Commit needed
     COMMIT ENTITIES
