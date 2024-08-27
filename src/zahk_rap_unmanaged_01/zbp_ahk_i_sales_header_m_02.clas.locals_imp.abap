@@ -1,5 +1,9 @@
 CLASS lhc_SO_Header DEFINITION INHERITING FROM cl_abap_behavior_handler.
+  PUBLIC SECTION.
+    CLASS-METHODS class_constructor.
+
   PRIVATE SECTION.
+    CLASS-DATA lo_salesorder_operation TYPE REF TO zcl_salesorder_operation_u_02.
 
     METHODS create FOR MODIFY
       IMPORTING entities FOR CREATE SO_Header.
@@ -31,11 +35,19 @@ CLASS lhc_SO_Header DEFINITION INHERITING FROM cl_abap_behavior_handler.
 ENDCLASS.
 
 CLASS lhc_SO_Header IMPLEMENTATION.
+
+  METHOD class_constructor.
+    " .. another option also could be to create the instance of the class zcl_salesorder_operation_u_02
+    " here, as this would make us avoid writing of long zcl_salesorder_operation_u_02=>get_instance( )-> every time
+    " and calling it unnecessarily each time right before doing an operation.
+    lo_salesorder_operation = zcl_salesorder_operation_u_02=>get_instance( ).
+  ENDMETHOD.
+
   METHOD create.
     DATA ls_so_header TYPE ztest_vbak_02.
     DATA lt_so_header TYPE STANDARD TABLE OF ztest_vbak_02.
 
-    DATA(lv_latest_sales_doc_num) = zcl_salesorder_operation_u_02=>get_instance( )->get_last_sales_doc_num( ).
+    DATA(lv_latest_sales_doc_num) = lo_salesorder_operation->get_last_sales_doc_num( ).
 
     GET TIME STAMP FIELD DATA(lv_timestamp).
 
@@ -60,7 +72,7 @@ CLASS lhc_SO_Header IMPLEMENTATION.
       INSERT ls_so_header INTO TABLE lt_so_header.
     ENDLOOP.
 
-    DATA(lo_msg) = zcl_salesorder_operation_u_02=>get_instance( )->create_so_header( it_so_header = lt_so_header ).
+    DATA(lo_msg) = lo_salesorder_operation->create_so_header( it_so_header = lt_so_header ).
 
     IF lo_msg IS BOUND.
       LOOP AT lt_so_header REFERENCE INTO DATA(lr_so_header).
@@ -131,8 +143,8 @@ CLASS lhc_SO_Header IMPLEMENTATION.
       INSERT ls_so_header_control INTO TABLE lt_so_header_control.
     ENDLOOP.
 
-    zcl_salesorder_operation_u_02=>get_instance( )->update_so_header( it_so_header         = lt_so_header
-                                                                      it_so_header_control = lt_so_header_control ).
+    lo_salesorder_operation->update_so_header( it_so_header         = lt_so_header
+                                               it_so_header_control = lt_so_header_control ).
   ENDMETHOD.
 
   METHOD delete.
@@ -142,7 +154,7 @@ CLASS lhc_SO_Header IMPLEMENTATION.
       INSERT VALUE ztest_vbak_02( vbeln = ls_key-sales_doc_num ) INTO TABLE lt_so_header.
     ENDLOOP.
 
-    zcl_salesorder_operation_u_02=>get_instance( )->delete_so_header( it_so_header = lt_so_header ).
+    lo_salesorder_operation->delete_so_header( it_so_header = lt_so_header ).
   ENDMETHOD.
 
   METHOD read.
@@ -187,8 +199,7 @@ CLASS lhc_SO_Header IMPLEMENTATION.
 
     " .. Get new sales item position
     IF lines( entities_cba ) > 0.
-      DATA(lv_new_so_item_posnr) = zcl_salesorder_operation_u_02=>get_instance(
-                                    )->get_item_new_posnr( iv_so_sales_doc_num = entities_cba[ 1 ]-sales_doc_num  ).
+       DATA(lv_new_so_item_posnr) = lo_salesorder_operation->get_item_new_posnr( iv_so_sales_doc_num = entities_cba[ 1 ]-sales_doc_num  ).
     ENDIF.
 
     " .. Create a table of all items
@@ -241,7 +252,7 @@ CLASS lhc_SO_Header IMPLEMENTATION.
 
      ENDLOOP.
 
-     zcl_salesorder_operation_u_02=>get_instance( )->create_so_item( it_so_item = lt_so_item ).
+     lo_salesorder_operation->create_so_item( it_so_item = lt_so_item ).
   ENDMETHOD.
 
   METHOD blockOrder.
@@ -253,9 +264,8 @@ CLASS lhc_SO_Header IMPLEMENTATION.
              INTO TABLE lt_so_header.
     ENDLOOP.
 
-    zcl_salesorder_operation_u_02=>get_instance( )->block_or_unlock_so(
-        it_so_header    = lt_so_header
-        iv_block_status = zif_sales_order_structure=>c_blocked_status ).
+    lo_salesorder_operation->block_or_unlock_so( it_so_header    = lt_so_header
+                                                 iv_block_status = zif_sales_order_structure=>c_blocked_status ).
 
     result = VALUE #( FOR s_so_header IN lt_so_header
                       ( sales_doc_num        = s_so_header-vbeln
@@ -272,9 +282,8 @@ CLASS lhc_SO_Header IMPLEMENTATION.
              INTO TABLE lt_so_header.
     ENDLOOP.
 
-    zcl_salesorder_operation_u_02=>get_instance( )->block_or_unlock_so(
-        it_so_header    = lt_so_header
-        iv_block_status = zif_sales_order_structure=>c_unblocked_status ).
+    lo_salesorder_operation->block_or_unlock_so( it_so_header    = lt_so_header
+                                                 iv_block_status = zif_sales_order_structure=>c_unblocked_status ).
 
     result = VALUE #( FOR s_so_header IN lt_so_header
                       ( sales_doc_num        = s_so_header-vbeln
@@ -320,7 +329,6 @@ CLASS lhc_SO_Header IMPLEMENTATION.
                                        THEN if_abap_behv=>fc-f-unrestricted
                                        ELSE if_abap_behv=>fc-f-read_only ) ) ).
   ENDMETHOD.
-
 ENDCLASS.
 
 CLASS lhc_SO_Item DEFINITION INHERITING FROM cl_abap_behavior_handler.

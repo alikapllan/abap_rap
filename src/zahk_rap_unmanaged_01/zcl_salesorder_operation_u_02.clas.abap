@@ -1,6 +1,6 @@
 CLASS zcl_salesorder_operation_u_02 DEFINITION
   PUBLIC FINAL
-  CREATE PUBLIC.
+  CREATE PRIVATE.
 
   PUBLIC SECTION.
     TYPES t_ztest_vbak02  TYPE ztest_vbak_02.
