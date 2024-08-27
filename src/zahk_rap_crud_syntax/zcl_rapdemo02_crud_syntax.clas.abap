@@ -48,6 +48,18 @@ CLASS zcl_rapdemo02_crud_syntax IMPLEMENTATION.
            REPORTED reported
            FAILED failed.
 
+
+    DATA lt_userinfo02 TYPE TABLE FOR CREATE Zahk_I_userinfo02_m_02.
+    " ..
+    " .. Preprocess of filling lt_userinfo02
+    " ..
+    MODIFY ENTITIES OF Zahk_I_userinfo02_m_02 IN LOCAL MODE
+           ENTITY Zahk_I_userinfo02_m_02
+           CREATE FROM lt_userinfo02
+           FAILED DATA(ls_failed)
+           MAPPED DATA(ls_mapped)
+           REPORTED DATA(ls_reported).
+
     " After create -> Commit needed
     COMMIT ENTITIES
            RESPONSE OF Zahk_I_userinfo02_m_02
