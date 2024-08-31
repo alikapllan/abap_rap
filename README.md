@@ -13,7 +13,7 @@ This Managed Scenario Example 2 - Translation App is replicated from [a blog of 
 ![image](https://github.com/user-attachments/assets/f852ada8-ca2b-4b97-8f98-9ae215349686)  
 
 ### Business Object
-#### [source](https://d.dam.sap.com/a/SGYW5Us/20240611_ABAP_RAP_Overview%40SCN.pdf?inline=true&rc=10&doi=SAP1085541)  
+#### [--> source <--](https://d.dam.sap.com/a/SGYW5Us/20240611_ABAP_RAP_Overview%40SCN.pdf?inline=true&rc=10&doi=SAP1085541)  
 
 ![image](https://github.com/user-attachments/assets/632f049b-3a2d-47e6-92c1-a12c2523e897)
 
