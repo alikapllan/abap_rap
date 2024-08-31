@@ -1,0 +1,77 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'ZC_AHK_DMO_LANG',
+    typeNamePlural: 'ZC_AHK_DMO_LANGs'
+  }
+}
+annotate view ZC_AHK_DMO_LANG with
+{
+  @UI.facet: [
+  {
+    label: 'Source',
+    id: 'idSource',
+    purpose: #STANDARD,
+    position: 10 ,
+    type: #IDENTIFICATION_REFERENCE,
+    targetQualifier: 'SOURCE'
+  },
+  {
+    label: 'Target',
+    id: 'idTarget',
+    purpose: #STANDARD,
+    position: 20 ,
+    type: #IDENTIFICATION_REFERENCE,
+    targetQualifier: 'TARGET'
+  }
+  ]
+
+  @UI.hidden: true
+  Identification;
+
+  @UI:{ lineItem: [{ position: 10, importance: #MEDIUM  },
+//                   -> If the action is defined as a “LineItem”, it appears below the FilterBar and above the 
+//                   table with the data.
+                   { position: 10, type: #FOR_ACTION, dataAction: 'TranslateText',label: 'Translate' }],
+        identification: [{ position: 10, qualifier: 'SOURCE' },
+//                   -> If we define the action in the “Identification”, the button for it appears on the object 
+//                   page next to the other actions in the upper area.
+                         { position: 10, type: #FOR_ACTION, dataAction: 'TranslateText',label: 'Translate' }],
+        selectionField: [{ position: 10 }] }
+  @EndUserText.label: 'Source Language'
+  SourceLanguage;
+
+  @UI:{ lineItem: [{ position: 20, importance: #HIGH }],
+        identification: [{ position: 20, qualifier: 'SOURCE' }],
+        multiLineText: true }
+  @EndUserText.label: 'Source Text'
+  SourceText;
+
+  @UI:{ lineItem: [{ position: 30, importance: #MEDIUM  }],
+        identification: [{ position: 10, qualifier: 'TARGET' }],
+        selectionField: [{ position: 20 }] }
+  @EndUserText.label: 'Target Language'
+  TargetLanguage;
+
+  @UI:{ lineItem: [{ position: 40, importance: #HIGH }],
+        identification: [{ position: 20, qualifier: 'TARGET' }],
+        multiLineText: true }
+  @EndUserText.label: 'Target Text'
+  TargetText;
+
+  @UI.hidden: true
+  @EndUserText.label: 'Created By'
+  LocalCreatedBy;
+  
+  @UI.hidden: true
+  @EndUserText.label: 'Changed By'
+  LocalLastChangedBy;
+  
+  @UI.hidden: true
+  @EndUserText.label: 'Changed On'
+  LocalLastChanged;
+  
+  @UI.hidden: true
+  @EndUserText.label: 'Changed On'
+  LastChanged;
+}
