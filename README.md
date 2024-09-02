@@ -1,6 +1,10 @@
 # ABAP RAP Learning
-
 All changes have been committed one by one, so the change flow can be tracked in [commits](https://github.com/alikapllan/abap_rap/commits/main/).
+
+## To-Do for Testing in your system 
+1. Create Database tables (if not created automatically after pulling the repo using ABAPGit)
+2. Run the Data Load Class within the related Package in Eclipse ADT as 'ABAP Application (Console)'. Then you will have mock data.
+3. Now in Service Binding you can call the app in preview and play on it.
 
 ## RAP CRUD Syntax
 [Create](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#L23-L68)  
