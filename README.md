@@ -8,6 +8,9 @@ All changes have been committed one by one, so the change flow can be tracked in
 [Update](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#L121-L168)     
 [Delete](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#L70-L100)  
 ## [Managed Scenario Example](https://github.com/alikapllan/abap_rap/tree/main/src/zahk_rap_managed/zahk_rap_managed_01) 
+### Overview of Development Package of this Example
+-> Some parts might be unnecessary or even missing. But I just wanted to add it so you can at least see what kind of a development structure in package it has.  
+![image](https://github.com/user-attachments/assets/6229aa80-6f96-48c2-ad40-4a94e2bb60fd)  
 ## [Managed Scenario Example 2](https://github.com/alikapllan/abap_rap/tree/main/src/zahk_rap_managed/zahk_rap_google_translate)
 This Managed Scenario Example 2 - Translation App is replicated from [a blog of SoftwareHeroes.com](https://software-heroes.com/en/blog/abap-rap-translate-app-example). The development flow is explained in this blog very well also using [ADT RAP Generator Wizard](https://discoveringabap.com/2022/11/16/abap-restful-application-programming-model-8-rap-generator-wizard/). 
 ## [Unmanaged Scenario Example](https://github.com/alikapllan/abap_rap/tree/main/src/zahk_rap_unmanaged/zahk_rap_unmanaged_01) 
