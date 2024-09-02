@@ -4,7 +4,7 @@ All changes have been committed one by one, so the change flow can be tracked in
 
 ## RAP CRUD Syntax
 [Create](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#L23-L68)  
-[Read](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#102-L119)    
+[Read](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#L102-L119)    
 [Update](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#L121-L168)     
 [Delete](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#L70-L100)  
 ## [Managed Scenario Example](https://github.com/alikapllan/abap_rap/tree/main/src/zahk_rap_managed/zahk_rap_managed_01) 
