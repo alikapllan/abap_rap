@@ -1,7 +1,7 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Item Composite View'
 @Metadata.allowExtensions: true
-
+@VDM.viewType: #COMPOSITE
 define view entity ZAHK_I_SALES_ITEM_M_02
   as select from zahk_i_sales_item_02
   association to parent ZAHK_I_SALES_HEADER_M_02 as _SHeader_M_02 

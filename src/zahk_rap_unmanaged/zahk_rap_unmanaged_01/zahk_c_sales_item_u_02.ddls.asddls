@@ -1,6 +1,7 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Unm.-Consmption/Projection View for Item'
 @Metadata.allowExtensions: true
+@VDM.viewType: #CONSUMPTION
 define view entity zahk_c_sales_item_u_02
   as projection on ZAHK_I_SALES_ITEM_M_02
 {

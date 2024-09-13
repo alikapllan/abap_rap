@@ -8,6 +8,7 @@
     sizeCategory: #S,
     dataClass: #MIXED
 }
+@VDM.viewType: #COMPOSITE
 // this is called 'root' because a behaviour&service definition will be attached (UI)
 // Top Level in the hierarchy
 define root view entity ZAHK_I_SALES_HEADER_M_01

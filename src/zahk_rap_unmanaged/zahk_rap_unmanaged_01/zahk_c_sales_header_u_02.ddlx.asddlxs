@@ -24,7 +24,6 @@ annotate view zahk_c_sales_header_u_02 with
 
   @UI:{ lineItem: [{ position: 10, label: 'Number', importance: #HIGH,
                      targetElement: '_SItem_M_02.sales_doc_num' }],
-
                      identification: [{ position: 10, label: 'Number' }],
                      fieldGroup: [{ qualifier: 'BASIC_INFO', importance: #HIGH }] }
   sales_doc_num;

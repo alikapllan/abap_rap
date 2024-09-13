@@ -10,7 +10,7 @@
 
 @ObjectModel.representativeKey: 'item_position' // here posnr is repre. key
 @ObjectModel.semanticKey: [ 'sales_doc_num','item_position' ] // 2 keys on table
-
+@VDM.viewType: #BASIC
 define view entity zahk_i_sales_item_02
   as select from ztest_vbap_02
   association [1..1] to ZAHK_I_SALES_HEADER_02 as _SD_Head_02 

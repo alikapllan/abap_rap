@@ -9,7 +9,7 @@
 }
 @ObjectModel.representativeKey: 'sales_doc_num'
 @ObjectModel.semanticKey: [ 'sales_doc_num' ]
-
+@VDM.viewType: #BASIC
 define view entity ZAHK_I_SALES_HEADER_02
   as select from ztest_vbak_02
   association [0..*] to zahk_i_sales_item_02 as _SD_Item_02 

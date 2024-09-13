@@ -7,6 +7,7 @@
     sizeCategory: #S,
     dataClass: #MIXED
 }
+@VDM.viewType: #BASIC
 define view entity Zahk_I_userinfo_m_01 as select from ztest_userinfo01
 {
     key user_mail as UserMail,

@@ -1,6 +1,7 @@
 @EndUserText.label: 'Projection View - Sales Header'
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @Metadata.allowExtensions: true
+@VDM.viewType: #CONSUMPTION
 define root view entity ZAHK_C_SALES_HEADER_M_01
   provider contract transactional_query
   as projection on ZAHK_I_SALES_HEADER_M_01 
