@@ -1,0 +1,13 @@
+unmanaged implementation in class zbp_bp_i_booking_zzap unique;
+strict ( 2 );
+
+define behavior for zbp_i_booking_zzap //alias <alias_name>
+//late numbering
+lock master
+authorization master ( instance )
+//etag master <field_name>
+{
+  create;
+  update;
+  delete;
+}
