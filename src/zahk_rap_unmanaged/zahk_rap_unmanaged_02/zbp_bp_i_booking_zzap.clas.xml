@@ -13,6 +13,12 @@
     <UNICODE>X</UNICODE>
     <CLSDEFINT>ZBP_I_BOOKING_ZZAP</CLSDEFINT>
    </VSEOCLASS>
+   <DESCRIPTIONS_CLASS>
+    <SEOCLASSTX>
+     <LANGU>D</LANGU>
+     <DESCRIPT>Behavior Implementation for ZBP_I_BOOKING_ZZAP</DESCRIPT>
+    </SEOCLASSTX>
+   </DESCRIPTIONS_CLASS>
   </asx:values>
  </asx:abap>
 </abapGit>

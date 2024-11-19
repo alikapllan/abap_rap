@@ -4,8 +4,9 @@
   <asx:values>
    <DDLX>
     <METADATA>
-     <NAME>ZC_AHK_DMO_LANG</NAME>
-     <MASTER_LANGUAGE>DE</MASTER_LANGUAGE>
+     <NAME>ZAHK_I_USERINFO_M_02</NAME>
+     <DESCRIPTION>Metadata Ext. of Root View ZAHK_C_USERINFO_M_02</DESCRIPTION>
+     <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
     </METADATA>
    </DDLX>
   </asx:values>

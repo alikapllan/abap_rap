@@ -13,6 +13,12 @@
     <UNICODE>5</UNICODE>
     <CLSDEFINT>ZR_AHK_DMO_LANG</CLSDEFINT>
    </VSEOCLASS>
+   <DESCRIPTIONS_CLASS>
+    <SEOCLASSTX>
+     <LANGU>D</LANGU>
+     <DESCRIPT>##GENERATED Behavior implementation</DESCRIPT>
+    </SEOCLASSTX>
+   </DESCRIPTIONS_CLASS>
   </asx:values>
  </asx:abap>
 </abapGit>

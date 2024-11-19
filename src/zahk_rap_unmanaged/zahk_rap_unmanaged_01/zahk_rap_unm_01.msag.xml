@@ -21,6 +21,16 @@
      <TEXT>&amp;1 Successful</TEXT>
     </T100>
    </T100>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <T100T>
+    <T100T>
+     <SPRSL>D</SPRSL>
+     <ARBGB>ZAHK_RAP_UNM_01</ARBGB>
+     <STEXT>RAP Unmanaged Message Class</STEXT>
+    </T100T>
+   </T100T>
   </asx:values>
  </asx:abap>
 </abapGit>

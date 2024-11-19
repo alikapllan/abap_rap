@@ -13,6 +13,12 @@
     <UNICODE>X</UNICODE>
     <CLSDEFINT>ZAHK_I_SALES_HEADER_M_01</CLSDEFINT>
    </VSEOCLASS>
+   <DESCRIPTIONS_CLASS>
+    <SEOCLASSTX>
+     <LANGU>D</LANGU>
+     <DESCRIPT>Behavior Implementation for ZAHK_I_SALES_HEADER_M_01</DESCRIPT>
+    </SEOCLASSTX>
+   </DESCRIPTIONS_CLASS>
   </asx:values>
  </asx:abap>
 </abapGit>

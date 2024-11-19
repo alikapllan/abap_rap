@@ -5,7 +5,6 @@
    <SRVD>
     <NAME>ZUI_C_SALES_HEADER_M_01</NAME>
     <TYPE>SRVD/SRV</TYPE>
-    <DESCRIPTION>Service Def for Sales Header 01 Managed</DESCRIPTION>
     <LANGUAGE>EN</LANGUAGE>
     <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
     <SOURCE_URI>./zui_c_sales_header_m_01/source/main</SOURCE_URI>

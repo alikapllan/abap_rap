@@ -1,4 +1,0 @@
-@EndUserText.label: 'Service definition for ZC_AHK_DMO_LANG'
-define service ZUI_AHK_DMO_LANG_O4 {
-  expose ZC_AHK_DMO_LANG;
-}
