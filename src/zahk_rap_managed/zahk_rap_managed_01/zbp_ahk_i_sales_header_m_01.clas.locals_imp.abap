@@ -111,6 +111,8 @@ CLASS lcl_additional_save DEFINITION INHERITING FROM cl_abap_behavior_saver.
 
   PROTECTED SECTION.
     METHODS save_modified REDEFINITION.
+
+    CONSTANTS cv_block_st_for_admin_approval TYPE faksk VALUE '99'.
 ENDCLASS.
 
 
@@ -190,6 +192,22 @@ CLASS lcl_additional_save IMPLEMENTATION.
       " means -> Update has been made
 
       " Call BAPI, FM or CRUD on Database Tables etc.
+
+      " RAISE EVENT -> Events are raised in late save phase (additional save/unmanaged save in BDEF.)
+      " --> https://community.sap.com/t5/technology-blogs-by-sap/introducing-rap-business-events/ba-p/13565543
+      " --> https://software-heroes.com/blog/abap-rap-events
+      GET TIME STAMP FIELD DATA(lv_timestamp).
+
+      RAISE ENTITY EVENT zahk_i_sales_header_m_01~LogBlockedSalesDoc
+            FROM VALUE #(
+                ( %key   = update-saleshead_m_01[ 1 ]-%key-sales_doc_num
+                  %param = VALUE #(
+                      salesDocNo        = update-saleshead_m_01[ 1 ]-%key-sales_doc_num
+                      createdBy         = cl_abap_context_info=>get_user_technical_name( )
+                      blockedStatus     = update-saleshead_m_01[ 1 ]-block_status
+                      blockedStatusText = COND #( WHEN update-saleshead_m_01[ 1 ]-block_status = cv_block_st_for_admin_approval
+                                                  THEN 'Blocked' )
+                      blockedOn         = lv_timestamp ) ) ).
     ENDIF.
 
     IF delete-saleshead_m_01 IS NOT INITIAL.
@@ -197,6 +215,9 @@ CLASS lcl_additional_save IMPLEMENTATION.
 
       " Call BAPI, FM or CRUD on Database Tables etc.
     ENDIF.
+
+
+
   ENDMETHOD.
 
 ENDCLASS.

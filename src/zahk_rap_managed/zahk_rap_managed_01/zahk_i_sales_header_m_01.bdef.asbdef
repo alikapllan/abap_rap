@@ -22,7 +22,7 @@ etag master last_changed_on
   association _SItem_M_01 { create ( features : instance ); with draft; }
 
   // to block sales order
-  action blockOrder result [1] $self; // result[1] -> 1 row
+  action blockOrder result [1] $self ; // result[1] -> 1 row
   action unblockOrder result [1] $self;
 
   draft action Activate optimized;
@@ -30,6 +30,9 @@ etag master last_changed_on
   draft action Edit;
   draft action Resume;
   draft determine action Prepare;
+
+  // EVENT -> when a sales doc is blocked, it will be logged in table ' zahk_blocked_sal '
+  event LogBlockedSalesDoc parameter zahk_s_block_eventdata;
 
   mapping for ztest_vbak_01 control zahk_i_sales_header_m_01 corresponding
     {

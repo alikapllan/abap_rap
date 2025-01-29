@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service Def for Sales Header 01 Managed'
+define service ZUI_C_SALES_HEADER_M_01_O2 {
+  expose ZAHK_C_SALES_HEADER_M_01;
+  expose ZAHK_C_SALES_ITEM_M_01;
+}

@@ -1,0 +1,6 @@
+abstract;
+
+define behavior for zahk_s_block_popup //alias <alias_name>
+{
+ field ( mandatory ) ToBeBlocked;
+}

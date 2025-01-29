@@ -1,0 +1,11 @@
+CLASS zcl_ahk_rap_m_eventconsumption DEFINITION
+  PUBLIC ABSTRACT FINAL
+  FOR EVENTS OF ZAHK_I_SALES_HEADER_M_01.
+
+  PUBLIC SECTION.
+ENDCLASS.
+
+
+
+CLASS zcl_ahk_rap_m_eventconsumption IMPLEMENTATION.
+ENDCLASS.
