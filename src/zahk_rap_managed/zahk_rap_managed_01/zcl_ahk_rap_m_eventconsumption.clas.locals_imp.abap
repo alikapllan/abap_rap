@@ -14,11 +14,13 @@ CLASS lcl_local_events IMPLEMENTATION.
     LOOP AT it_blocked_sales_docs REFERENCE INTO DATA(ir_blocked_sales_doc).
 
       IF ir_blocked_sales_doc->blockedStatus = cv_block_st_for_admin_approval.
-        INSERT zahk_blocked_sal FROM @( VALUE #( salesdocno        = ir_blocked_sales_doc->%key-sales_doc_num
-                                               createdby         = ir_blocked_sales_doc->createdBy
-                                               blockedstatus     = ir_blocked_sales_doc->blockedStatus
-                                               blockedstatustext = ir_blocked_sales_doc->blockedStatusText
-                                               blockedon         = ir_blocked_sales_doc->blockedOn ) ).
+        MODIFY zahk_blocked_sal FROM @( VALUE #( salesdocno        = ir_blocked_sales_doc->%key-sales_doc_num
+                                                 createdby         = ir_blocked_sales_doc->createdBy
+                                                 blockedstatus     = ir_blocked_sales_doc->blockedStatus
+                                                 blockedstatustext = ir_blocked_sales_doc->blockedStatusText
+                                                 blockedon         = ir_blocked_sales_doc->blockedOn ) ).
+      ELSE. " Sales Order Unblocked -> delete entries from table
+        DELETE FROM zahk_blocked_sal WHERE salesdocno = ir_blocked_sales_doc->%key-sales_doc_num.
       ENDIF.
 
     ENDLOOP.
