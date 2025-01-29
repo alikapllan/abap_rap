@@ -1,5 +1,5 @@
 unmanaged implementation in class zbp_ahk_i_sales_header_m_02 unique;
-//strict ( 2 );
+// strict ( 2 );
 
 define behavior for ZAHK_I_SALES_HEADER_M_02 alias SO_Header
 //late numbering
