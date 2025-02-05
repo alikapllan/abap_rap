@@ -32,6 +32,10 @@ CLASS lhc_SO_Header DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS get_instance_features FOR INSTANCE FEATURES " automatic created method for Instance Feature
       IMPORTING keys REQUEST requested_features FOR SO_Header RESULT result.
 
+    METHODS get_global_authorizations FOR GLOBAL AUTHORIZATION
+      IMPORTING REQUEST requested_authorizations FOR so_header RESULT result.
+
+
 ENDCLASS.
 
 CLASS lhc_SO_Header IMPLEMENTATION.
@@ -329,6 +333,67 @@ CLASS lhc_SO_Header IMPLEMENTATION.
                                        THEN if_abap_behv=>fc-f-unrestricted
                                        ELSE if_abap_behv=>fc-f-read_only ) ) ).
   ENDMETHOD.
+
+  METHOD get_global_authorizations.
+    " somehow comes sy-subrc value as 2 :P at that start
+    sy-subrc = COND #( WHEN sy-subrc = 2 THEN 0 ).
+
+    " Check authorization via auth. object
+*    AUTHORITY-CHECK OBJECT 'AUT_OBJECT'
+*        ID 'FIELD' DUMMY
+*        ID 'ACTVT' FIELD '01'.
+
+    " If user is authorized -> allow CREATE, UPDATE, DELETE
+    IF sy-subrc = 0.
+      result-%create = if_abap_behv=>auth-allowed.
+      result-%update = if_abap_behv=>auth-allowed.
+      result-%delete = if_abap_behv=>auth-allowed.
+
+      " reported -> custom return message possible
+      INSERT VALUE #( sales_doc_num = '1001'
+                      %msg = new_message( id       = 'ZAHK_RAP_UNM_01'
+                                          number   = '003'
+                                          severity = if_abap_behv_message=>severity-success ) )
+           INTO TABLE reported-so_header.
+    ELSE.
+      result-%create = if_abap_behv=>auth-unauthorized.
+      result-%update = if_abap_behv=>auth-unauthorized.
+      result-%delete = if_abap_behv=>auth-unauthorized.
+    ENDIF.
+
+    " You can also check what operation is done
+    IF requested_authorizations-%create = if_abap_behv=>mk-on.
+*    AUTHORITY-CHECK OBJECT 'AUT_OBJECT'
+*        ID 'FIELD' DUMMY
+*        ID 'ACTVT' FIELD '01'.
+      IF sy-subrc = 0.
+        result-%create = if_abap_behv=>auth-allowed.
+      ELSE.
+        result-%create = if_abap_behv=>auth-unauthorized.
+      ENDIF.
+    ENDIF.
+
+    IF requested_authorizations-%update = if_abap_behv=>mk-on.
+
+    ENDIF.
+
+    IF requested_authorizations-%delete = if_abap_behv=>mk-on.
+
+    ENDIF.
+
+    " Action check is also possible
+    IF requested_authorizations-%action-blockOrder = if_abap_behv=>mk-on.
+*    AUTHORITY-CHECK OBJECT 'AUT_OBJECT'
+*        ID 'FIELD' DUMMY
+*        ID 'ACTVT' FIELD '01'.
+      IF sy-subrc = 0.
+        result-%action-blockOrder = if_abap_behv=>auth-allowed.
+      ELSE.
+        result-%action-blockOrder = if_abap_behv=>auth-unauthorized.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.
+
 ENDCLASS.
 
 CLASS lhc_SO_Item DEFINITION INHERITING FROM cl_abap_behavior_handler.

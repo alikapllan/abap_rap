@@ -20,6 +20,12 @@
      <MSGNR>002</MSGNR>
      <TEXT>&amp;1 Successful</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZAHK_RAP_UNM_01</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Global Authorization check successful</TEXT>
+    </T100>
    </T100>
    <I18N_LANGS>
     <LANGU>D</LANGU>

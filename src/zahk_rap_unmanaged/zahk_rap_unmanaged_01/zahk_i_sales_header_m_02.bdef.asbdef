@@ -4,7 +4,7 @@ unmanaged implementation in class zbp_ahk_i_sales_header_m_02 unique;
 define behavior for ZAHK_I_SALES_HEADER_M_02 alias SO_Header
 //late numbering
 //lock master
-//authorization master ( instance )
+authorization master ( global )
 etag master last_changed_on
 {
   create;
@@ -39,7 +39,7 @@ etag master last_changed_on
 define behavior for ZAHK_I_SALES_ITEM_M_02 alias SO_Item
 //late numbering
 //lock dependent by _SHeader_M_02
-//authorization dependent by _SHeader_M_02
+authorization dependent by _SHeader_M_02
 //etag master <field_name>
 {
   create;
