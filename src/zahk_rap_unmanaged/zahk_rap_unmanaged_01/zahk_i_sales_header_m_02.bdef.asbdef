@@ -4,7 +4,7 @@ unmanaged implementation in class zbp_ahk_i_sales_header_m_02 unique;
 define behavior for ZAHK_I_SALES_HEADER_M_02 alias SO_Header
 //late numbering
 //lock master
-authorization master ( global )
+authorization master ( global, instance )
 etag master last_changed_on
 {
   create;
@@ -12,7 +12,7 @@ etag master last_changed_on
   delete ( features : instance );
   association _SItem_M_02 { create ( features : instance ); }
 
-  action blockOrder result[1] $self; // 1 because we will only get 1 entity set for the particulat SO
+  action blockOrder   result[1] $self; // 1 because we will only get 1 entity set for the particulat SO
   action unblockOrder result[1] $self;
 
   field ( readonly ) sales_doc_num,

@@ -35,6 +35,9 @@ CLASS lhc_SO_Header DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS get_global_authorizations FOR GLOBAL AUTHORIZATION
       IMPORTING REQUEST requested_authorizations FOR so_header RESULT result.
 
+    METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
+      IMPORTING keys REQUEST requested_authorizations FOR so_header RESULT result.
+
 
 ENDCLASS.
 
@@ -350,8 +353,7 @@ CLASS lhc_SO_Header IMPLEMENTATION.
       result-%delete = if_abap_behv=>auth-allowed.
 
       " reported -> custom return message possible
-      INSERT VALUE #( sales_doc_num = '1001'
-                      %msg = new_message( id       = 'ZAHK_RAP_UNM_01'
+      INSERT VALUE #( %msg = new_message( id       = 'ZAHK_RAP_UNM_01'
                                           number   = '003'
                                           severity = if_abap_behv_message=>severity-success ) )
            INTO TABLE reported-so_header.
@@ -392,6 +394,76 @@ CLASS lhc_SO_Header IMPLEMENTATION.
         result-%action-blockOrder = if_abap_behv=>auth-unauthorized.
       ENDIF.
     ENDIF.
+  ENDMETHOD.
+
+  METHOD get_instance_authorizations.
+    " Instance auth. is used for all auth. checks in addition to a user role.
+    " E.g. Field based, Action based auth. checks..
+
+    " E.g in our case O sales order :
+    " -> more than 5000 EUR cannot be BLOCKED and UPDATED
+    " -> less than 100 EUR cannot be UNBLOCKED
+    DATA update_requested TYPE abap_bool.
+
+    READ ENTITIES OF zahk_c_sales_header_u_02
+         ENTITY zahk_c_sales_header_u_02
+         FIELDS ( total_cost )
+         WITH CORRESPONDING #( keys )
+         RESULT DATA(lt_sales_orders)
+         FAILED DATA(ls_failed).
+
+    IF lines( lt_sales_orders ) = 0 OR ls_failed IS NOT INITIAL.
+      RETURN.
+    ENDIF.
+
+    update_requested = COND #( WHEN requested_authorizations-%action-blockOrder   = if_abap_behv=>mk-on
+                                 OR requested_authorizations-%action-unblockOrder = if_abap_behv=>mk-on
+                                 OR requested_authorizations-%update              = if_abap_behv=>mk-on
+                               THEN abap_true
+                               ELSE abap_false ).
+
+    IF update_requested = abap_false.
+      RETURN.
+    ENDIF.
+
+    LOOP AT lt_sales_orders REFERENCE INTO DATA(lr_sales_order).
+      IF lr_sales_order->total_cost > 5000. " -> more than 5000 EUR cannot be BLOCKED and UPDATED
+        APPEND INITIAL LINE TO result REFERENCE INTO DATA(r_result).
+
+        r_result->%tky               = lr_sales_order->%tky.
+        r_result->%action-blockOrder = if_abap_behv=>auth-unauthorized.
+        r_result->%update            = if_abap_behv=>auth-unauthorized.
+*        r_result->%delete            = if_abap_behv=>auth-unauthorized. " we also could have blocked the delete operation
+
+        " fill failed
+        INSERT VALUE #( %tky = lr_sales_order->%tky ) INTO TABLE failed-so_header.
+
+        " reported -> custom return message possible
+        INSERT VALUE #( sales_doc_num = lr_sales_order->%key-sales_doc_num
+                        %tky          = lr_sales_order->%tky
+                        %msg          = new_message( id       = 'ZAHK_RAP_UNM_01'
+                                                     number   = '004'
+                                                     severity = if_abap_behv_message=>severity-warning ) )
+               INTO TABLE reported-so_header.
+
+      ELSEIF lr_sales_order->total_cost < 100. " -> less than 100 EUR cannot be UNBLOCKED
+        APPEND INITIAL LINE TO result REFERENCE INTO r_result.
+
+        r_result->%tky = lr_sales_order->%tky.
+        r_result->%action-unblockOrder = if_abap_behv=>auth-unauthorized.
+
+        " fill failed
+        INSERT VALUE #( %tky = lr_sales_order->%tky ) INTO TABLE failed-so_header.
+
+        INSERT VALUE #( sales_doc_num = lr_sales_order->%key-sales_doc_num
+                        %tky          = lr_sales_order->%tky
+                        %msg          = new_message( id       = 'ZAHK_RAP_UNM_01'
+                                                     number   = '005'
+                                                     severity = if_abap_behv_message=>severity-warning ) )
+               INTO TABLE reported-so_header.
+      ENDIF.
+
+    ENDLOOP.
   ENDMETHOD.
 
 ENDCLASS.

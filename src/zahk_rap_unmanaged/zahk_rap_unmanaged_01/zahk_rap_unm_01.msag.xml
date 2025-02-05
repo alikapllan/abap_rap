@@ -26,6 +26,18 @@
      <MSGNR>003</MSGNR>
      <TEXT>Global Authorization check successful</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZAHK_RAP_UNM_01</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Total cost more than 5000 EUR -&gt; Sales Order cannot be updated or blocked</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZAHK_RAP_UNM_01</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Total cost less then 100 EUR -&gt; Sales Order cannot be unblocked</TEXT>
+    </T100>
    </T100>
    <I18N_LANGS>
     <LANGU>D</LANGU>
