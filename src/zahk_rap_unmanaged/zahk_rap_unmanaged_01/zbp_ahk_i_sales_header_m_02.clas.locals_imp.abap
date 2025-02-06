@@ -427,7 +427,9 @@ CLASS lhc_SO_Header IMPLEMENTATION.
     ENDIF.
 
     LOOP AT lt_sales_orders REFERENCE INTO DATA(lr_sales_order).
-      IF lr_sales_order->total_cost > 5000. " -> more than 5000 EUR cannot be BLOCKED and UPDATED
+      IF     lr_sales_order->total_cost                  > 5000 " -> more than 5000 EUR cannot be BLOCKED and UPDATED
+         AND requested_authorizations-%action-blockOrder = if_abap_behv=>mk-on.
+
         APPEND INITIAL LINE TO result REFERENCE INTO DATA(r_result).
 
         r_result->%tky               = lr_sales_order->%tky.
@@ -446,7 +448,9 @@ CLASS lhc_SO_Header IMPLEMENTATION.
                                                      severity = if_abap_behv_message=>severity-warning ) )
                INTO TABLE reported-so_header.
 
-      ELSEIF lr_sales_order->total_cost < 100. " -> less than 100 EUR cannot be UNBLOCKED
+      ELSEIF     lr_sales_order->total_cost                    < 100 " -> less than 100 EUR cannot be UNBLOCKED
+             AND requested_authorizations-%action-unblockOrder = if_abap_behv=>mk-on.
+
         APPEND INITIAL LINE TO result REFERENCE INTO r_result.
 
         r_result->%tky = lr_sales_order->%tky.
