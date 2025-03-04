@@ -29,7 +29,13 @@ define view entity ZAHK_I_SALES_HEADER_01 as select from ztest_vbak_01
     waerk as cost_currency,
     faksk as block_status,
     
-    @Semantics.largeObject: { mimeType: 'mimetype',  fileName: 'filename',  contentDispositionPreference: #INLINE }
+    @Semantics.largeObject: { mimeType: 'mimetype',  
+                                fileName: 'filename',  
+                                contentDispositionPreference: #INLINE
+                               // -> we can also specify what kind of files types are allowed to be uploaded.
+                               // -> E.g. with the annonation below we would only allow excel uploads
+                               // acceptableMimeTypes: [ 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ]
+                            }
     attachment,
     filename,
     @Semantics.mimeType: true

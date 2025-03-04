@@ -31,7 +31,13 @@ define root view entity ZAHK_I_SALES_HEADER_M_01
           else 'Blocked'
       end as block_status_msg,
       
-      @Semantics.largeObject: { mimeType: 'mimetype',  fileName: 'filename',  contentDispositionPreference: #INLINE }
+      @Semantics.largeObject: { mimeType: 'mimetype',  
+                                fileName: 'filename',  
+                                contentDispositionPreference: #INLINE
+                               // -> we can also specify what kind of files types are allowed to be uploaded.
+                               // -> E.g. with the annonation below we would only allow excel uploads
+                               // acceptableMimeTypes: [ 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ]
+                              }
       attachment,
       filename,
       @Semantics.mimeType: true
