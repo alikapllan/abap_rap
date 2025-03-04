@@ -74,6 +74,22 @@ annotate view zahk_c_sales_header_u_02 with
        identification: [{ position: 90, label: 'Sales Div' }],
        fieldGroup: [{ qualifier: 'DETAIL_INFO', importance: #HIGH }] }
   sales_div;
+  
+  @UI: { lineItem: [{position: 100 , label: 'Attachment', importance: #MEDIUM }],
+         identification: [{ position: 100 , label: 'Attachment' }],
+         fieldGroup: [{ qualifier: 'DETAIL_INFO', importance: #HIGH }] }
+  attachment;
+
+  @UI: { lineItem: [{position: 110 , label: 'Filename', importance: #MEDIUM }],
+         identification: [{ position: 110 , label: 'Filename' }],
+         fieldGroup: [{ qualifier: 'DETAIL_INFO', importance: #HIGH }] }
+  filename;
+
+  @UI: { lineItem: [{position: 120 , label: 'Mimetype',  importance: #MEDIUM  }],
+         identification: [{ position: 120 , label: 'Mimetype' }],
+         fieldGroup: [{ qualifier: 'DETAIL_INFO', importance: #HIGH }] }
+  @UI.selectionField: [ { position: 120 } ]
+  mimetype;
 
   // last_changed_on;
 

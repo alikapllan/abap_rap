@@ -22,6 +22,9 @@ define root view entity ZAHK_C_SALES_HEADER_M_01
       cost_currency,
       block_status,
       block_status_msg,
+      attachment,
+      filename,
+      mimetype,
       last_changed_on,
       /* Associations */
       _SItem_M_01 : redirected to composition child ZAHK_C_SALES_ITEM_M_01

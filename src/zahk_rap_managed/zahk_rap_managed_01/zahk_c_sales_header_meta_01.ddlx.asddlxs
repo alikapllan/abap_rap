@@ -51,7 +51,7 @@ annotate view ZAHK_C_SALES_HEADER_M_01 with
         // Actions
         { type: #FOR_ACTION, dataAction: 'blockOrder', label: 'Block' },
         { type: #FOR_ACTION, dataAction: 'unblockOrder', label: 'Unblock' }],
-       identification: [{ position: 50, label: 'Block Status' }],        
+       identification: [{ position: 50, label: 'Block Status' }],
        fieldGroup: [{ qualifier: 'BasicInfo', importance: #HIGH }] }
   block_status;
 
@@ -75,6 +75,24 @@ annotate view ZAHK_C_SALES_HEADER_M_01 with
        identification: [{ position: 90, label: 'Sales Div' }],
        fieldGroup: [{ qualifier: 'DetailInfo', importance: #HIGH }] }
   sales_div;
+  
+  @UI: { lineItem: [{position: 100 , label: 'Attachment', importance: #MEDIUM}],
+         identification: [{ position: 100 , label: 'Attachment' }],
+         fieldGroup: [{ qualifier: 'DetailInfo', importance: #HIGH }] }
+  attachment;
+
+  @UI.hidden: true
+  @UI: { lineItem: [{position: 110 , label: 'Filename', importance: #MEDIUM }],
+         identification: [{ position: 110 , label: 'Filename' }],
+         fieldGroup: [{ qualifier: 'DetailInfo', importance: #HIGH }] }
+  filename;
+
+  @UI.hidden: true
+  @UI: { lineItem: [{position: 120 , label: 'Mimetype',  importance: #MEDIUM  }],
+         identification: [{ position: 120 , label: 'Mimetype' }],
+         fieldGroup: [{ qualifier: 'DetailInfo', importance: #HIGH }] }
+  @UI.selectionField: [ { position: 120 } ]
+  mimetype;
 
   // last_changed_on;
 

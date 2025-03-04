@@ -45,6 +45,14 @@ etag master last_changed_on
       cost_currency   = waerk;
       person_created  = ernam;
       date_created    = erdat;
+
+      // -> normally you should also map these 3 fields as well but currently it raises an error :
+      // Component "attachment/filename/mimetype" has a type that is not supported for "control"
+      // -> works like this but note that naming in this case should be same in table and all entities.
+//      attachment      = attachment;
+//      filename        = filename;
+//      mimetype        = mimetype;
+
       last_changed_on = last_changed_timestamp;
     }
 
