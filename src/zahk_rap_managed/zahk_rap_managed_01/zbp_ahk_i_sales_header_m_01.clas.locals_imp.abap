@@ -98,6 +98,7 @@ CLASS lhc_SalesHead_M_01 IMPLEMENTATION.
     " In draft-enabled use cases, %tky will automatically contain the is_draft indicator.
     " -> %tky-%is_draft = '00' (if_abap_behv=>mk-off) %tky-%is_draft = '01' (if_abap_behv=>mk-on)
   ENDMETHOD.
+
 ENDCLASS.
 
 
@@ -111,6 +112,8 @@ CLASS lcl_additional_save DEFINITION INHERITING FROM cl_abap_behavior_saver.
 
   PROTECTED SECTION.
     METHODS save_modified REDEFINITION.
+    METHODS adjust_numbers REDEFINITION.
+
 
     CONSTANTS cv_block_st_for_admin_approval TYPE faksk VALUE '99'.
 ENDCLASS.
@@ -217,6 +220,49 @@ CLASS lcl_additional_save IMPLEMENTATION.
     ENDIF.
 
 
+
+  ENDMETHOD.
+
+
+  METHOD adjust_numbers.
+    " Late Numbering
+    " -> This method is called right before the rap save sequence, meaning here is a no-way-back place
+    " -> In this phase, the BO is considered to be in a consistent state
+    " -> Generally, we would use here number range object or generate a uuid. But for simplicity we just take
+    " the latest sales doc nr. and increase it +1
+    " -> 'Late Numbering' tag is to be added to all child in behavior def. If not, you are given an error anyways
+    " -> In Draft scenarios a new field 'draftuuid' with type sdraft_uuid has to be added to draft table/s
+    " It is handled by RAP itself. Child draft tables should also contain an additional field 'parentdraftuuid'.
+
+    " Links for read
+    " -> https://help.sap.com/docs/abap-cloud/abap-rap/unmanaged-internal-late-numbering
+    " -> https://help.sap.com/docs/abap-cloud/abap-rap/adjust-numbers
+    " -> https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/abenbdl_late_numbering.html
+    " -> https://software-heroes.com/en/blog/abap-rap-numbering-en
+    " -> https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/abapderived_types_comp.html
+
+    SELECT FROM ztest_vbak_01
+      FIELDS MAX( vbeln )
+      INTO @DATA(lv_latest_sales_doc_no).
+
+    IF sy-subrc <> 0.
+      RETURN.
+    ENDIF.
+
+    LOOP AT mapped-saleshead_m_01 REFERENCE INTO DATA(lr_sales_order_header).
+      " -> https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/abapderived_types_comp.html
+      " Preliminary Identifiers
+*        lr_sales_order_header->%pre-%pid
+*        lr_sales_order_header->%pre-%tmp-sales_doc_num
+
+*        lr_sales_order_header->%tmp-sales_doc_num
+*        lr_sales_order_header->%pid
+
+      lv_latest_sales_doc_no += 1.
+
+      lr_sales_order_header->%key          = lv_latest_sales_doc_no.
+      lr_sales_order_header->sales_doc_num = lv_latest_sales_doc_no.
+    ENDLOOP.
 
   ENDMETHOD.
 

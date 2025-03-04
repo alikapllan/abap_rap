@@ -13,6 +13,7 @@ lock master total etag last_changed_on // -> in order to identify changes to act
                                        // a total ETag field is required.
 //authorization master ( instance )
 etag master last_changed_on
+late numbering
 {
   field ( readonly : update ) sales_doc_num;
 
@@ -66,6 +67,7 @@ lock dependent by _SHeader_M_01
 with unmanaged save
 //authorization dependent by _SHeader_M_01
 etag master last_changed_on
+late numbering
 {
   // for external numbering, meaning to take it from user
   // put here as I want to demonstrate the creation of an item
