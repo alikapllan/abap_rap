@@ -1,0 +1,51 @@
+projection implementation in class ZBP_C_ZT_ROOT unique;
+strict ( 2 );
+use draft;
+define behavior for ZC_ZT_ROOT alias Root
+use etag
+
+{
+  use create;
+  use update;
+  use delete;
+
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+  use association _Child { create; with draft; }
+  use association _GrandChild { with draft; }
+  use association _GreatGrandChild { with draft; }
+}
+// ** CHILD **
+define behavior for ZC_ZT_CHILD alias Child
+{
+  use update;
+  use delete;
+
+  use association _Root { with draft; }
+  use association _GrandChild { create; with draft; }
+  use association _GreatGrandChild { with draft; }
+}
+// ** GRAND-CHILD **
+define behavior for ZC_ZT_GCHILD alias GrandChild
+{
+  use update;
+  use delete;
+
+  use association _Root { with draft; }
+  use association _Child { with draft; }
+  use association _GreatGrandChild { create; with draft; }
+}
+
+// ** GREAT-GRAND-CHILD **
+define behavior for ZC_ZT_GGCHILD alias GreatGrandChild
+{
+  use update;
+  use delete;
+
+  use association _Root { with draft; }
+  use association _Child { with draft; }
+  use association _GrandChild { with draft; }
+}

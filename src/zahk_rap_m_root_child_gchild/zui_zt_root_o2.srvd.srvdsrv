@@ -1,0 +1,7 @@
+@EndUserText.label: 'Service Definition - Root - O2'
+define service ZUI_ZT_ROOT_O2 {
+  expose ZC_ZT_ROOT    as Root;
+  expose ZC_ZT_CHILD   as Child;
+  expose ZC_ZT_GCHILD  as GrandChild;
+  expose ZC_ZT_GGCHILD as GreatGrandChild;
+}

@@ -1,0 +1,172 @@
+managed implementation in class ZBP_R_ZT_ROOT unique;
+strict ( 2 );
+with draft;
+define behavior for ZR_ZT_ROOT alias Root
+persistent table zzt_root
+draft table zzt_root_d
+etag master Locallastchangedat
+lock master total etag Lastchangedat
+authorization master ( global )
+
+{
+  field ( readonly )
+  UuidRoot,
+  Createdby,
+  Createdat,
+  Changedby,
+  Lastchangedat,
+  Locallastchangedat;
+
+  field ( numbering : managed )
+  UuidRoot;
+
+
+  create;
+  update;
+  delete;
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare;
+
+  association _Child { create; with draft; }
+  association _GrandChild { with draft; }
+  association _GreatGrandChild { with draft; }
+
+  mapping for zzt_root
+    {
+      UuidRoot           = uuid_root;
+      SemantickeyRoot    = semantickey_root;
+      Description        = description;
+      Createdby          = createdby;
+      Createdat          = createdat;
+      Changedby          = changedby;
+      Lastchangedat      = lastchangedat;
+      Locallastchangedat = locallastchangedat;
+    }
+}
+
+// ** CHILD **
+define behavior for ZR_ZT_CHILD alias Child
+persistent table zzt_child
+draft table zzt_child_d
+lock dependent by _Root
+authorization dependent by _Root
+etag master Lastchangedat
+{
+  field ( readonly )
+  UuidRoot,
+  Createdby,
+  Createdat,
+  Changedby,
+  Lastchangedat,
+  Locallastchangedat;
+
+  field ( numbering : managed, readonly ) UuidChild;
+
+  association _Root { with draft; }
+  association _GrandChild { create; with draft; }
+  association _GreatGrandChild { with draft; }
+
+  update;
+  delete;
+
+  mapping for zzt_child
+    {
+      UuidChild          = uuid_child;
+      SemantickeyChild   = semantickey_child;
+      Description        = description;
+      UuidRoot           = uuid_root;
+      Createdby          = createdby;
+      Createdat          = createdat;
+      Changedby          = changedby;
+      Lastchangedat      = lastchangedat;
+      Locallastchangedat = locallastchangedat;
+    }
+}
+
+// ** GRAND-CHILD **
+define behavior for ZR_ZT_GCHILD alias GrandChild
+persistent table zzt_gchild
+draft table zzt_gchild_d
+lock dependent by _Root
+authorization dependent by _Root
+etag master Lastchangedat
+{
+  field ( readonly )
+  UuidRoot,
+  UuidChild,
+  Createdby,
+  Createdat,
+  Changedby,
+  Lastchangedat,
+  Locallastchangedat;
+
+  field ( numbering : managed, readonly ) UuidGchild;
+
+  ancestor association _Root { with draft; }
+  association _Child { with draft; }
+  association _GreatGrandChild { create; with draft; }
+
+  update;
+  delete;
+
+  mapping for zzt_gchild
+    {
+      UuidGChild         = uuid_gchild;
+      UuidChild          = uuid_child;
+      SemantickeyGchild  = semantickey_gchild;
+      Description        = description;
+      UuidRoot           = uuid_root;
+      Createdby          = createdby;
+      Createdat          = createdat;
+      Changedby          = changedby;
+      Lastchangedat      = lastchangedat;
+      Locallastchangedat = locallastchangedat;
+    }
+}
+
+// ** GREAT-GRAND-CHILD **
+define behavior for ZR_ZT_GGCHILD alias GreatGranChild
+persistent table zzt_ggchild
+draft table zzt_ggchild_d
+lock dependent by _Root
+authorization dependent by _Root
+etag master Lastchangedat
+{
+  field ( readonly )
+  UuidRoot,
+  UuidChild,
+  UuidGchild,
+  Createdby,
+  Createdat,
+  Changedby,
+  Lastchangedat,
+  Locallastchangedat;
+
+  field ( numbering : managed, readonly ) UuidGgchild;
+
+  ancestor association _Root { with draft; }
+  ancestor association _Child { with draft; }
+  association _GrandChild { with draft; }
+
+  update;
+  delete;
+
+  mapping for zzt_ggchild
+    {
+      UuidGgchild        = uuid_ggchild;
+      SemantickeyGgchild = semantickey_ggchild;
+      Description        = description;
+      UuidRoot           = uuid_root;
+      UuidChild          = uuid_child;
+      UuidGChild         = uuid_gchild;
+      Createdby          = createdby;
+      Createdat          = createdat;
+      Changedby          = changedby;
+      Lastchangedat      = lastchangedat;
+      Locallastchangedat = locallastchangedat;
+    }
+}
