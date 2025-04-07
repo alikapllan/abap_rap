@@ -14,8 +14,8 @@ ENDCLASS.
 
 CLASS zcl_rapdemo02_crud_syntax IMPLEMENTATION.
   METHOD if_oo_adt_classrun~main.
-*    sample_create( ).
-    sample_read( ).
+    sample_create( ).
+*    sample_read( ).
 *    sample_update( ).
 *    sample_delete( ).
   ENDMETHOD.
@@ -53,18 +53,52 @@ CLASS zcl_rapdemo02_crud_syntax IMPLEMENTATION.
     " ..
     " .. Preprocess of filling lt_userinfo02
     " ..
-    MODIFY ENTITIES OF Zahk_I_userinfo02_m_02 IN LOCAL MODE
+    MODIFY ENTITIES OF Zahk_I_userinfo02_m_02
+*           IN LOCAL MODE
            ENTITY Zahk_I_userinfo02_m_02
            CREATE FROM lt_userinfo02
            FAILED DATA(ls_failed)
            MAPPED DATA(ls_mapped)
            REPORTED DATA(ls_reported).
 
+    " Dynamic Create
+    DATA lt_create_userinfo TYPE TABLE FOR CREATE Zahk_I_userinfo02_m_02.
+    DATA lt_op_tab          TYPE abp_behv_changes_tab.
+
+    lt_create_userinfo = VALUE #( ( Email       = 'dynamic-rap-create@demo.com'
+                                    FirstName   = 'I dont'
+                                    LastName    = 'know'
+                                    IsAdmin     = 'No'
+                                    LastChanged = lv_timestamp
+                                    %control    = VALUE #( Email       = if_abap_behv=>mk-on
+                                                           FirstName   = if_abap_behv=>mk-on
+                                                           LastName    = if_abap_behv=>mk-on
+                                                           IsAdmin     = if_abap_behv=>mk-on
+                                                           LastChanged = if_abap_behv=>mk-on ) ) ).
+
+    lt_op_tab = VALUE #( ( entity_name = to_upper( 'Zahk_I_userinfo02_m_02' )
+                           op          = if_abap_behv=>op-m-create
+                           instances   = REF #( lt_create_userinfo ) )
+
+                         " If we had wanted to also create by ASSOCIATION
+*                         ( entity_name = to_upper( 'associated_entity_name' )
+*                           op          = if_abap_behv=>op-m-create_ba
+*                           subname     = 'alias name of the association entity in Zahk_I_userinfo02_m_02'
+*                           instances   = REF #( lt_create_userinfo_association ) )
+                            ).
+
+    MODIFY ENTITIES OPERATIONS lt_op_tab
+           MAPPED DATA(mapped_dynamic)
+           FAILED DATA(failed_dynamic)
+           REPORTED DATA(reported_dynamic).
+
     " After create -> Commit needed
     COMMIT ENTITIES
            RESPONSE OF Zahk_I_userinfo02_m_02
            FAILED   DATA(failed_commit)
            REPORTED DATA(reported_commit).
+
+    BREAK-POINT.
   ENDMETHOD.
 
   METHOD sample_delete.
