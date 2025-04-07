@@ -15,7 +15,7 @@ ENDCLASS.
 CLASS zcl_rapdemo02_crud_syntax IMPLEMENTATION.
   METHOD if_oo_adt_classrun~main.
 *    sample_create( ).
-*    sample_read( ).
+    sample_read( ).
 *    sample_update( ).
 *    sample_delete( ).
   ENDMETHOD.
@@ -116,6 +116,30 @@ CLASS zcl_rapdemo02_crud_syntax IMPLEMENTATION.
          RESULT   DATA(lt_userinfo_some_fields)
          REPORTED DATA(reported) " to show messages to user in frontend
          FAILED   DATA(failed).
+
+    " Dynamic read
+    DATA lt_read_userinfo        TYPE TABLE FOR READ IMPORT Zahk_I_userinfo02_m_02.
+    DATA lt_op_tab               TYPE abp_behv_retrievals_tab.
+    DATA lt_read_userinfo_result TYPE TABLE FOR READ RESULT Zahk_I_userinfo02_m_02.
+
+    lt_read_userinfo = VALUE #( ( %key-Email = 'warummacheichdas@gmail.com'
+                                  " here marking fields that you wanna read
+                                  %control   = VALUE #( FirstName = if_abap_behv=>mk-on
+                                                        LastName  = if_abap_behv=>mk-on
+                                                        FullName  = if_abap_behv=>mk-on
+                                                        IsAdmin   = if_abap_behv=>mk-on ) ) ).
+
+    lt_op_tab = VALUE #( entity_name = 'ZAHK_I_USERINFO02_M_02'
+                         ( op        = if_abap_behv=>op-r-read
+                           instances = REF #( lt_read_userinfo )
+                           " read fields come in
+                           results   = REF #( lt_read_userinfo_result ) ) ).
+
+    READ ENTITIES OPERATIONS lt_op_tab FAILED DATA(read_failed).
+
+    IF lines( lt_op_tab ) > 0 AND read_failed IS INITIAL.
+      DATA(lt_result) = lt_op_tab[ 1 ]-results.
+    ENDIF.
   ENDMETHOD.
 
   METHOD sample_update.

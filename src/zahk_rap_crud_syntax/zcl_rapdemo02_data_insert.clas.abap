@@ -19,7 +19,7 @@ CLASS ZCL_RAPDEMO02_DATA_INSERT IMPLEMENTATION.
       INTO TABLE @DATA(lt_userinfo).
 
     IF sy-subrc = 0.
-      UPDATE ztest_userinfo02 FROM TABLE @lt_userinfo.
+      MODIFY ztest_userinfo02 FROM TABLE @lt_userinfo.
     ENDIF.
   ENDMETHOD.
 
