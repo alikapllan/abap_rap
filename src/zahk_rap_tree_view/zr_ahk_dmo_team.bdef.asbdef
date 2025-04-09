@@ -1,0 +1,50 @@
+managed implementation in class ZBP_AHK_DMO_TEAM unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZR_AHK_DMO_TEAM
+persistent table zahk_dmo_team
+draft table ZAHK_DMO_TEAM_D
+etag master LocalLastChanged
+lock master total etag LastChanged
+authorization master( global )
+
+{
+  field ( mandatory : create )
+   UserID;
+
+  field ( readonly )
+   LocalCreatedBy,
+   LastChanged,
+   LocalLastChanged,
+   LocalLastChangedBy;
+
+  field ( readonly : update )
+   UserID;
+
+
+  create;
+  update;
+  delete;
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare;
+
+  mapping for ZAHK_DMO_TEAM
+  {
+    UserID = user_id;
+    PlayerName = player_name;
+    PlayerEmail = player_email;
+    PlayerPosition = player_position;
+    Score = score;
+    Team = team;
+    TeamLeader = team_leader;
+    LocalCreatedBy = local_created_by;
+    LocalLastChangedBy = local_last_changed_by;
+    LocalLastChanged = local_last_changed;
+    LastChanged = last_changed;
+  }
+}
