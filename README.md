@@ -7,10 +7,10 @@ All changes have been committed one by one, so the change flow can be tracked in
 3. Now in Service Binding you can call the app in preview and play on it.
 
 ## RAP CRUD Syntax
-[Create](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#L23-L68)  
-[Read](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#L102-L119)    
-[Update](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#L121-L168)     
-[Delete](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#L70-L100)  
+[Create](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#L23-L102)  
+[Read](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#L136-L177)    
+[Update](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#L179-L226)     
+[Delete](https://github.com/alikapllan/abap_rap/blob/main/src/zahk_rap_crud_syntax/zcl_rapdemo02_crud_syntax.clas.abap#L104-L134)  
 ## [Managed Scenario Example](https://github.com/alikapllan/abap_rap/tree/main/src/zahk_rap_managed/zahk_rap_managed_01) 
 ### Overview of Development Package of this Example
 -> Some parts might be unnecessary or even missing( me a junior and still learning :') ). But I just wanted to add it so you can at least see what kind of a development structure in package it has.  
