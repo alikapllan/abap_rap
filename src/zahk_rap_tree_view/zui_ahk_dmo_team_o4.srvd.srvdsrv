@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service definition for ZC_AHK_DMO_TEAM - OData V4'
+define service ZUI_AHK_DMO_TEAM_O4 {
+  expose ZC_AHK_DMO_TEAM;
+}

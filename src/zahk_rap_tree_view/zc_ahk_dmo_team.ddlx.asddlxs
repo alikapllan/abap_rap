@@ -20,7 +20,8 @@ annotate view ZC_AHK_DMO_TEAM with
   } ]
   @UI.identification: [ {
     position: 10 , 
-    label: 'UserID'
+    label: 'UserID',
+    cssDefault.width: '150px' // more place on UI
   } ]
   UserID;
   

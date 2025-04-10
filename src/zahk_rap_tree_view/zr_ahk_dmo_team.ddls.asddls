@@ -1,7 +1,8 @@
-@AccessControl.authorizationCheck: #CHECK
+@AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: '##GENERATED zAHK_DMO_TEAM'
 define root view entity ZR_AHK_DMO_TEAM
   as select from zahk_dmo_team
+  association of many to one ZR_AHK_DMO_TEAM as _TeamLeader on $projection.TeamLeader = _TeamLeader.UserID
 {
   key user_id as UserID,
   player_name as PlayerName,
@@ -17,6 +18,7 @@ define root view entity ZR_AHK_DMO_TEAM
   @Semantics.systemDateTime.localInstanceLastChangedAt: true
   local_last_changed as LocalLastChanged,
   @Semantics.systemDateTime.lastChangedAt: true
-  last_changed as LastChanged
+  last_changed as LastChanged,
   
+  _TeamLeader
 }

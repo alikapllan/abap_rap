@@ -3,12 +3,11 @@
 {
 "FROM":
 [
+"DDDDL_HIERARCHY",
 "ZR_AHK_DMO_TEAM"
 ],
 "ASSOCIATED":
-[
-"ZC_AHK_DMO_TEAM"
-],
+[],
 "BASE":
 [],
 "ANNO_REF":

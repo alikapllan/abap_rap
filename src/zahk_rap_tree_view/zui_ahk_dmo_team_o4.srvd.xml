@@ -3,12 +3,12 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <SRVD>
-    <NAME>ZUI_AHK_DMO_TEAM_O2</NAME>
+    <NAME>ZUI_AHK_DMO_TEAM_O4</NAME>
     <TYPE>SRVD/SRV</TYPE>
-    <DESCRIPTION>Service definition for ZC_AHK_DMO_TEAM - OData V2</DESCRIPTION>
+    <DESCRIPTION>Service definition for ZC_AHK_DMO_TEAM - OData V4</DESCRIPTION>
     <LANGUAGE>EN</LANGUAGE>
     <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
-    <SOURCE_URI>./zui_ahk_dmo_team_o2/source/main</SOURCE_URI>
+    <SOURCE_URI>./zui_ahk_dmo_team_o4/source/main</SOURCE_URI>
     <SOURCE_TYPE>ABAP_SOURCE</SOURCE_TYPE>
     <SOURCE_ORIGIN_DESCRIPTION>ABAP Development Tools</SOURCE_ORIGIN_DESCRIPTION>
     <SRVD_SOURCE_TYPE>S</SRVD_SOURCE_TYPE>
