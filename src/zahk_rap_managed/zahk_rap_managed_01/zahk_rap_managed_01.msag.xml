@@ -20,6 +20,12 @@
      <MSGNR>001</MSGNR>
      <TEXT>Negative Entries not allowed at position &amp;1</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZAHK_RAP_MANAGED_01</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>This is message with the method &amp;1 ! It can include more content.</TEXT>
+    </T100>
    </T100>
    <I18N_LANGS>
     <LANGU>D</LANGU>

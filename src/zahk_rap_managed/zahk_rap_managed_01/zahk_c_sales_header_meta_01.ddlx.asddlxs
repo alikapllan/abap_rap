@@ -23,7 +23,9 @@ annotate view ZAHK_C_SALES_HEADER_M_01 with
                 ]
 
   @UI:{ lineItem: [{ position: 10, label: 'Number', importance: #HIGH,
-                     targetElement: '_SItem_M_01.sales_doc_num' }],
+                     targetElement: '_SItem_M_01.sales_doc_num' },
+                     // static action example
+                    { type: #FOR_ACTION, dataAction: 'createUIMessageStaticAction', label: 'Static Action UI Message' }],
 
                      identification: [{ position: 10, label: 'Number' }],
                      fieldGroup: [{ qualifier: 'BasicInfo', importance: #HIGH }] }
@@ -75,7 +77,7 @@ annotate view ZAHK_C_SALES_HEADER_M_01 with
        identification: [{ position: 90, label: 'Sales Div' }],
        fieldGroup: [{ qualifier: 'DetailInfo', importance: #HIGH }] }
   sales_div;
-  
+
   @UI: { lineItem: [{position: 100 , label: 'Attachment', importance: #MEDIUM}],
          identification: [{ position: 100 , label: 'Attachment' }],
          fieldGroup: [{ qualifier: 'DetailInfo', importance: #HIGH }] }

@@ -10,6 +10,7 @@ use etag
   use update;
   use delete;
 
+  use action createUIMessageStaticAction;
   use action blockOrder;
   use action unblockOrder;
 

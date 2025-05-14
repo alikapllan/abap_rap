@@ -13,6 +13,8 @@ CLASS lhc_SalesHead_M_01 DEFINITION INHERITING FROM cl_abap_behavior_handler.
     " ( features : instance ) in behavior def
     METHODS get_instance_features FOR INSTANCE FEATURES
       IMPORTING keys REQUEST requested_features FOR SalesHead_M_01 RESULT result.
+    METHODS createuimessagestaticaction FOR MODIFY
+      IMPORTING keys FOR ACTION saleshead_m_01~createuimessagestaticaction.
 
 ENDCLASS.
 
@@ -97,6 +99,19 @@ CLASS lhc_SalesHead_M_01 IMPLEMENTATION.
     " %tky stands for transactional key. In non-draft use cases , %tky contains the same value as %key which is the key of the related entity.
     " In draft-enabled use cases, %tky will automatically contain the is_draft indicator.
     " -> %tky-%is_draft = '00' (if_abap_behv=>mk-off) %tky-%is_draft = '01' (if_abap_behv=>mk-on)
+  ENDMETHOD.
+
+  METHOD createUIMessageStaticAction.
+    " avoid using NEW_MESSAGE_WITH_TEXT if your text contains more than 50 characters AND/OR you want to use placeholders
+*    INSERT new_message_with_text( severity = if_abap_behv_message=>severity-error
+*                                  text     = 'This is a message with the method NEW_MESSAGE_WITH_TEXT!'  ) INTO TABLE reported-%other.
+
+    " NEW_MESSAGE usage offers more characters and flexibility via up to 4 placeholders
+    INSERT new_message( id       = 'ZAHK_RAP_MANAGED_01'
+                        number   = '002'
+                        severity = if_abap_behv_message=>severity-error
+                        v1       = 'NEW_MESSAGE' )
+           INTO TABLE reported-%other.
   ENDMETHOD.
 
 ENDCLASS.
