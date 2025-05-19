@@ -42,3 +42,6 @@ This Managed Scenario Example 2 - Translation App is replicated from [a blog of 
 ## [Dealing with Existing Code](https://learning.sap.com/courses/building-apps-with-the-abap-restful-application-programming-model/defining-and-implementing-the-business-object-behavior_LE_3903d34c-9c78-4089-b967-bcdf1581a135)
 
 ## [Service Consumption & Web APIs](https://learning.sap.com/courses/building-apps-with-the-abap-restful-application-programming-model/the-business-scenario_LE_154dc8cd-c3e4-4939-b8b0-8b0b1b326395)
+
+## Youtube Channel - SAP Developers - Useful Video resources
+[01 - ABAP Cloud - Expose ABAP CDS view using Communication Arrangement](https://www.youtube.com/watch?v=3QoP-6cTDm4&ab_channel=SAPDevelopers)
