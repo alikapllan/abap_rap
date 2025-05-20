@@ -45,7 +45,7 @@ late numbering
       sales_div       = spart;
       sales_org       = vkorg;
       total_cost      = netwr;
-      cost_currency   = waerk;
+      CostCurrency    = waerk;
       person_created  = ernam;
       date_created    = erdat;
 

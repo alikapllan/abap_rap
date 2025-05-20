@@ -14,12 +14,12 @@ define root view entity ZAHK_C_SALES_HEADER_M_01
       @Search.defaultSearchElement: true
       @Search.fuzzinessThreshold: 0.8
       @Search.ranking: #HIGH
-      person_created,
+      person_created as PersonCreated,
       sales_org,
       sales_dist,
       sales_div,
       total_cost,
-      cost_currency,
+      CostCurrency,
       block_status,
       block_status_msg,
       attachment,

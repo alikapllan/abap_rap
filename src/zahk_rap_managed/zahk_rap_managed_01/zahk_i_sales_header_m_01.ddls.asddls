@@ -21,9 +21,9 @@ define root view entity ZAHK_I_SALES_HEADER_M_01
       sales_org,
       sales_dist,
       sales_div,
-      @Semantics.amount.currencyCode: 'cost_currency'
+      @Semantics.amount.currencyCode: 'CostCurrency'
       total_cost,
-      cost_currency,
+      CostCurrency,
       block_status,
       case block_status
           when ' ' then 'OK'

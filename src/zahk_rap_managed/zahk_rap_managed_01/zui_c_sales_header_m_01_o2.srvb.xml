@@ -6,7 +6,7 @@
     <METADATA>
      <NAME>ZUI_C_SALES_HEADER_M_01_O2</NAME>
      <TYPE>SRVB/SVB</TYPE>
-     <DESCRIPTION>Service Binding OV2 Managed - Sales Header 01</DESCRIPTION>
+     <DESCRIPTION>Service binding OV2 - Sales Header 01</DESCRIPTION>
     </METADATA>
     <CONTENT>
      <BIND_TYPE_IMPL>

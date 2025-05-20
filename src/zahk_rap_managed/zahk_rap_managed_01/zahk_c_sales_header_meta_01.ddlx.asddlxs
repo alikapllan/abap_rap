@@ -4,7 +4,26 @@
                      description: { value: 'date_created' },
                      typeName: 'Sales Document',
                      typeNamePlural: 'Sales Documents' } }
+                     
+// RAP - Multiple filters and settings
+// -> https://software-heroes.com/en/blog/abap-rap-multiple-filter-and-settings
+@UI.presentationVariant: [ {
+  qualifier: 'pVariant',
+  sortOrder: [{ by: 'sales_doc_num', direction: #DESC }],
+  groupBy: [ 'PersonCreated' ],
+  visualizations: [{ type: #AS_LINEITEM }]    
+} ] 
 
+@UI.selectionVariant: [{  
+  qualifier: 'sVariant',
+  filter: 'CostCurrency EQ EUR OR CostCurrency EQ USD'
+}]   
+
+@UI.selectionPresentationVariant: [ { 
+  presentationVariantQualifier: 'pVariant',
+  selectionVariantQualifier: 'sVariant'
+} ]       
+       
 annotate view ZAHK_C_SALES_HEADER_M_01 with
 {
 
@@ -38,16 +57,20 @@ annotate view ZAHK_C_SALES_HEADER_M_01 with
 
   @UI:{ lineItem: [{ position: 30, label: 'Created By', importance: #HIGH }],
        identification: [{ position: 30, label: 'Created By' }],
-       fieldGroup: [{ qualifier: 'BasicInfo', importance: #HIGH }] }
-  person_created;
+       fieldGroup: [{ qualifier: 'BasicInfo', importance: #HIGH }],
+       selectionField: [{ position: 10 }] }
+  @EndUserText.label: 'Created By'
+  PersonCreated;
 
   @UI:{ lineItem: [{ position: 40, label: 'Total Cost', importance: #HIGH }],
        identification: [{ position: 40, label: 'Total Cost' }],
        fieldGroup: [{ qualifier: 'BasicInfo', importance: #HIGH }] }
   total_cost;
 
-  //    @UI:{ lineItem: [{ position: 41, label: 'Number', importance: #HIGH }] }
-  //    cost_currency;
+  // @UI:{ lineItem: [{ position: 41, label: 'Currency', importance: #HIGH }] }
+  @UI.selectionField: [{ position: 20 }]
+  @EndUserText.label: 'Currency'
+  CostCurrency;
 
   @UI:{ lineItem: [{ position: 50, label: 'Block Status', importance: #HIGH },
         // Actions

@@ -24,9 +24,9 @@ define view entity ZAHK_I_SALES_HEADER_01 as select from ztest_vbak_01
     vtweg as sales_dist,
     spart as sales_div,
     
-    @Semantics.amount.currencyCode: 'cost_currency'
+    @Semantics.amount.currencyCode: 'CostCurrency'
     netwr as total_cost,
-    waerk as cost_currency,
+    waerk as CostCurrency, // prefer CamelCase over snake_case -> otherwise Gateway errors if used in Filtering or Grouping
     faksk as block_status,
     
     @Semantics.largeObject: { mimeType: 'mimetype',  
