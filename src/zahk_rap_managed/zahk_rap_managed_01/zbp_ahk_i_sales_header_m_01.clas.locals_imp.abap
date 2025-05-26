@@ -148,6 +148,9 @@ CLASS lcl_additional_save IMPLEMENTATION.
       " means -> Creation has been made
 
       " Call BAPI, FM or CRUD on Database Tables etc.
+      " ## Of course BAPIs should be called via wrapper classes (if in cloud or package is set to 'Cloud Development' this wrapper classes should be released as C1 contract)
+      " and there is a special technique for a proper error handling and calling the FM containing BAPI properly
+      " -> this video explains it very well -> https://www.youtube.com/watch?v=HQLM9I_Lcek&ab_channel=MunirSolkar from minute 31:00
     ENDIF.
 
     " -- UNMANAGED SAVE --
