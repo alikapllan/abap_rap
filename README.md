@@ -44,6 +44,9 @@ This Managed Scenario Example 2 - Translation App is replicated from [a blog of 
 ## [Service Consumption & Web APIs](https://learning.sap.com/courses/building-apps-with-the-abap-restful-application-programming-model/the-business-scenario_LE_154dc8cd-c3e4-4939-b8b0-8b0b1b326395)
 
 ## Youtube Channel - SAP Developers - Useful Video resources
+[Implement Numbering in RAP](https://www.youtube.com/watch?v=fmUY-nW9GLE)
+
+
 [01 - ABAP Cloud - Expose ABAP CDS view using Communication Arrangement](https://www.youtube.com/watch?v=3QoP-6cTDm4&ab_channel=SAPDevelopers)  
 [02 - ABAP Cloud - Create your First App using RAP Generator](https://www.youtube.com/watch?v=-SMAfDdPmeo)  
 [03 - ABAP Cloud - Fiori project using ABAP Tool Bridge](https://www.youtube.com/watch?v=vwcTSPH84GY)  
