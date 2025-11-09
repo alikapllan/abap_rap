@@ -4,6 +4,8 @@
   <asx:values>
    <DEVC>
     <CTEXT>Google Translate App - Managed</CTEXT>
+    <LANGUAGE>D</LANGUAGE>
+    <MASTERLANG>D</MASTERLANG>
     <PACKKIND>5</PACKKIND>
    </DEVC>
   </asx:values>

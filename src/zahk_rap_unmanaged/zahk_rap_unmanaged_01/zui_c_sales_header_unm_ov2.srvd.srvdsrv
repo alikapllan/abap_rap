@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service def ZAHK_C_SALES_HEADER_UNM_01'
+define service ZUI_C_SALES_HEADER_UNM_OV2 {
+  expose zahk_c_sales_header_u_02;
+  expose zahk_c_sales_item_u_02;
+}

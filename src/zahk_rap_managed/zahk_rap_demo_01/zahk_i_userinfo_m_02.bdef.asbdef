@@ -8,32 +8,33 @@ lock master
 etag master LastChanged // important for 2 users working at the same time
 {
 
-//field ( readonly ) Email, FirstName, LastName;
-field ( readonly:update ) Email;
+  //field ( readonly ) Email, FirstName, LastName;
+  field ( readonly : update ) Email;
 
   create;
   update;
   delete;
 
- /* as we are deriving data from a root view data fields should be mapped with dtable.
-    Because this root composite view is not directly in relationship with dtable
-    like the basic (interface view) ZAHK_I_USERINFO_M_01 */
-  mapping for ztest_userinfo01 {
-    Email     = user_mail;
-    FirstName = first_name;
-    LastName  = last_name;
-    IsAdmin   = is_admin;
-  }
-/*  -> mapping can also be written as : )
-//  mapping for ztest_userinfo01 corresponding;
-    # for a smooth corresponding, field names must be identical in Comp. Root View and D.Table
-    # e.g. in this example it could cause problem as namings are different */
+  /* as we are deriving data from a root view data fields should be mapped with dtable.
+   Because this root composite view is not directly in relationship with dtable
+   like the basic (interface view) ZAHK_I_USERINFO_M_01 */
+  mapping for ztest_userinfo01
+    {
+      Email     = user_mail;
+      FirstName = first_name;
+      LastName  = last_name;
+      IsAdmin   = is_admin;
+    }
+  /*  -> mapping can also be written as : )
+   // mapping for ztest_userinfo01 corresponding;
+   # for a smooth corresponding, field names must be identical in Comp. Root View and D.Table
+   # e.g. in this example it could cause problem as namings are different */
 
-action makeUserAdmin result [1] $self;
-action removeUserAdmin result [1] $self;
+  action makeUserAdmin result [1] $self;
+  action removeUserAdmin result [1] $self;
 
-validation validEmail on save {field Email;} // on save -> before data written into db
+  validation validEmail on save { field Email; } // on save -> before data written into db
 
-// fields that are used as a determination factor for a calculation/operation on other fields are provided inside
-determination assignAdmin on modify {field Email;} // e.g. based on Email, IsAdmin is filled
+  // fields that are used as a determination factor for a calculation/operation on other fields are provided inside
+  determination assignAdmin on modify { field Email; } // e.g. based on Email, IsAdmin is filled
 }

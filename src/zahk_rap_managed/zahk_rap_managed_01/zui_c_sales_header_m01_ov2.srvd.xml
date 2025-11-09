@@ -3,12 +3,12 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <SRVD>
-    <NAME>ZUI_C_SALES_HEADER_M_01_O2</NAME>
+    <NAME>ZUI_C_SALES_HEADER_M01_OV2</NAME>
     <TYPE>SRVD/SRV</TYPE>
-    <DESCRIPTION>Service Def for Sales Header 01 Managed</DESCRIPTION>
+    <DESCRIPTION>Service def ZAHK_C_SALES_HEADER_M_01</DESCRIPTION>
     <LANGUAGE>EN</LANGUAGE>
     <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
-    <SOURCE_URI>./zui_c_sales_header_m_01_o2/source/main</SOURCE_URI>
+    <SOURCE_URI>./zui_c_sales_header_m01_ov2/source/main</SOURCE_URI>
     <SOURCE_TYPE>ABAP_SOURCE</SOURCE_TYPE>
     <SOURCE_ORIGIN_DESCRIPTION>ABAP Development Tools</SOURCE_ORIGIN_DESCRIPTION>
     <SRVD_SOURCE_TYPE>S</SRVD_SOURCE_TYPE>

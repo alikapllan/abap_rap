@@ -38,11 +38,10 @@ CLASS lhc_SO_Header DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
       IMPORTING keys REQUEST requested_authorizations FOR so_header RESULT result.
 
-
 ENDCLASS.
 
-CLASS lhc_SO_Header IMPLEMENTATION.
 
+CLASS lhc_SO_Header IMPLEMENTATION.
   METHOD class_constructor.
     " .. another option also could be to create the instance of the class zcl_salesorder_operation_u_02
     " here, as this would make us avoid writing of long zcl_salesorder_operation_u_02=>get_instance( )-> every time
@@ -101,12 +100,11 @@ CLASS lhc_SO_Header IMPLEMENTATION.
                INTO TABLE reported-so_header.
       ENDLOOP.
     ENDIF.
-
   ENDMETHOD.
 
   METHOD update.
-    DATA ls_so_header  TYPE ztest_vbak_02.
-    DATA lt_so_header  TYPE STANDARD TABLE OF ztest_vbak_02.
+    DATA ls_so_header         TYPE ztest_vbak_02.
+    DATA lt_so_header         TYPE STANDARD TABLE OF ztest_vbak_02.
     " ..!
     DATA ls_so_header_control TYPE zif_sales_order_structure=>ts_so_control.
     DATA lt_so_header_control TYPE zif_sales_order_structure=>tt_so_control.
@@ -174,25 +172,26 @@ CLASS lhc_SO_Header IMPLEMENTATION.
       WHERE vbeln = @keys-sales_doc_num
       INTO TABLE @DATA(lt_so_headers).
 
-    IF sy-subrc = 0.
-
-      " .. Mapping is really important.
-      " .. Even one field is missing you get the error :
-      " 'our changes could not be saved. A more recent version is available.
-      " To make changes to the latest version, please refresh the data. '
-      result = CORRESPONDING #( lt_so_headers
-                                MAPPING
-                                sales_doc_num   = vbeln
-                                block_status    = faksk
-                                sales_dist      = vtweg
-                                sales_div       = spart
-                                sales_org       = vkorg
-                                total_cost      = netwr
-                                cost_currency   = waerk
-                                person_created  = ernam
-                                date_created    = erdat
-                                last_changed_on = last_changed_timestamp ).
+    IF sy-subrc <> 0.
+      RETURN.
     ENDIF.
+
+    " .. Mapping is really important.
+    " .. Even one field is missing you get the error :
+    " 'our changes could not be saved. A more recent version is available.
+    " To make changes to the latest version, please refresh the data. '
+    result = CORRESPONDING #( lt_so_headers
+                              MAPPING
+                              sales_doc_num   = vbeln
+                              block_status    = faksk
+                              sales_dist      = vtweg
+                              sales_div       = spart
+                              sales_org       = vkorg
+                              total_cost      = netwr
+                              cost_currency   = waerk
+                              person_created  = ernam
+                              date_created    = erdat
+                              last_changed_on = last_changed_timestamp ).
   ENDMETHOD.
 
   METHOD rba_Sitem_m_02.
@@ -206,7 +205,8 @@ CLASS lhc_SO_Header IMPLEMENTATION.
 
     " .. Get new sales item position
     IF lines( entities_cba ) > 0.
-       DATA(lv_new_so_item_posnr) = lo_salesorder_operation->get_item_new_posnr( iv_so_sales_doc_num = entities_cba[ 1 ]-sales_doc_num  ).
+      DATA(lv_new_so_item_posnr) = lo_salesorder_operation->get_item_new_posnr(
+                                       iv_so_sales_doc_num = entities_cba[ 1 ]-sales_doc_num  ).
     ENDIF.
 
     " .. Create a table of all items
@@ -216,18 +216,18 @@ CLASS lhc_SO_Header IMPLEMENTATION.
 
       LOOP AT lr_entity_cba->*-%target REFERENCE INTO DATA(lr_entity_target).
 
-      ls_so_item = CORRESPONDING #( lr_entity_target->*
-                                    MAPPING
-                                    " .. in the target we have only values which are provided in UI
-                                    " .. as vbeln & posnr will be provided by us explicitly outside of the UI
-                                    " both removed from here
-                                    " .. total item cost is also calculated explicitly based on qty and unit cost
-                                    waerk = cost_currency
-                                    arktx = mat_desc
-                                    matnr = mat_num
-                                    kpein = quantity
-                                    netpr = unit_cost
-                                    kmein = unit ).
+        ls_so_item = CORRESPONDING #( lr_entity_target->*
+                                      MAPPING
+                                      " .. in the target we have only values which are provided in UI
+                                      " .. as vbeln & posnr will be provided by us explicitly outside of the UI
+                                      " both removed from here
+                                      " .. total item cost is also calculated explicitly based on qty and unit cost
+                                      waerk = cost_currency
+                                      arktx = mat_desc
+                                      matnr = mat_num
+                                      kpein = quantity
+                                      netpr = unit_cost
+                                      kmein = unit ).
 
         " .. Check if values of qty and unit pr. are negative
         IF ls_so_item-netpr < 0 OR ls_so_item-kpein < 0.
@@ -244,22 +244,21 @@ CLASS lhc_SO_Header IMPLEMENTATION.
                           item_position = lv_new_so_item_posnr ) TO failed-so_item.
         ENDIF.
 
+        " .. Calculating price
+        ls_so_item-netwr = ls_so_item-netpr * ls_so_item-kpein.
 
-      " .. Calculating price
-      ls_so_item-netwr = ls_so_item-netpr * ls_so_item-kpein.
+        ls_so_item-vbeln = lr_entity_cba->*-sales_doc_num. " here it will be taken from Header not UI.
 
-      ls_so_item-vbeln = lr_entity_cba->*-sales_doc_num. " here it will be taken from Header not UI.
+        " .. Assigning new posnr
+        ls_so_item-posnr = lv_new_so_item_posnr.
 
-      " .. Assigning new posnr
-      ls_so_item-posnr = lv_new_so_item_posnr.
-
-      INSERT ls_so_item INTO TABLE lt_so_item.
+        INSERT ls_so_item INTO TABLE lt_so_item.
 
       ENDLOOP.
 
-     ENDLOOP.
+    ENDLOOP.
 
-     lo_salesorder_operation->create_so_item( it_so_item = lt_so_item ).
+    lo_salesorder_operation->create_so_item( it_so_item = lt_so_item ).
   ENDMETHOD.
 
   METHOD blockOrder.
@@ -356,7 +355,7 @@ CLASS lhc_SO_Header IMPLEMENTATION.
       INSERT VALUE #( %msg = new_message( id       = 'ZAHK_RAP_UNM_01'
                                           number   = '003'
                                           severity = if_abap_behv_message=>severity-success ) )
-           INTO TABLE reported-so_header.
+             INTO TABLE reported-so_header.
     ELSE.
       result-%create = if_abap_behv=>auth-unauthorized.
       result-%update = if_abap_behv=>auth-unauthorized.
@@ -469,12 +468,11 @@ CLASS lhc_SO_Header IMPLEMENTATION.
 
     ENDLOOP.
   ENDMETHOD.
-
 ENDCLASS.
+
 
 CLASS lhc_SO_Item DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
-
     METHODS create FOR MODIFY
       IMPORTING entities FOR CREATE SO_Item.
 
@@ -492,8 +490,8 @@ CLASS lhc_SO_Item DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
 ENDCLASS.
 
-CLASS lhc_SO_Item IMPLEMENTATION.
 
+CLASS lhc_SO_Item IMPLEMENTATION.
   METHOD create.
     " .. creating Item wont trigger here as item is created via association.
   ENDMETHOD.
@@ -521,26 +519,25 @@ CLASS lhc_SO_Item IMPLEMENTATION.
 
   METHOD rba_Sheader_m_02.
   ENDMETHOD.
-
 ENDCLASS.
+
 
 CLASS lsc_ZAHK_I_SALES_HEADER_M_02 DEFINITION INHERITING FROM cl_abap_behavior_saver.
   PROTECTED SECTION.
-
-    METHODS finalize REDEFINITION.
+    METHODS finalize          REDEFINITION.
 
     METHODS check_before_save REDEFINITION.
 
-    METHODS save REDEFINITION.
+    METHODS save              REDEFINITION.
 
-    METHODS cleanup REDEFINITION.
+    METHODS cleanup           REDEFINITION.
 
-    METHODS cleanup_finalize REDEFINITION.
+    METHODS cleanup_finalize  REDEFINITION.
 
 ENDCLASS.
 
-CLASS lsc_ZAHK_I_SALES_HEADER_M_02 IMPLEMENTATION.
 
+CLASS lsc_ZAHK_I_SALES_HEADER_M_02 IMPLEMENTATION.
   METHOD finalize.
   ENDMETHOD.
 
@@ -560,5 +557,4 @@ CLASS lsc_ZAHK_I_SALES_HEADER_M_02 IMPLEMENTATION.
 
   METHOD cleanup_finalize.
   ENDMETHOD.
-
 ENDCLASS.

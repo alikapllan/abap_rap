@@ -4,27 +4,28 @@
   <asx:values>
    <SRVB>
     <METADATA>
-     <NAME>ZUI_C_SALES_HEADER_U_O2</NAME>
+     <NAME>ZUI_C_AHK_DMO_LANG_SRV_OV2</NAME>
      <TYPE>SRVB/SVB</TYPE>
-     <DESCRIPTION>Service Binding OV2 Unmanaged - Sales Header 01</DESCRIPTION>
+     <DESCRIPTION>Service Binding - Root - ZC_AHK_DMO_LANG</DESCRIPTION>
+     <ABAP_LANGU_VERSION>5</ABAP_LANGU_VERSION>
     </METADATA>
     <CONTENT>
      <BIND_TYPE_IMPL>
-      <NAME>ZUI_C_SALES_HEADER_U_O2</NAME>
+      <NAME>ZUI_C_AHK_DMO_LANG_SRV_OV2</NAME>
      </BIND_TYPE_IMPL>
      <BIND_TYPE>ODATA</BIND_TYPE>
      <BIND_TYPE_VERSION>V2</BIND_TYPE_VERSION>
      <SERVICES>
       <item>
-       <SERVICE_NAME>ZUI_C_SALES_HEADER_U_O2</SERVICE_NAME>
+       <SERVICE_NAME>ZUI_C_AHK_DMO_LANG_SRV_OV2</SERVICE_NAME>
        <SERVICE_CONTENT>
         <item>
          <SERVICE_VERSION>0001</SERVICE_VERSION>
          <RELEASE_STATE>NOT_RELEASED</RELEASE_STATE>
          <SRVD_REF>
-          <URI>/sap/bc/adt/ddic/srvd/sources/zui_c_sales_header_u_02</URI>
+          <URI>/sap/bc/adt/ddic/srvd/sources/zui_c_ahk_dmo_lang_srv_ov2</URI>
           <TYPE>SRVD/SRV</TYPE>
-          <NAME>ZUI_C_SALES_HEADER_U_02</NAME>
+          <NAME>ZUI_C_AHK_DMO_LANG_SRV_OV2</NAME>
          </SRVD_REF>
          <BIND_TYPE_DATA>
           <CONTENT>

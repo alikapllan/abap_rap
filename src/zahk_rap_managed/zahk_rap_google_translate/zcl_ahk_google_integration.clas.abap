@@ -112,15 +112,15 @@ CLASS ZCL_AHK_GOOGLE_INTEGRATION IMPLEMENTATION.
                                        id_target_language = id_target_language ).
 
     TRY.
-        DATA(lo_destination) = cl_http_destination_provider=>create_by_url( ld_url ).
-        DATA(lo_client) = cl_web_http_client_manager=>create_by_http_destination( lo_destination ).
+*        DATA(lo_destination) = cl_http_destination_provider=>create_by_url( ld_url ).
+*        DATA(lo_client) = cl_web_http_client_manager=>create_by_http_destination( lo_destination ).
 
-        DATA(lo_request) = lo_client->get_http_request( ).
-        lo_request->set_content_type( 'application/json; charset=utf-8' ).
-        lo_request->set_text( ld_payload ).
-        DATA(lo_response) = lo_client->execute( i_method = if_web_http_client=>post ).
+*        DATA(lo_request) = lo_client->get_http_request( ).
+*        lo_request->set_content_type( 'application/json; charset=utf-8' ).
+*        lo_request->set_text( ld_payload ).
+*        DATA(lo_response) = lo_client->execute( i_method = if_web_http_client=>post ).
 
-        rt_result = map_result( lo_response ).
+*        rt_result = map_result( lo_response ).
 
       CATCH cx_root.
         CLEAR rt_result.

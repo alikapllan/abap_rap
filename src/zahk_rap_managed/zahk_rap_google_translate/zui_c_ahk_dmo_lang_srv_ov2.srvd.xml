@@ -3,11 +3,12 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <SRVD>
-    <NAME>ZUI_C_SALES_HEADER_U_02</NAME>
+    <NAME>ZUI_C_AHK_DMO_LANG_SRV_OV2</NAME>
     <TYPE>SRVD/SRV</TYPE>
+    <DESCRIPTION>Service def for ZC_AHK_DMO_LANG</DESCRIPTION>
     <LANGUAGE>EN</LANGUAGE>
     <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
-    <SOURCE_URI>./zui_c_sales_header_u_02/source/main</SOURCE_URI>
+    <SOURCE_URI>./zui_c_ahk_dmo_lang_srv_ov2/source/main</SOURCE_URI>
     <SOURCE_TYPE>ABAP_SOURCE</SOURCE_TYPE>
     <SOURCE_ORIGIN_DESCRIPTION>ABAP Development Tools</SOURCE_ORIGIN_DESCRIPTION>
     <SRVD_SOURCE_TYPE>S</SRVD_SOURCE_TYPE>

@@ -76,8 +76,34 @@ CLASS zcl_demo_data_load_02 IMPLEMENTATION.
                      )
                      (
 
+                         vbeln          = '1001'
+                         posnr          = '30'
+                         matnr          = 'M-20'
+                         arktx          = 'Office Phone'
+                         netpr          = '1000'
+                         netwr          = '1000'
+                         waerk          = 'EUR'
+                         kpein          = '1'
+                         kmein          = 'PC'
+                         last_changed_timestamp = lv_timestamp
+                     )
+                     (
+
                          vbeln          = '1002'
                          posnr          = '10'
+                         matnr          = 'A-20'
+                         arktx          = 'Big Office Desk'
+                         netpr          = '1000'
+                         netwr          = '2000'
+                         waerk          = 'EUR'
+                         kpein          = '2'
+                         kmein          = 'PC'
+                         last_changed_timestamp = lv_timestamp
+                     )
+                     (
+
+                         vbeln          = '1002'
+                         posnr          = '20'
                          matnr          = 'A-20'
                          arktx          = 'Big Office Desk'
                          netpr          = '1000'

@@ -4,27 +4,27 @@
   <asx:values>
    <SRVB>
     <METADATA>
-     <NAME>ZUI_C_SALES_HEADER_M_01_O2</NAME>
+     <NAME>ZUI_C_SALES_HEADER_M01_OV2</NAME>
      <TYPE>SRVB/SVB</TYPE>
      <DESCRIPTION>Service binding OV2 - Sales Header 01</DESCRIPTION>
     </METADATA>
     <CONTENT>
      <BIND_TYPE_IMPL>
-      <NAME>ZUI_C_SALES_HEADER_M_01_O2</NAME>
+      <NAME>ZUI_C_SALES_HEADER_M01_OV2</NAME>
      </BIND_TYPE_IMPL>
      <BIND_TYPE>ODATA</BIND_TYPE>
      <BIND_TYPE_VERSION>V2</BIND_TYPE_VERSION>
      <SERVICES>
       <item>
-       <SERVICE_NAME>ZUI_C_SALES_HEADER_M_01_O2</SERVICE_NAME>
+       <SERVICE_NAME>ZUI_C_SALES_HEADER_M01_OV2</SERVICE_NAME>
        <SERVICE_CONTENT>
         <item>
          <SERVICE_VERSION>0001</SERVICE_VERSION>
          <RELEASE_STATE>NOT_RELEASED</RELEASE_STATE>
          <SRVD_REF>
-          <URI>/sap/bc/adt/ddic/srvd/sources/zui_c_sales_header_m_01_o2</URI>
+          <URI>/sap/bc/adt/ddic/srvd/sources/zui_c_sales_header_m01_ov2</URI>
           <TYPE>SRVD/SRV</TYPE>
-          <NAME>ZUI_C_SALES_HEADER_M_01_O2</NAME>
+          <NAME>ZUI_C_SALES_HEADER_M01_OV2</NAME>
          </SRVD_REF>
          <BIND_TYPE_DATA>
           <CONTENT>

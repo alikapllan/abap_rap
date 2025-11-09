@@ -5,6 +5,7 @@
    <DDLS>
     <DDLNAME>ZAHK_I_USERINFO_M_02</DDLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
+    <DDTEXT>Composition Root View ztest_userinfo01</DDTEXT>
     <SOURCE_TYPE>W</SOURCE_TYPE>
    </DDLS>
   </asx:values>

@@ -4,7 +4,7 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZBP_AHK_I_USERINFO_M_02</CLSNAME>
-    <LANGU>D</LANGU>
+    <LANGU>E</LANGU>
     <DESCRIPT>Behavior Implementation for ZAHK_I_USERINFO_M_02</DESCRIPT>
     <CATEGORY>06</CATEGORY>
     <STATE>1</STATE>
@@ -13,12 +13,6 @@
     <UNICODE>X</UNICODE>
     <CLSDEFINT>ZAHK_I_USERINFO_M_02</CLSDEFINT>
    </VSEOCLASS>
-   <DESCRIPTIONS_CLASS>
-    <SEOCLASSTX>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Behavior Implementation for ZAHK_I_USERINFO_M_02</DESCRIPT>
-    </SEOCLASSTX>
-   </DESCRIPTIONS_CLASS>
   </asx:values>
  </asx:abap>
 </abapGit>

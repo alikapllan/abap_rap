@@ -38,10 +38,10 @@ annotate view zahk_c_sales_item_u_02 with
         fieldGroup: [{ qualifier: 'ITEM_DETAIL', position: 60, importance: #HIGH }]}
   quantity;
 
-  //    @UI:{ lineItem: [{ position: 80, label: 'Q Unit', importance: #HIGH }],
-  //          identification: [{ position: 80, label: 'Q Unit' }],
-  //          fieldGroup: [{ qualifier: 'ITEM_DETAIL', importance: #HIGH }]}
-  //    unit;
+//  @UI:{ lineItem: [{ position: 80, label: 'Q Unit', importance: #HIGH }],
+//        identification: [{ position: 80, label: 'Q Unit' }],
+//        fieldGroup: [{ qualifier: 'ITEM_DETAIL', importance: #HIGH }]}
+//  unit;
 
 
   @UI:{ lineItem: [{ position: 70, label: 'Price', importance: #HIGH }],

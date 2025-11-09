@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service def for ZC_AHK_DMO_LANG'
+define service ZUI_C_AHK_DMO_LANG_SRV_OV2 {
+  expose ZC_AHK_DMO_LANG;
+}

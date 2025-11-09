@@ -4,6 +4,8 @@
   <asx:values>
    <DEVC>
     <CTEXT>ABAP OO Design applied to RAP unmanaged scenario</CTEXT>
+    <LANGUAGE>D</LANGUAGE>
+    <MASTERLANG>D</MASTERLANG>
    </DEVC>
   </asx:values>
  </asx:abap>

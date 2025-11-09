@@ -5,7 +5,7 @@
    <BDEF>
     <NAME>ZAHK_I_USERINFO_M_02</NAME>
     <TYPE>BDEF/BDO</TYPE>
-    <DESCRIPTION>Behavior Definition for Compos. Root View ztest_userinfo01</DESCRIPTION>
+    <DESCRIPTION>Composition Root View ztest_userinfo01</DESCRIPTION>
     <DESCRIPTION_TEXT_LIMIT>60</DESCRIPTION_TEXT_LIMIT>
     <LANGUAGE>EN</LANGUAGE>
     <LINKS>
@@ -33,7 +33,7 @@
       <TITLE>Source Content (HTML)</TITLE>
      </item>
     </LINKS>
-    <MASTER_LANGUAGE>DE</MASTER_LANGUAGE>
+    <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
     <ABAP_LANGU_VERSION>X</ABAP_LANGU_VERSION>
     <SOURCE_URI>./zahk_i_userinfo_m_02/source/main</SOURCE_URI>
     <SOURCE_TYPE>ABAP_SOURCE</SOURCE_TYPE>
