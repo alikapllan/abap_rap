@@ -30,14 +30,29 @@ annotate view ZAHK_I_SALES_HEADER_M_02 with
                      fieldGroup: [{ qualifier: 'BASIC_INFO', importance: #HIGH }] }
   sales_doc_num;
 
-  @UI:{ lineItem: [{ position: 20, label: 'Created On', importance: #HIGH }],
-       identification: [{ position: 20, label: 'Created On' }],
-       fieldGroup: [{ qualifier: 'BASIC_INFO', importance: #HIGH }] }
+  @UI: {
+    identification: [ { position: 20, label: 'Created On' } ],
+    fieldGroup: [
+      { qualifier: 'BASIC_INFO', importance: #HIGH}, // " keeping my for visibility on object page
+      { qualifier: 'CREATED',    position: 10 }                     
+    ]
+  }
   date_created;
 
-  @UI:{ lineItem: [{ position: 30, label: 'Created By', importance: #HIGH }],
-       identification: [{ position: 30, label: 'Created By' }],
-       fieldGroup: [{ qualifier: 'BASIC_INFO', importance: #HIGH }] }
+  @UI: {
+    identification: [ { position: 30, label: 'Created By' } ],
+    fieldGroup: [
+      { qualifier: 'BASIC_INFO', importance: #HIGH }, //
+      { qualifier: 'CREATED',    position: 20 }
+    ],
+    lineItem: [
+      { type: #AS_FIELDGROUP,
+        valueQualifier: 'CREATED',
+        label: 'Created On / By',
+        position: 20,
+        importance: #HIGH }
+    ]
+  }
   person_created;
 
   @UI:{ lineItem: [{ position: 40, label: 'Total Cost', importance: #HIGH }],
