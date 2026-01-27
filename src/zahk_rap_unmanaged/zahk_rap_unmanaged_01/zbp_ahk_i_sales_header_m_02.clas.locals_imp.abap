@@ -37,6 +37,8 @@ CLASS lhc_SO_Header DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
     METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
       IMPORTING keys REQUEST requested_authorizations FOR so_header RESULT result.
+    METHODS lock FOR LOCK
+      IMPORTING keys FOR LOCK so_header.
 
 ENDCLASS.
 
@@ -468,6 +470,9 @@ CLASS lhc_SO_Header IMPLEMENTATION.
       ENDIF.
 
     ENDLOOP.
+  ENDMETHOD.
+
+  METHOD lock.
   ENDMETHOD.
 ENDCLASS.
 

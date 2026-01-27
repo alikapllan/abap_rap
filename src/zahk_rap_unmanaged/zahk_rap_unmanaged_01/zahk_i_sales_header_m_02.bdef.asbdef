@@ -1,9 +1,9 @@
 unmanaged implementation in class zbp_ahk_i_sales_header_m_02 unique;
-// strict ( 2 );
+strict ( 2 );
 
 define behavior for ZAHK_I_SALES_HEADER_M_02 alias SO_Header
 //late numbering
-//lock master
+lock master
 authorization master ( global, instance )
 etag master last_changed_on
 {
@@ -12,14 +12,18 @@ etag master last_changed_on
   delete ( features : instance );
   association _SItem_M_02 { create ( features : instance ); }
 
-  action blockOrder   result[1] $self; // 1 because we will only get 1 entity set for the particulat SO
-  action unblockOrder result[1] $self;
+  action blockOrder result [1] $self; // 1 because we will only get 1 entity set for the particulat SO
+  action unblockOrder result [1] $self;
 
   field ( readonly ) sales_doc_num,
   date_created,
   last_changed_on,
-  block_status,
-  person_created;
+  person_created,
+  total_cost,
+  cost_currency,
+  block_status_msg;
+
+  side effects { field block_status affects $self; }
 
   mapping for ztest_vbak_02 control zahk_i_sales_header_m_02 corresponding
     {
@@ -38,7 +42,7 @@ etag master last_changed_on
 
 define behavior for ZAHK_I_SALES_ITEM_M_02 alias SO_Item
 //late numbering
-//lock dependent by _SHeader_M_02
+lock dependent by _SHeader_M_02
 authorization dependent by _SHeader_M_02
 //etag master <field_name>
 {
@@ -49,8 +53,8 @@ authorization dependent by _SHeader_M_02
   // sales doc no & item & position should not be given at creating.
   // total item cost is calculating explicitly
   field ( readonly ) sales_doc_num,
-                     item_position,
-                     total_item_cost;
+  item_position,
+  total_item_cost;
 
   association _SHeader_M_02;
 

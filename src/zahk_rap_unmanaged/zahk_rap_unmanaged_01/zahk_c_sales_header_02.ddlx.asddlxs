@@ -1,12 +1,13 @@
 @Metadata.layer: #CORE
 
-@UI: { headerInfo: { title: { value: 'sales_doc_num' },
-                     description: { value: 'date_created' },
-                     typeName: 'Sales Document',
-                     typeNamePlural: 'Sales Documents' } }
-annotate view ZAHK_I_SALES_HEADER_M_02 with
-{
+@UI.headerInfo: { title.value: 'sales_doc_num',
+                  description.value: 'date_created',
+                  typeName: 'Sales Document',
+                  typeNamePlural: 'Sales Documents' }
 
+annotate view ZAHK_I_SALES_HEADER_M_02 with
+
+{
   @UI.facet: [  { id: 'FacetCollection', type: #COLLECTION, label: 'Sales Document Details Collection' },
 
                 { id: 'FacetGeneral'   , parentId: 'FacetCollection', type: #IDENTIFICATION_REFERENCE, label: 'Sales Document Details', position: 10 },
@@ -34,7 +35,7 @@ annotate view ZAHK_I_SALES_HEADER_M_02 with
     identification: [ { position: 20, label: 'Created On' } ],
     fieldGroup: [
       { qualifier: 'BASIC_INFO', importance: #HIGH}, // " keeping my for visibility on object page
-      { qualifier: 'CREATED',    position: 10 }                     
+      { qualifier: 'CREATED',    position: 10 }
     ]
   }
   date_created;
@@ -55,14 +56,15 @@ annotate view ZAHK_I_SALES_HEADER_M_02 with
   }
   person_created;
 
-  @UI:{ lineItem: [{ position: 40, label: 'Total Cost', importance: #HIGH }],
-       identification: [{ position: 40, label: 'Total Cost' }],
-       fieldGroup: [{ qualifier: 'BASIC_INFO', importance: #HIGH }] }
+  @UI.fieldGroup: [ { qualifier: 'BASIC_INFO', importance: #HIGH } ]
+  @UI.identification: [ { position: 40, label: 'Total Cost' } ]
+  @UI.lineItem: [ { position: 40, label: 'Total Cost', importance: #HIGH } ]
   total_cost;
 
   //    @UI:{ lineItem: [{ position: 41, label: 'Number', importance: #HIGH }] }
   //    cost_currency;
-
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZAHK_I_BLOCKSTATUS_VH', element: 'BlockStatus' } } ]
+  @UI.textArrangement: #TEXT_ONLY
   @UI:{ lineItem: [{ position: 50, label: 'Block Status', importance: #HIGH },
        // Actions
           { type: #FOR_ACTION, dataAction: 'blockOrder', label: 'Block' },
@@ -71,30 +73,29 @@ annotate view ZAHK_I_SALES_HEADER_M_02 with
        fieldGroup: [{ qualifier: 'BASIC_INFO', importance: #HIGH }] }
   block_status;
 
-  @UI:{ lineItem: [{ position: 60, label: 'Block Status Message', importance: #HIGH }],
-       identification: [{ position: 60, label: 'Block Status Message' }],
-       fieldGroup: [{ qualifier: 'BASIC_INFO', importance: #HIGH }] }
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZAHK_I_BLOCKSTATUS_VH', element: 'BlockStatusDescription' } } ]
+  @UI.fieldGroup: [ { qualifier: 'BASIC_INFO', importance: #HIGH } ]
+  @UI.identification: [ { position: 60, label: 'Block Status Message' } ]
+  @UI.lineItem: [ { position: 60, label: 'Block Status Message', importance: #HIGH } ]
   block_status_msg;
 
   // importance is about what to show on UI
-  @UI:{ lineItem: [{ position: 70, label: 'Sales Org', importance: #MEDIUM }],
-       identification: [{ position: 70, label: 'Sales Org' }],
-       fieldGroup: [{ qualifier: 'DETAIL_INFO', importance: #HIGH }] }
+  @UI.fieldGroup: [ { qualifier: 'DETAIL_INFO', importance: #HIGH } ]
+  @UI.identification: [ { position: 70, label: 'Sales Org' } ]
+  @UI.lineItem: [ { position: 70, label: 'Sales Org', importance: #MEDIUM } ]
   sales_org;
 
-  @UI:{ lineItem: [{ position: 80, label: 'Sales Dist', importance: #MEDIUM }],
-       identification: [{ position: 80, label: 'Sales Dist' }],
-       fieldGroup: [{ qualifier: 'DETAIL_INFO', importance: #HIGH }] }
+  @UI.fieldGroup: [ { qualifier: 'DETAIL_INFO', importance: #HIGH } ]
+  @UI.identification: [ { position: 80, label: 'Sales Dist' } ]
+  @UI.lineItem: [ { position: 80, label: 'Sales Dist', importance: #MEDIUM } ]
   sales_dist;
 
-  @UI:{ lineItem: [{ position: 90, label: 'Sales Div', importance: #MEDIUM }],
-       identification: [{ position: 90, label: 'Sales Div' }],
-       fieldGroup: [{ qualifier: 'DETAIL_INFO', importance: #HIGH }] }
+  @UI.fieldGroup: [ { qualifier: 'DETAIL_INFO', importance: #HIGH } ]
+  @UI.identification: [ { position: 90, label: 'Sales Div' } ]
+  @UI.lineItem: [ { position: 90, label: 'Sales Div', importance: #MEDIUM } ]
   sales_div;
 
   // last_changed_on;
-
   /* Associations */
   //   _SItem_M_02;
-
 }
