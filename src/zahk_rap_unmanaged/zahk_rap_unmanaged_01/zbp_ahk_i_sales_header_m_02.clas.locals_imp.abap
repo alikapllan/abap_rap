@@ -270,8 +270,8 @@ CLASS lhc_SO_Header IMPLEMENTATION.
              INTO TABLE lt_so_header.
     ENDLOOP.
 
-    lo_salesorder_operation->block_or_unlock_so( it_so_header    = lt_so_header
-                                                 iv_block_status = zif_sales_order_structure=>c_blocked_status ).
+    lo_salesorder_operation->block_sales_order_buffer( it_so_header    = lt_so_header
+                                                       iv_block_status = zif_sales_order_structure=>c_blocked_status ).
 
     result = VALUE #( FOR s_so_header IN lt_so_header
                       ( sales_doc_num        = s_so_header-vbeln
@@ -288,8 +288,9 @@ CLASS lhc_SO_Header IMPLEMENTATION.
              INTO TABLE lt_so_header.
     ENDLOOP.
 
-    lo_salesorder_operation->block_or_unlock_so( it_so_header    = lt_so_header
-                                                 iv_block_status = zif_sales_order_structure=>c_unblocked_status ).
+    lo_salesorder_operation->unblock_sales_order_buffer(
+        it_so_header    = lt_so_header
+        iv_block_status = zif_sales_order_structure=>c_unblocked_status ).
 
     result = VALUE #( FOR s_so_header IN lt_so_header
                       ( sales_doc_num        = s_so_header-vbeln

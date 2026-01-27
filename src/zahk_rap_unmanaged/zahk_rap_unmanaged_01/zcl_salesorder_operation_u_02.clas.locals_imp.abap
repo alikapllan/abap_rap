@@ -22,54 +22,64 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
     CLASS-METHODS get_instance RETURNING VALUE(ro_instance) TYPE REF TO lcl_salesorder_buffer.
 
     METHODS delete_so_header_buffer IMPORTING it_so_header TYPE tt_ztest_vbak02.
-    METHODS create_so_header_buffer IMPORTING it_so_header TYPE tt_ztest_vbak02
+
+    METHODS create_so_header_buffer IMPORTING it_so_header  TYPE tt_ztest_vbak02
                                     RETURNING VALUE(ro_msg) TYPE REF TO if_abap_behv_message.
+
     METHODS update_so_header_buffer IMPORTING it_so_header         TYPE tt_ztest_vbak02
                                               it_so_header_control TYPE zif_sales_order_structure=>tt_so_control.
+
     METHODS save_so_header_buffer.
     METHODS cleanup_buffer.
 
-    METHODS create_so_item_buffer IMPORTING it_so_item TYPE tt_ztest_vbap02.
-    METHODS delete_so_item_buffer IMPORTING it_so_item TYPE tt_ztest_vbap02.
+    METHODS create_so_item_buffer         IMPORTING it_so_item              TYPE tt_ztest_vbap02.
+    METHODS delete_so_item_buffer         IMPORTING it_so_item              TYPE tt_ztest_vbap02.
 
     METHODS get_last_sales_doc_num_buffer RETURNING VALUE(rv_sales_doc_num) TYPE vbeln.
-    METHODS get_associated_items_buffer IMPORTING it_so_header TYPE tt_ztest_vbak02
-                                 RETURNING VALUE(rt_sales_items) TYPE tt_ztest_vbap02.
+
+    METHODS get_associated_items_buffer IMPORTING it_so_header          TYPE tt_ztest_vbak02
+                                        RETURNING VALUE(rt_sales_items) TYPE tt_ztest_vbap02.
 
     METHODS get_item_full_details_buffer IMPORTING it_so_items           TYPE tt_ztest_vbap02
                                          RETURNING VALUE(rt_sales_items) TYPE tt_ztest_vbap02.
 
-    METHODS block_or_unlock_so_buffer IMPORTING it_so_header    TYPE tt_ztest_vbak02
-                                                iv_block_status TYPE ztest_vbak_02-faksk.
+    METHODS block_sales_order_buffer IMPORTING it_so_header    TYPE tt_ztest_vbak02
+                                               iv_block_status TYPE ztest_vbak_02-faksk.
+
+    METHODS unblock_sales_order_buffer IMPORTING it_so_header    TYPE tt_ztest_vbak02
+                                                 iv_block_status TYPE ztest_vbak_02-faksk.
 
     METHODS get_item_new_posnr_buffer IMPORTING iv_so_sales_doc_num      TYPE ztest_vbap_02-vbeln
                                       RETURNING VALUE(rv_new_item_posnr) TYPE ztest_vbap_02-posnr.
 
   PRIVATE SECTION.
-    CLASS-DATA go_instance TYPE REF TO lcl_salesorder_buffer.
+    CLASS-DATA go_instance_buffer TYPE REF TO lcl_salesorder_buffer.
 
     METHODS get_associated_header IMPORTING it_so_item          TYPE tt_ztest_vbap02
                                   RETURNING VALUE(rs_so_header) TYPE t_ztest_vbak02.
 
-    METHODS update_header_total_price IMPORTING it_so_item            TYPE tt_ztest_vbap02
-                                                iv_create_flag        TYPE abap_bool OPTIONAL
-                                                iv_delete_flag        TYPE abap_bool OPTIONAL.
+    METHODS update_header_total_price IMPORTING it_so_item     TYPE tt_ztest_vbap02
+                                                iv_create_flag TYPE abap_bool OPTIONAL
+                                                iv_delete_flag TYPE abap_bool OPTIONAL.
 
     METHODS calculate_header_new_price IMPORTING is_so_header         TYPE t_ztest_vbak02
                                                  it_so_item           TYPE tt_ztest_vbap02
                                                  iv_create_flag       TYPE abap_bool OPTIONAL
                                                  iv_delete_flag       TYPE abap_bool OPTIONAL
                                        EXPORTING es_so_header_updated TYPE t_ztest_vbak02.
+
+    METHODS _update_block_status_buffer IMPORTING it_so_header    TYPE tt_ztest_vbak02
+                                                  iv_block_status TYPE ztest_vbak_02-faksk.
 ENDCLASS.
 
 
 CLASS lcl_salesorder_buffer IMPLEMENTATION.
   METHOD get_instance.
-    go_instance = COND #( WHEN go_instance IS BOUND
-                          THEN go_instance
-                          ELSE NEW #( ) ).
+    go_instance_buffer = COND #( WHEN go_instance_buffer IS BOUND
+                                 THEN go_instance_buffer
+                                 ELSE NEW #( ) ).
 
-    ro_instance = go_instance.
+    ro_instance = go_instance_buffer.
   ENDMETHOD.
 
   METHOD delete_so_header_buffer.
@@ -127,11 +137,12 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
          OR ls_so_header-spart < 0.
 
         " .. Message Handling within Operation Class (outside of the Behavior Implementation)
-        ro_msg = zcl_ahk_abap_behv_msg=>get_instance( )->new_message( id       = 'ZAHK_RAP_UNM_01'
-                                                                      number   = '001'
-                                                                      severity = if_abap_behv_message=>severity-error
-                                                                      v1       = 'Creating Header'
-                                                                      v2       = 'Negative Values not allowed at Sales Org/Dist/Div' ).
+        ro_msg = zcl_ahk_abap_behv_msg=>get_instance( )->new_message(
+                     id       = 'ZAHK_RAP_UNM_01'
+                     number   = '001'
+                     severity = if_abap_behv_message=>severity-error
+                     v1       = 'Creating Header'
+                     v2       = 'Negative Values not allowed at Sales Org/Dist/Div' ).
         RETURN.
       ENDIF.
     ENDLOOP.
@@ -147,7 +158,7 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
       INTO TABLE @DATA(lt_sales_items).
 
     IF sy-subrc = 0.
-       rt_sales_items = lt_sales_items.
+      rt_sales_items = lt_sales_items.
     ENDIF.
   ENDMETHOD.
 
@@ -231,7 +242,17 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
-  METHOD block_or_unlock_so_buffer.
+  METHOD block_sales_order_buffer.
+    _update_block_status_buffer( it_so_header    = it_so_header
+                                 iv_block_status = iv_block_status ).
+  ENDMETHOD.
+
+  METHOD unblock_sales_order_buffer.
+    _update_block_status_buffer( it_so_header    = it_so_header
+                                 iv_block_status = iv_block_status ).
+  ENDMETHOD.
+
+  METHOD _update_block_status_buffer.
     " .. Get related Sales Orders
     SELECT FROM ztest_vbak_02
       FIELDS *
@@ -252,7 +273,7 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
 
     " .. The new total price in item needs to be taken into account in header.
     " .. Total price of all items = total price in header
-    update_header_total_price( it_so_item = it_so_item
+    update_header_total_price( it_so_item     = it_so_item
                                iv_create_flag = abap_true ).
   ENDMETHOD.
 
@@ -324,13 +345,12 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
     SELECT FROM ztest_vbap_02
       FIELDS *
       FOR ALL ENTRIES IN @it_so_items
-      WHERE vbeln = @it_so_items-vbeln AND
-            posnr = @it_so_items-posnr
+      WHERE vbeln = @it_so_items-vbeln
+        AND posnr = @it_so_items-posnr
       INTO TABLE @DATA(lt_sales_items).
 
     IF sy-subrc = 0.
-       rt_sales_items = lt_sales_items.
+      rt_sales_items = lt_sales_items.
     ENDIF.
   ENDMETHOD.
-
 ENDCLASS.

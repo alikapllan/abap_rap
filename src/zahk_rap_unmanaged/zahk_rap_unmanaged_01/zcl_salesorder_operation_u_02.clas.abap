@@ -1,7 +1,7 @@
 CLASS zcl_salesorder_operation_u_02 DEFINITION
   PUBLIC FINAL
   CREATE PRIVATE. " by adding PRIVATE -> this class cannot be instantiated outside of the class.
-                  " -> meaning we force to use get_instance to have an instance.
+  " -> meaning we force to use get_instance to have an instance.
 
   PUBLIC SECTION.
     TYPES t_ztest_vbak02  TYPE ztest_vbak_02.
@@ -13,21 +13,29 @@ CLASS zcl_salesorder_operation_u_02 DEFINITION
     CLASS-METHODS get_instance RETURNING VALUE(ro_instance) TYPE REF TO zcl_salesorder_operation_u_02.
 
     METHODS delete_so_header IMPORTING it_so_header TYPE tt_ztest_vbak02.
-    METHODS create_so_header IMPORTING it_so_header TYPE tt_ztest_vbak02
+
+    METHODS create_so_header IMPORTING it_so_header  TYPE tt_ztest_vbak02
                              RETURNING VALUE(ro_msg) TYPE REF TO if_abap_behv_message.
+
     METHODS update_so_header IMPORTING it_so_header         TYPE tt_ztest_vbak02
                                        it_so_header_control TYPE zif_sales_order_structure=>tt_so_control.
+
     METHODS save_so_header.
     METHODS cleanup.
 
-    METHODS create_so_item IMPORTING it_so_item TYPE tt_ztest_vbap02.
-    METHODS delete_so_item IMPORTING it_so_item TYPE tt_ztest_vbap02.
+    METHODS create_so_item         IMPORTING it_so_item              TYPE tt_ztest_vbap02.
+    METHODS delete_so_item         IMPORTING it_so_item              TYPE tt_ztest_vbap02.
 
     METHODS get_last_sales_doc_num RETURNING VALUE(rv_sales_doc_num) TYPE vbeln.
-    METHODS block_or_unlock_so IMPORTING it_so_header    TYPE tt_ztest_vbak02
-                                         iv_block_status TYPE ztest_vbak_02-faksk.
-    METHODS get_item_new_posnr IMPORTING iv_so_sales_doc_num       TYPE ztest_vbap_02-vbeln
-                               RETURNING VALUE(rv_new_item_posnr)  TYPE ztest_vbap_02-posnr.
+
+    METHODS block_sales_order_buffer IMPORTING it_so_header    TYPE tt_ztest_vbak02
+                                               iv_block_status TYPE ztest_vbak_02-faksk.
+
+    METHODS unblock_sales_order_buffer IMPORTING it_so_header    TYPE tt_ztest_vbak02
+                                                 iv_block_status TYPE ztest_vbak_02-faksk.
+
+    METHODS get_item_new_posnr IMPORTING iv_so_sales_doc_num      TYPE ztest_vbap_02-vbeln
+                               RETURNING VALUE(rv_new_item_posnr) TYPE ztest_vbap_02-posnr.
 
   PRIVATE SECTION.
     CLASS-DATA go_instance TYPE REF TO zcl_salesorder_operation_u_02.
@@ -59,7 +67,7 @@ CLASS zcl_salesorder_operation_u_02 IMPLEMENTATION.
     lcl_salesorder_buffer=>get_instance( )->cleanup_buffer( ).
   ENDMETHOD.
 
-  METHOD get_last_sales_doc_num .
+  METHOD get_last_sales_doc_num.
     rv_sales_doc_num = lcl_salesorder_buffer=>get_instance( )->get_last_sales_doc_num_buffer( ).
   ENDMETHOD.
 
@@ -72,9 +80,14 @@ CLASS zcl_salesorder_operation_u_02 IMPLEMENTATION.
                                                                      it_so_header_control = it_so_header_control ).
   ENDMETHOD.
 
-  METHOD block_or_unlock_so.
-    lcl_salesorder_buffer=>get_instance( )->block_or_unlock_so_buffer( it_so_header    = it_so_header
-                                                                       iv_block_status = iv_block_status ).
+  METHOD block_sales_order_buffer.
+    lcl_salesorder_buffer=>get_instance( )->block_sales_order_buffer( it_so_header    = it_so_header
+                                                                      iv_block_status = iv_block_status ).
+  ENDMETHOD.
+
+  METHOD unblock_sales_order_buffer.
+    lcl_salesorder_buffer=>get_instance( )->unblock_sales_order_buffer( it_so_header    = it_so_header
+                                                                        iv_block_status = iv_block_status ).
   ENDMETHOD.
 
   METHOD get_item_new_posnr.
@@ -89,5 +102,4 @@ CLASS zcl_salesorder_operation_u_02 IMPLEMENTATION.
   METHOD delete_so_item.
     lcl_salesorder_buffer=>get_instance( )->delete_so_item_buffer( it_so_item = it_so_item ).
   ENDMETHOD.
-
 ENDCLASS.
