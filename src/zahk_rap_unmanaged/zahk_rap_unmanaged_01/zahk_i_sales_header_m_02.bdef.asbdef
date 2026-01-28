@@ -54,9 +54,12 @@ authorization dependent by _SHeader_M_02
   // total item cost is calculating explicitly
   field ( readonly ) sales_doc_num,
   item_position,
-  total_item_cost;
+  total_item_cost,
+  mat_desc;
 
   association _SHeader_M_02;
+
+  side effects { field mat_num affects $self; }
 
   mapping for ztest_vbap_02 control zahk_i_sales_item_m_02 corresponding
     {
