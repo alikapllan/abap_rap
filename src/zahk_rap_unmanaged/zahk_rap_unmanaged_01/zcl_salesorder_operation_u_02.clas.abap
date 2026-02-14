@@ -37,6 +37,23 @@ CLASS zcl_salesorder_operation_u_02 DEFINITION
     METHODS get_item_new_posnr IMPORTING iv_so_sales_doc_num      TYPE ztest_vbap_02-vbeln
                                RETURNING VALUE(rv_new_item_posnr) TYPE ztest_vbap_02-posnr.
 
+    " related to parallel processing
+    "--- Messages returned to behavior layer (reported-so_header)
+    TYPES: BEGIN OF ty_item_msg,
+             vbeln    TYPE vbeln,
+             msgno    TYPE symsgno, " optional: which message number you want to show
+             severity TYPE if_abap_behv_message=>t_severity,
+             v1       TYPE string,
+             v2       TYPE string,
+           END OF ty_item_msg,
+           tt_item_msg TYPE STANDARD TABLE OF ty_item_msg WITH EMPTY KEY.
+
+    METHODS do_parallel_processing
+      IMPORTING it_so_header TYPE tt_ztest_vbak02
+      EXPORTING ev_has_red   TYPE abap_bool
+                ev_summary   TYPE string
+                et_item_msgs TYPE tt_item_msg.
+
   PRIVATE SECTION.
     CLASS-DATA go_instance TYPE REF TO zcl_salesorder_operation_u_02.
 ENDCLASS.
@@ -101,5 +118,12 @@ CLASS zcl_salesorder_operation_u_02 IMPLEMENTATION.
 
   METHOD delete_so_item.
     lcl_salesorder_buffer=>get_instance( )->delete_so_item_buffer( it_so_item = it_so_item ).
+  ENDMETHOD.
+
+  METHOD do_parallel_processing.
+    lcl_salesorder_buffer=>get_instance( )->do_parallel_processing( EXPORTING it_so_header = it_so_header
+                                                                    IMPORTING ev_has_red   = ev_has_red
+                                                                              ev_summary   = ev_summary
+                                                                              et_item_msgs = et_item_msgs ).
   ENDMETHOD.
 ENDCLASS.

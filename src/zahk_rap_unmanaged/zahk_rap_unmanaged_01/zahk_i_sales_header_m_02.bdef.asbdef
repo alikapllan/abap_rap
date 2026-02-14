@@ -23,7 +23,8 @@ etag master last_changed_on
   cost_currency,
   block_status_msg;
 
-  side effects { field block_status affects $self; }
+  side effects { field block_status affects $self;
+                 entity _SItem_M_02 affects $self, entity _SItem_M_02; }
 
   mapping for ztest_vbak_02 control zahk_i_sales_header_m_02 corresponding
     {
@@ -54,12 +55,17 @@ authorization dependent by _SHeader_M_02
   // total item cost is calculating explicitly
   field ( readonly ) sales_doc_num,
   item_position,
-  total_item_cost,
+//  total_item_cost,
   mat_desc;
 
   association _SHeader_M_02;
 
-  side effects { field mat_num affects $self; }
+  side effects
+  { field mat_num affects $self;
+    field unit_cost affects field total_item_cost;
+    field quantity affects field total_item_cost;
+
+  }
 
   mapping for ztest_vbap_02 control zahk_i_sales_item_m_02 corresponding
     {

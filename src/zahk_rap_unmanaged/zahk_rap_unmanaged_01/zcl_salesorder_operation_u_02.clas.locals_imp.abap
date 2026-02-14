@@ -52,6 +52,12 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
     METHODS get_item_new_posnr_buffer IMPORTING iv_so_sales_doc_num      TYPE ztest_vbap_02-vbeln
                                       RETURNING VALUE(rv_new_item_posnr) TYPE ztest_vbap_02-posnr.
 
+    METHODS do_parallel_processing
+      IMPORTING it_so_header TYPE tt_ztest_vbak02
+      EXPORTING ev_has_red   TYPE abap_bool
+                ev_summary   TYPE string
+                et_item_msgs TYPE zcl_salesorder_operation_u_02=>tt_item_msg.
+
   PRIVATE SECTION.
     CLASS-DATA go_instance_buffer TYPE REF TO lcl_salesorder_buffer.
 
@@ -72,7 +78,49 @@ CLASS lcl_salesorder_buffer DEFINITION FINAL
                                                   iv_block_status TYPE ztest_vbak_02-faksk.
 ENDCLASS.
 
+" ========================================================================
+" Type definitions and helper classes for parallel processing
+" ========================================================================
+TYPES: BEGIN OF ty_wave_item_result,
+         vbeln    TYPE vbeln,
+         posnr    TYPE posnr,
+         status   TYPE c LENGTH 1, " G/Y/R
+         severity TYPE if_abap_behv_message=>t_severity,
+         reason   TYPE string,
+       END OF ty_wave_item_result.
 
+CLASS lcl_par_wave_item DEFINITION FINAL.
+  PUBLIC SECTION.
+    INTERFACES if_abap_parallel.
+    INTERFACES if_serializable_object.
+
+    METHODS constructor
+      IMPORTING iv_vbeln     TYPE vbeln
+                iv_posnr     TYPE posnr
+                iv_matnr     TYPE ztest_vbap_02-matnr
+                iv_qty       TYPE ztest_vbap_02-kpein
+                iv_unit_cost TYPE ztest_vbap_02-netpr
+                iv_text      TYPE ztest_vbap_02-arktx.
+
+    METHODS get_result RETURNING VALUE(rs_result) TYPE ty_wave_item_result.
+
+  PRIVATE SECTION.
+    DATA mv_vbeln     TYPE vbeln.
+    DATA mv_posnr     TYPE posnr.
+    DATA mv_matnr     TYPE matnr.
+    DATA mv_qty       TYPE kpein.
+    DATA mv_unit_cost TYPE netpr.
+    DATA mv_text      TYPE string.
+
+    DATA ms_result    TYPE ty_wave_item_result.
+
+    METHODS simulate_wave_constraints.
+ENDCLASS.
+
+
+" ========================================================================
+" Implementation of lcl_salesorder_buffer
+" ========================================================================
 CLASS lcl_salesorder_buffer IMPLEMENTATION.
   METHOD get_instance.
     go_instance_buffer = COND #( WHEN go_instance_buffer IS BOUND
@@ -352,5 +400,177 @@ CLASS lcl_salesorder_buffer IMPLEMENTATION.
     IF sy-subrc = 0.
       rt_sales_items = lt_sales_items.
     ENDIF.
+  ENDMETHOD.
+
+  METHOD do_parallel_processing.
+    " Single hard scenario: Warehouse Wave Readiness Simulation
+    " We assume order is already blocked at header level (FAKSK='99').
+    " This method just evaluates readiness and returns messages + summary.
+
+    ev_has_red = abap_false.
+    CLEAR: ev_summary,
+           et_item_msgs.
+
+    " Get all items belonging to the blocked headers
+    DATA(lt_items) = lcl_salesorder_buffer=>get_instance( )->get_associated_items_buffer( it_so_header = it_so_header ).
+
+    " IMPORTANT: Empty items is NOT an error and NOT the reason for blocking.
+    " It just means: nothing to simulate yet.
+    IF lines( lt_items ) = 0.
+      ev_summary = |(status { zif_sales_order_structure=>c_blocked_status }). Wave readiness check skipped: no items yet.|.
+      RETURN.
+    ENDIF.
+
+    " Build parallel instances: 1 task per item (best scaling model)
+    DATA lt_in  TYPE cl_abap_parallel=>t_in_inst_tab.
+    DATA lt_out TYPE cl_abap_parallel=>t_out_inst_tab.
+
+    LOOP AT lt_items INTO DATA(ls_item).
+      INSERT NEW lcl_par_wave_item( iv_vbeln     = ls_item-vbeln
+                                    iv_posnr     = ls_item-posnr
+                                    iv_matnr     = ls_item-matnr
+                                    iv_qty       = ls_item-kpein
+                                    iv_unit_cost = ls_item-netpr
+                                    iv_text      = ls_item-arktx )
+             INTO TABLE lt_in.
+    ENDLOOP.
+
+    " Throttle parallelism (demo value; tune in real life)
+    NEW cl_abap_parallel( p_num_tasks = 8 )->run_inst( EXPORTING p_in_tab  = lt_in
+                                                       IMPORTING p_out_tab = lt_out ).
+
+    " Aggregate
+    DATA(lv_red)   = 0.
+    DATA(lv_yel)   = 0.
+    DATA(lv_green) = 0.
+
+    LOOP AT lt_out INTO DATA(ls_out).
+      DATA(ls_res) = CAST lcl_par_wave_item( ls_out-inst )->get_result( ).
+
+      CASE ls_res-status.
+        WHEN 'R'.
+          lv_red += 1.
+          ev_has_red = abap_true.
+        WHEN 'Y'.
+          lv_yel   += 1.
+        WHEN 'G'.
+          lv_green += 1.
+      ENDCASE.
+
+      " Only send messages for warnings/errors (otherwise UI spam for 200 items)
+      IF ls_res-severity <> if_abap_behv_message=>severity-success.
+        APPEND VALUE zcl_salesorder_operation_u_02=>ty_item_msg( vbeln    = ls_res-vbeln
+                                                                 msgno    = '007'
+                                                                 severity = ls_res-severity
+                                                                 v1       = |Item { ls_res-posnr }|
+                                                                 v2       = ls_res-reason ) TO et_item_msgs.
+      ENDIF.
+    ENDLOOP.
+
+    ev_summary =
+      |Order blocked (status { zif_sales_order_structure=>c_blocked_status }). Wave readiness: { lv_red } critical, { lv_yel } warnings, { lv_green } ok.|.
+  ENDMETHOD.
+ENDCLASS.
+
+
+CLASS lcl_par_wave_item IMPLEMENTATION.
+  METHOD constructor.
+    mv_vbeln     = iv_vbeln.
+    mv_posnr     = iv_posnr.
+    mv_matnr     = iv_matnr.
+    mv_qty       = iv_qty.
+    mv_unit_cost = iv_unit_cost.
+    mv_text      = iv_text.
+
+    ms_result-vbeln    = mv_vbeln.
+    ms_result-posnr    = mv_posnr.
+    ms_result-status   = 'G'.
+    ms_result-severity = if_abap_behv_message=>severity-success.
+    ms_result-reason   = |OK|.
+  ENDMETHOD.
+
+  METHOD if_abap_parallel~do.
+    " This is executed in a separate session.
+    " Real-world: this step would call heavy services / do complex DB reads:
+    " - packaging spec / HU strategy determination
+    " - batch / SLED rules check
+    " - stock-type / availability simulation
+    " - split-delivery feasibility (waves try to avoid splits)
+    " - hazardous/cold-chain restrictions
+    " - Database queries
+    " - RFC calls to external systems
+    " - HTTP calls to APIs
+    " - File operations
+    simulate_wave_constraints( ).
+  ENDMETHOD.
+
+  METHOD simulate_wave_constraints.
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " Real DB access that benefits from parallelization:
+
+    " 1. Check batch requirements
+*  SELECT SINGLE @abap_true
+*    FROM mara
+*    WHERE matnr = @mv_matnr
+*      AND xchpf = @abap_true  " Batch management required
+*    INTO @DATA(lv_batch_required).
+*
+*  " 2. Check stock availability (complex ATP logic)
+*  CALL FUNCTION 'BAPI_MATERIAL_AVAILABILITY'
+*    " ... parameters
+*
+*  " 3. Get HU configuration
+*  SELECT SINGLE *
+*    FROM /scwm/t333  " WM HU types
+*    " ... complex joins
+
+    " These DB/RFC calls in parallel = REAL performance gain
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+    " Hard-ish realistic heuristics (DEMO):
+    " We model results as if they came from complex rules.
+    " No toy 'matnr starts with X'—use multiple dimensions: qty/value/text-based class.
+
+    DATA(lv_value) = mv_unit_cost * mv_qty.
+
+    " 1) Batch/SLED required (critical if missing in real life)
+    " Demo assumption: anything described as FOOD/PHARMA requires batch/SLED validation.
+    " In real implementation you would fetch classification / shelf-life requirements.
+    IF mv_text CS 'FOOD' OR mv_text CS 'PHARMA'.
+      " We can't actually check batch fields in your table here -> demonstrate as warning/critical by rule
+      IF mv_qty > 1000.
+        ms_result-status   = 'R'.
+        ms_result-severity = if_abap_behv_message=>severity-error.
+        ms_result-reason   = |Wave blocked: high-qty batch/SLED-relevant item requires batch determination before picking.|.
+        RETURN.
+      ELSE.
+        ms_result-status   = 'Y'.
+        ms_result-severity = if_abap_behv_message=>severity-warning.
+        ms_result-reason   = |Wave warning: batch/SLED-relevant item should be checked for batch determination.|.
+      ENDIF.
+    ENDIF.
+
+    " 2) HU strategy / packaging constraint (split risk)
+    " Demo: huge quantity or huge value tends to require special handling units -> wave risk
+    IF ms_result-status <> 'R' AND ( mv_qty > 5000 OR lv_value > 300000 ).
+      ms_result-status   = 'Y'.
+      ms_result-severity = if_abap_behv_message=>severity-warning.
+      ms_result-reason   = |Wave warning: item likely requires special HU strategy or split handling (qty/value too high).|.
+    ENDIF.
+
+    " 3) Hazardous/cold chain (critical if wave not configured)
+    " Demo: description indicates HAZMAT/COLD -> critical for standard wave
+    IF ms_result-status <> 'R' AND ( mv_text CS 'HAZMAT' OR mv_text CS 'COLD' ).
+      ms_result-status   = 'R'.
+      ms_result-severity = if_abap_behv_message=>severity-error.
+      ms_result-reason   = |Wave blocked: special handling (hazmat/cold-chain) not allowed in standard picking wave.|.
+      RETURN.
+    ENDIF.
+
+    " If none triggered: OK (or previous warning stays)
+  ENDMETHOD.
+
+  METHOD get_result.
+    rs_result = ms_result.
   ENDMETHOD.
 ENDCLASS.

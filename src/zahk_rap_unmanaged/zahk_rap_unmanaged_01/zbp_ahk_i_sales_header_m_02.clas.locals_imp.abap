@@ -266,14 +266,49 @@ CLASS lhc_SO_Header IMPLEMENTATION.
   METHOD blockOrder.
     DATA lt_so_header TYPE STANDARD TABLE OF ztest_vbak_02.
 
+    " ---- EXAMPLE FOR PARALLEL PROCESSING IN RAP ----
+    " ---- Business scenario
+    " Blocking the order (FAKSK = '99') freezes commercial changes.
+    " Immediately after blocking, business wants a "Wave Readiness Simulation":
+    " - Can the warehouse include this order in the next picking wave?
+    " - Per item we evaluate constraints (batch/SLED, HU strategy, stock-type, split feasibility, hazard/cold-chain).
+    " This is expensive for many items, so we run per-item checks in parallel and aggregate a summary.
+
     LOOP AT keys REFERENCE INTO DATA(lr_key).
       INSERT VALUE #( vbeln = lr_key->%key-sales_doc_num
                       faksk = zif_sales_order_structure=>c_blocked_status )
              INTO TABLE lt_so_header.
     ENDLOOP.
 
+    " 1) Block the order in buffer (your existing logic)
     lo_salesorder_operation->block_sales_order_buffer( it_so_header    = lt_so_header
                                                        iv_block_status = zif_sales_order_structure=>c_blocked_status ).
+
+    " 2) Run parallel wave-readiness simulation (NEW)
+    lo_salesorder_operation->do_parallel_processing( EXPORTING it_so_header = lt_so_header
+                                                     IMPORTING ev_has_red   = DATA(lv_has_red)
+                                                               ev_summary   = DATA(lv_summary)
+                                                               et_item_msgs = DATA(lt_item_msgs) ).
+
+    " 3) Report item-level messages
+    LOOP AT lt_item_msgs INTO DATA(ls_msg).
+      INSERT VALUE #( sales_doc_num = ls_msg-vbeln
+                      %msg          = new_message( id       = 'ZAHK_RAP_UNM_01'
+                                                   number   = ls_msg-msgno
+                                                   severity = ls_msg-severity
+                                                   v1       = ls_msg-v1
+                                                   v2       = ls_msg-v2 ) )
+             INTO TABLE reported-so_header.
+    ENDLOOP.
+
+    " 4) Report header summary (does NOT claim why it was blocked; only says blocked + check outcome)
+    INSERT VALUE #( sales_doc_num = lt_so_header[ 1 ]-vbeln
+                    %msg          = new_message_with_text(
+                                        severity = COND #( WHEN lv_has_red = abap_true
+                                                           THEN if_abap_behv_message=>severity-error
+                                                           ELSE if_abap_behv_message=>severity-success )
+                                        text     = lv_summary ) )
+           INTO TABLE reported-so_header.
 
     result = VALUE #( FOR s_so_header IN lt_so_header
                       ( sales_doc_num        = s_so_header-vbeln
