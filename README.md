@@ -50,3 +50,20 @@ This Managed Scenario Example 2 - Translation App is replicated from [a blog of 
 [01 - ABAP Cloud - Expose ABAP CDS view using Communication Arrangement](https://www.youtube.com/watch?v=3QoP-6cTDm4&ab_channel=SAPDevelopers)  
 [02 - ABAP Cloud - Create your First App using RAP Generator](https://www.youtube.com/watch?v=-SMAfDdPmeo)  
 [03 - ABAP Cloud - Fiori project using ABAP Tool Bridge](https://www.youtube.com/watch?v=vwcTSPH84GY)  
+
+## SAP delivered Apps for learning
+
+- SAP delivers for learning purposes multiple apps which covers almost all important topics in RAP-context with SFLIGHT. [Take a look on here](https://help.sap.com/docs/abap-cloud/abap-rap/develop-applications?locale=en-US).Containing topics:  
+  - Read-Only List Reporting Apps
+  - Read-Only RAP Analytical Tables
+  - Managed Transactional Apps
+  - Unmanaged Transactional Apps
+  - Transactional Apps with Exclusive Draft Capabilities
+  - Transactional Apps with Collaborative Draft Capabilities
+  - Cross-Business Object Scenarios with Draft Scope
+  - Apps with Hierarchical Data Structures including edit capabilities in draft
+  - Transactional Apps with Multi-Inline-Edit Capabilities (SM30 like - **business configuration** is also an option)
+  - UI Service with Access to a Remote Service
+- /DMO/FLIGHT Package is preinstalled on BTP Trial, you can investigate it there in ABAP Environment.
+- You also have the possibility to download it on your system. See [how to](https://github.com/SAP-samples/abap-platform-refscen-flight?tab=readme-ov-file). Basically based on your system release (lets say S4 2023), using ABAPGit, you select the branch **ABAP-platform-2023** and upload it. Before that you need to add **/DMO/** namespace into your system and create **/DMO/FLIGHT** Package.  
+
