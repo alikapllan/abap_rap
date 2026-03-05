@@ -1,0 +1,89 @@
+@Metadata.layer: #CORE
+
+@UI.headerInfo: { typeName: 'Requests',
+                  typeNamePlural: 'Requests',
+                  title: { type: #STANDARD, value: 'ExternalId' },
+                  description.value: 'StatusText' }
+
+annotate entity ZC_Request with
+
+{
+  @UI.facet: [ { id: 'Request',
+                 purpose: #STANDARD,
+                 type: #IDENTIFICATION_REFERENCE,
+                 label: 'Request',
+                 position: 10,
+                 targetQualifier: 'Main' }, // Matches qualifier='Main' on fields below
+               { id: 'RequestItems',
+                 purpose: #STANDARD,
+                 type: #LINEITEM_REFERENCE,
+                 label: 'Requested Products',
+                 position: 20,
+                 targetElement: '_items' } ]
+
+  @UI.lineItem: [{ type: #FOR_ACTION,
+                   label: 'Cancel Request',
+                   dataAction: 'cancel_request',
+                   requiresContext: true,
+                   invocationGrouping: #CHANGE_SET
+  }]
+
+  @UI.identification: [{ type: #FOR_ACTION,
+                          position: 10,
+                          label: 'Add Quick Product',
+                          dataAction: 'add_item' }]
+  @UI.adaptationHidden: true
+  RequestUuid;
+
+  @EndUserText.label: 'External ID'
+  @UI.identification: [ { position: 10, qualifier: 'Main' } ]
+  @UI.lineItem: [ { position: 10 } ]
+  ExternalId;
+
+  @EndUserText.label: 'Requester'
+  @UI.identification: [ { position: 20, qualifier: 'Main' } ]
+  @UI.lineItem: [ { position: 20 } ]
+  @UI.selectionField: [ { position: 20 } ]
+  @UI.textArrangement: #TEXT_ONLY
+  RequesterId;
+
+  @EndUserText.label: 'Status'
+  @UI.identification: [ { position: 30,
+                          qualifier: 'Main',
+                          criticality: 'StatusCriticality',
+                          criticalityRepresentation: #WITH_ICON } ]
+  @UI.textArrangement: #TEXT_FIRST
+  Status;
+
+  @EndUserText.label: 'Status'
+  @UI.lineItem: [ { position: 30, criticality: 'StatusCriticality', criticalityRepresentation: #WITHOUT_ICON } ]
+  @UI.selectionField: [ { position: 30 } ]
+  @UI.textArrangement: #TEXT_FIRST
+  StatusFilter;
+
+  @UI.adaptationHidden: true
+  StatusCriticality;
+
+  @EndUserText.label: 'Priority'
+  @UI.identification: [ { position: 40, qualifier: 'Main' } ]
+  @UI.lineItem: [ { position: 40 } ]
+  @UI.selectionField: [ { position: 40 } ]
+  @UI.textArrangement: #TEXT_ONLY
+  Priority;
+
+  @EndUserText.label: 'Deadline'
+  @UI.identification: [ { position: 50, qualifier: 'Main' } ]
+  @UI.lineItem: [ { position: 50 } ]
+  DeadlineDate;
+
+  @EndUserText.label: 'Cancel Reason'
+  @UI.hidden: #( CancelReasonHidden )
+  @UI.identification: [ { position: 60, qualifier: 'Main' } ]
+  @UI.lineItem: [ { position: 60 } ]
+  @UI.multiLineText: true
+  CancelReason;
+
+  @EndUserText.label: 'Last Changed At'
+  @UI.lineItem: [ { position: 70 } ]
+  LastChangedAt;
+}

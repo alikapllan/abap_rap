@@ -1,0 +1,33 @@
+projection;
+strict ( 2 );
+use draft;
+use side effects;
+
+define behavior for ZC_Request alias Request
+{
+  use create;
+  use update;
+
+  use association _items { create; with draft; }
+
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+
+  use action cancel_request;
+  use action add_item;
+
+  // Status field is used twice and normally could only be used once
+  // with the suppress annotation on Projection level, we can use it twice and assign different values to it
+  field ( suppress ) StatusFilter;
+}
+
+define behavior for ZC_RequestItem alias RequestItem
+{
+  use update;
+  use delete;
+
+  use association _Request { with draft; }
+}

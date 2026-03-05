@@ -1,0 +1,100 @@
+managed implementation in class zbp_i_request unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_Request alias Request
+persistent table zrap_a_request
+draft table zrap_d_request
+lock master total etag LastChangedAt
+authorization master ( instance )
+etag master LastChangedAt
+{
+  create ( authorization : global );
+  update ( features : instance );
+  internal delete;
+
+  field ( readonly ) RequestUuid, ExternalId;
+  field ( numbering : managed ) RequestUuid;
+  field ( mandatory ) RequesterId, DeadlineDate;
+  field ( features : instance ) Status;
+  field ( features : instance ) CancelReason;
+
+
+  determination set_semantic_key on save { create; }
+  determination set_priority on save { field DeadlineDate; }
+  determination set_initial_status on save { create; }
+
+  validation check_semantic_key on save { field ExternalId; }
+  validation check_mandatory_fields on save { create; update; }
+  validation check_deadline_date on save { field DeadlineDate; }
+
+  action ( features : instance ) cancel_request parameter ZP_popup;
+  action ( features : instance ) add_item parameter ZP_PopupItem;
+
+  side effects
+  {
+    action cancel_request affects $self;
+
+    // this is for refreshing the editability of Cancel Reason after status gets updated
+    field Status affects permissions ( field CancelReason );
+
+    action add_item affects $self;
+  }
+
+  draft action ( features : instance ) Edit;
+  draft action Activate optimized;
+  draft action Resume;
+  draft action Discard;
+  draft determine action Prepare
+  {
+    validation ( always ) check_semantic_key;
+    validation ( always ) check_mandatory_fields;
+    validation ( always ) check_deadline_date;
+  }
+
+  association _items { create ( features : instance ); with draft; }
+
+  mapping for zrap_a_request corresponding
+    {
+      RequestUuid   = request_uuid;
+      Status        = status;
+      Priority      = priority;
+      ExternalId    = external_id;
+      DeadlineDate  = deadline_date;
+      RequesterId   = requester_id;
+      CancelReason  = cancel_reason;
+      CreatedBy     = created_by;
+      CreatedAt     = created_at;
+      LastChangedBy = last_changed_by;
+      LastChangedAt = last_changed_at;
+    }
+}
+
+define behavior for ZI_RequestItem alias RequestItem
+persistent table zrap_a_reqitem
+draft table zrap_d_reqitem
+lock dependent by _Request
+authorization dependent by _Request
+etag master LastChangedAt
+{
+  update;
+  delete;
+
+  association _Request { with draft; }
+
+  field ( readonly ) RequestUuid, ItemUuid;
+  field ( numbering : managed ) ItemUuid;
+
+  mapping for zrap_a_reqitem corresponding
+    {
+      RequestUuid   = request_uuid;
+      ItemUuid      = item_uuid;
+      ProductId     = product_id;
+      ProductQty    = product_qty;
+      ProductUom    = product_uom;
+      CreatedAt     = created_at;
+      CreatedBy     = created_by;
+      LastChangedAt = last_changed_at;
+      LastChangedBy = last_changed_by;
+    }
+}

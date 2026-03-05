@@ -1,0 +1,6 @@
+abstract;
+
+define behavior for ZP_PopupItem // alias <alias_name>
+{
+  field ( mandatory ) ProductId, ProductAmount, ProductUom;
+}
